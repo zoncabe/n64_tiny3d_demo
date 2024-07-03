@@ -24,8 +24,8 @@ void actor_integrate (Actor *actor, float frame_time);
 
 void actor_setAcceleration(Actor *actor, float target_speed, float acceleration_rate)
 {
-    actor->target_velocity.x = target_speed * sinf(rad(actor->target_rotation.z));
-    actor->target_velocity.y = target_speed * -cosf(rad(actor->target_rotation.z));
+    actor->target_velocity.x = target_speed * sinf(rad(actor->target_yaw));
+    actor->target_velocity.y = target_speed * -cosf(rad(actor->target_yaw));
 
     actor->body.acceleration.x = acceleration_rate * (actor->target_velocity.x - actor->body.velocity.x);
     actor->body.acceleration.y = acceleration_rate * (actor->target_velocity.y - actor->body.velocity.y);
@@ -72,9 +72,9 @@ void actor_integrate (Actor *actor, float frame_time)
 
     if (actor->body.velocity.x != 0 || actor->body.velocity.y != 0) {
 
-        Vector2 horizontal_velocity = {actor->body.velocity.x, actor->body.velocity.y};
+		actor->body.rotation.z = deg(atan2(-actor->body.velocity.x, -actor->body.velocity.y));
 
-		actor->body.rotation.z = deg(atan2(actor->body.velocity.x, -actor->body.velocity.y));
+        Vector2 horizontal_velocity = {actor->body.velocity.x, actor->body.velocity.y};
         actor->horizontal_speed = vector2_magnitude(&horizontal_velocity);       
 	}
 }

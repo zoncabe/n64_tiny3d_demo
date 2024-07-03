@@ -47,7 +47,7 @@ void move_with_stick(Actor *actor, ControllerData *data, float camera_angle_arou
         Vector2 stick = {data->input.stick_x, data->input.stick_y};
         
         stick_magnitude = vector2_magnitude(&stick);
-        actor->target_rotation.z = deg(atan2(data->input.stick_x, -data->input.stick_y) - rad(camera_angle_around));
+        actor->target_yaw = deg(atan2(data->input.stick_x, -data->input.stick_y) - rad(camera_angle_around));
     }
 
     

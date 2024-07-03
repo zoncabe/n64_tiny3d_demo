@@ -2,60 +2,75 @@
 #define SCENERY_H
 
 
-/* SCENERY.H
-here are all the structures and functions prototypes that involve the setting up of an entity */
-
-// macros
-
 // structures
-
 
 typedef struct {
 
-	Mtx	position_mtx;
-	Mtx rotation_mtx[3];
-	Mtx scale_mtx;
-
-	Gfx *mesh;
+  	uint32_t id;
+	rspq_block_t *dl;
+	T3DMat4FP *modelMat;
+	T3DModel *model;
     
+	Vector3 scale;
 	Vector3 position;
 	Vector3 rotation;
-	Vector3 scale;
 
 } Scenery;
 
 
 // function prototypes
 
+Scenery scenery_create(uint32_t id, const char *model_path);
+void scenery_set(Scenery *scenery);
+void scenery_draw(Scenery *scenery);
+void scenery_delete(Scenery *scenery);
 
-void scenery_set_dl(Scenery *scenery);
 
+//function implementations
 
-/* set scenery
-handles the system functions that enters a scenery object's position and rotation values */
-
-void scenery_set_dl(Scenery *scenery)
+Scenery scenery_create(uint32_t id, const char *model_path)
 {
-    guTranslate(&scenery->position_mtx, scenery->position.x, scenery->position.y, scenery->position.z);
-    guRotate(&scenery->rotation_mtx[0], scenery->rotation.x, 1, 0, 0);
-    guRotate(&scenery->rotation_mtx[1], scenery->rotation.y, 0, 1, 0);
-    guRotate(&scenery->rotation_mtx[2], scenery->rotation.z, 0, 0, 1);
-    guScale(&scenery->scale_mtx, scenery->scale.x, scenery->scale.y, scenery->scale.z);
+    Scenery scenery = {
+        .id = id,
+        .model = t3d_model_load(model_path),
+        .modelMat = malloc_uncached(sizeof(T3DMat4FP)), // needed for t3d
 
-    gSPMatrix(glistp++, OS_K0_TO_PHYSICAL(&scenery->position_mtx), G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
-    gSPMatrix(glistp++, OS_K0_TO_PHYSICAL(&scenery->rotation_mtx[0]), G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
-    gSPMatrix(glistp++, OS_K0_TO_PHYSICAL(&scenery->rotation_mtx[1]), G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
-    gSPMatrix(glistp++, OS_K0_TO_PHYSICAL(&scenery->rotation_mtx[2]), G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
-    gSPMatrix(glistp++, OS_K0_TO_PHYSICAL(&scenery->scale_mtx), G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
-    
-    gSPDisplayList(glistp++, scenery->mesh);
+        .scale = {1.0f, 1.0f, 1.0f},
+        .position = {0.0f, 0.0f, 0.0f},
+        .rotation = {0.0f, 0.0f, 0.0f},
+    };
 
-    gSPPopMatrix(glistp++, G_MTX_MODELVIEW);
-    gSPPopMatrix(glistp++, G_MTX_MODELVIEW);
-    gSPPopMatrix(glistp++, G_MTX_MODELVIEW);
-    gSPPopMatrix(glistp++, G_MTX_MODELVIEW);
-    gSPPopMatrix(glistp++, G_MTX_MODELVIEW);
+    rspq_block_begin();
+    t3d_model_draw(scenery.model);
+    scenery.dl = rspq_block_end();
+
+    t3d_mat4fp_identity(scenery.modelMat);
+
+    return scenery;
 }
+
+void scenery_set(Scenery *scenery)
+{
+    t3d_mat4fp_from_srt_euler(scenery->modelMat,
+        (float[3]){scenery->scale.x, scenery->scale.y, scenery->scale.z},
+        (float[3]){rad(scenery->rotation.x), rad(scenery->rotation.y), rad(scenery->rotation.z)},
+        (float[3]){scenery->position.x, scenery->position.y, scenery->position.z}
+    );
+}
+
+void scenery_draw(Scenery *scenery)
+{
+    t3d_matrix_push_pos(1);
+    t3d_matrix_set(scenery->modelMat, true);
+    rspq_block_run(scenery->dl);
+    t3d_matrix_pop(1);
+}
+
+void scenery_delete(Scenery *scenery)
+{
+    free_uncached(scenery->modelMat);
+}
+
 
 
 #endif

@@ -61,15 +61,15 @@ typedef struct {
 typedef struct {
 
 	uint32_t id;
+	rspq_block_t *dl;
+	T3DMat4FP *modelMat;
+	T3DModel *model;
 	
 	Vector3 scale;
 	RigidBody body;
-	
-	Vector3 target_rotation;
+	float target_yaw;
 	Vector3 target_velocity;
-
 	float horizontal_speed;
-
 	bool grounded;
 	float grounding_height;
 
@@ -79,54 +79,52 @@ typedef struct {
 	ActorSettings settings;
 	Actorinput input;
 
-
-	rspq_block_t *dl;
-	T3DMat4FP *modelMat;
-	T3DModel *model;
-
 } Actor;
 
 
-Actor actor_create(uint32_t id);
-void actor_update(Actor *actor);
+Actor actor_create(uint32_t id, const char *model_path);
+void actor_set(Actor *actor);
 void actor_draw(Actor *actor);
 void actor_delete(Actor *actor);
 void actor_animate(Actor *actor);
 
 
 
-Actor actor_create(uint32_t id)
+Actor actor_create(uint32_t id, const char *model_path)
 {
     Actor actor = {
+
         .id = id,
+		.model = t3d_model_load(model_path),
+        .modelMat = malloc_uncached(sizeof(T3DMat4FP)), // needed for t3d
+
         .scale = {1.0f, 1.0f, 1.0f},
-        .grounding_height = 0,
-        .body = {
-            .position = {0, 0, 0},
-            .velocity = {0, 0, 0},
-            .rotation = {0, 0, 0},
+        
+		.body = {
+            .position = {0.0f, 0.0f, 0.0f},
+            .velocity = {0.0f, 0.0f, 0.0f},
+            .rotation = {0.0f, 0.0f, 0.0f},
         },
-        .settings = {
-            .idle_acceleration_rate = 9,
-            .walk_acceleration_rate = 4,
-            .run_acceleration_rate = 6,
-            .roll_acceleration_rate = 20,
-            .roll_acceleration_grip_rate = 2,
-            .jump_acceleration_rate = 50,
+        
+		.grounding_height = 0.0f,
+        
+		.settings = {
+            .idle_acceleration_rate = 9.0f,
+            .walk_acceleration_rate = 4.0f,
+            .run_acceleration_rate = 6.0f,
+            .jump_acceleration_rate = 50.0f,
             .aerial_control_rate = 0.5,
-            .walk_target_speed = 350,
-            .run_target_speed = 700,
-            .sprint_target_speed = 900,
-            .idle_to_roll_target_speed = 300,
-            .idle_to_roll_grip_target_speed = 50,
-            .walk_to_roll_target_speed = 400,
-            .run_to_roll_target_speed = 780,
-            .sprint_to_roll_target_speed = 980,
-            .jump_target_speed = 550,
-            .jump_timer_max = 0.20,
+            .walk_target_speed = 750.0f,
+            .run_target_speed = 1000.0f,
+            .sprint_target_speed = 1300.0f,
+            .jump_target_speed = 850.0f,
+            .jump_timer_max = 0.2f,
         },
-        .modelMat = malloc_uncached(sizeof(T3DMat4FP)) // needed for t3d
     };
+
+    rspq_block_begin();
+    t3d_model_draw(actor.model);
+    actor.dl = rspq_block_end();
 
     t3d_mat4fp_identity(actor.modelMat);
 
@@ -135,7 +133,7 @@ Actor actor_create(uint32_t id)
 
 
 
-void actor_update(Actor *actor)
+void actor_set(Actor *actor)
 {	
 	t3d_mat4fp_from_srt_euler(actor->modelMat,
 		(float[3]){actor->scale.x, actor->scale.y, actor->scale.z},
@@ -146,9 +144,11 @@ void actor_update(Actor *actor)
 
 
 void actor_draw(Actor *actor) 
-{
+{	
+	t3d_matrix_push_pos(1);
 	t3d_matrix_set(actor->modelMat, true);
 	rspq_block_run(actor->dl);
+	t3d_matrix_pop(1);
 }
 
 

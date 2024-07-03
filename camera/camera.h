@@ -1,16 +1,12 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-/* camera.H
-here are all the structures and functions prototypes that involve the setting up of the camera */
+#include "light.h"
 
 
 // structures
 
 typedef enum {
-	INTRO,
-	MENU,
-	PAUSE,
     ORBITAL,
 	AIMING,
 
@@ -41,12 +37,8 @@ typedef struct {
 
 
 typedef struct {
-	
-	Mtx modeling;
 
-	u16 normal;
-	Mtx projection;
-	Mtx position_mtx;
+	T3DViewport viewport;
 
 	Vector3 position;
 	float offset_height;
@@ -81,24 +73,51 @@ typedef struct {
 	
 } Camera;
 
-typedef struct{
-
-	uint8_t ambient_color[4];
-	uint8_t directional_color[4];
-	T3DVec3 direction;
-	
-} LightData;
-
 
 // functions prototypes
 
+
+Camera camera_create();
 void camera_getOrbitalPosition(Camera *camera, Vector3 barycenter, float frame_time);
-void camera_set_dl(Camera *camera);
-void light_set_dl(LightData *light);
+void camera_set(Camera *camera, Screen* screen);
 
 
-/*camera_getOrbitalPosition
-calculates the camera position given the input controlled variables*/
+// function implementations
+
+Camera camera_create()
+{
+    Camera camera = {
+        .distance_from_barycenter = 1200,
+        .target_distance = 1200,
+        .angle_around_barycenter = 180,
+        .pitch = 20,
+        .offset_angle = 5,
+        .offset_height = 90,
+
+        .settings = {
+            .orbitational_acceleration_rate = 15,
+            .orbitational_max_velocity = {120, 160},
+
+            .zoom_acceleration_rate = 60,
+            .zoom_deceleration_rate = 20,
+            .zoom_max_speed = 3800,
+
+            .target_zoom = 1200,
+            .target_zoom_aim = 470,
+
+            .offset_acceleration_rate = 25,
+            .offset_deceleration_rate = 45,
+            .offset_max_speed = 80,
+
+            .target_offset = 5,
+            .target_offset_aim = 10,
+
+            .max_pitch = 80,
+        },
+    };
+
+    return camera;
+}
 
 void camera_getOrbitalPosition(Camera *camera, Vector3 barycenter, float frame_time)
 {
@@ -144,46 +163,22 @@ void camera_getOrbitalPosition(Camera *camera, Vector3 barycenter, float frame_t
 }
 
 
-/* set camera
-handles the system functions that enters the camera position and rotation values */
-
-void camera_set_dl(Camera *camera, T3DViewport viewport)
+void camera_set(Camera *camera, Screen* screen)
 {
+    t3d_viewport_set_projection(
+        &screen->viewport, 
+        T3D_DEG_TO_RAD(35.0f), 
+        0.1f, 
+        10000.0f
+    );
 
-	t3d_viewport_set_projection(&viewport, T3D_DEG_TO_RAD(65.0f), 10.0f, 100.0f);
-    t3d_viewport_look_at(&viewport, &camPos, &camTarget, &(T3DVec3){{0,1,0}});
-
+    t3d_viewport_look_at(
+        &screen->viewport, 
+        &(T3DVec3){{camera->position.x, camera->position.y, camera->position.z}}, 
+        &(T3DVec3){{camera->target.x, camera->target.y, camera->target.z}}, 
+        &(T3DVec3){{0, 0, 1}}
+    );
 }
 
-
-/* set light
-temporary function until i learn how the lights work  */
-void light_set_dl(LightData *light)
-{
-    int i;
-
-    //color
-    for (i=0; i<3; i++) {
-
-        // Ambient color
-        light->amb.l.col[i]  = 130;
-        light->amb.l.colc[i] = 130;
-
-        //directional light color
-        light->dir.l.col[i]  = 255;
-        light->dir.l.colc[i] = 255;
-    }
-
-    // Direction
-    light->dir.l.dir[0] = -127 * sinf(light->rotation.x * 0.0174532925);
-    light->dir.l.dir[1] =  127 * sinf(light->rotation.z * 0.0174532925) * cosf(light->rotation.x * 0.0174532925);
-    light->dir.l.dir[2] =  127 * cosf(light->rotation.z * 0.0174532925) * cosf(light->rotation.x * 0.0174532925);
-
-    // Send the light struct to the RSP
-    gSPNumLights(glistp++, NUMLIGHTS_1);
-    gSPLight(glistp++, &light->dir, 1);
-    gSPLight(glistp++, &light->amb, 2);
-    gDPPipeSync(glistp++); 
-}
 
 #endif

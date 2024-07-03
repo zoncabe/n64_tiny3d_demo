@@ -37,7 +37,7 @@ void set_idle(Actor *actor)
 
         vector3_init(&actor->body.velocity);
     
-        actor->target_rotation.z = actor->body.rotation.z;
+        actor->target_yaw = actor->body.rotation.z;
         actor->state = STAND_IDLE;
 
         actor->previous_state = STAND_IDLE;
