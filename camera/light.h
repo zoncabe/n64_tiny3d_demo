@@ -19,7 +19,7 @@ LightData light_create() {
     LightData light = {
         .ambient_color = {80, 80, 100, 0xFF},
         .directional_color = {0xEE, 0xAA, 0xAA, 0xFF},
-        .direction = {{-1.0f, 1.0f, 1.0f}}
+        .direction = {{1.0f, 1.0f, 1.0f}}
     };
 
     t3d_vec3_norm(&light.direction);

@@ -1,10 +1,10 @@
 #ifndef ACTORSTATES_H
 #define ACTORSTATES_H
 
-/* ACTORSTATES.H
-here are all the actor state machine related functions */
 
 #include "actor_movement.h"
+
+#define ACTOR_GRAVITY -6000
 
 
 // function prototypes
@@ -81,23 +81,22 @@ void set_sprinting(Actor *actor)
 
 void set_jump(Actor *actor) 
 {       
-    if (actor->input.hold == 1 && actor->input.released == 0 && actor->input.time_held < actor->settings.jump_timer_max){
+    if (actor->input.jump_hold && !actor->input.jump_released && actor->input.jump_time_held < actor->settings.jump_timer_max){
 
         actor_setJumpAcceleration (actor, actor->settings.jump_target_speed, actor->settings.jump_acceleration_rate);
-        //actor->body.velocity.z = 650;
         actor_setAcceleration (actor, actor->horizontal_speed, actor->settings.aerial_control_rate);
     } 
     
-    else if (actor->body.velocity.z >= 0){
+    else if (actor->body.velocity.z > 0){
 
         actor_setAcceleration (actor, actor->horizontal_speed, actor->settings.aerial_control_rate);
-        actor->body.acceleration.z = -ACTOR_GRAVITY;
+        actor->body.acceleration.z = ACTOR_GRAVITY;
     }
     
     else {
 
         actor_setState(actor, FALLING);
-        actor->input.time_held = 0;
+        actor->input.jump_time_held = 0;
         return;
     }
 
@@ -113,7 +112,7 @@ void set_falling (Actor *actor)
 {   
     actor->grounded = 0;
     actor_setAcceleration (actor, actor->horizontal_speed, actor->settings.aerial_control_rate);
-    actor->body.acceleration.z = -ACTOR_GRAVITY;
+    actor->body.acceleration.z = ACTOR_GRAVITY;
 
     if (actor->body.position.z <= actor->grounding_height) {
 

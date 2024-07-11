@@ -27,7 +27,7 @@ void screen_clear(Screen* screen)
 	t3d_frame_start();
 	t3d_viewport_attach(&screen->viewport);
 
-	t3d_screen_clear_color(RGBA32(100, 80, 80, 0xFF));
+	t3d_screen_clear_color(RGBA32(154, 181, 198, 0xFF));
 	t3d_screen_clear_depth();
 }
 

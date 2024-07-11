@@ -16,19 +16,19 @@ void jump(Actor* actor, ControllerData *data, float frame_time)
 {    
     if (data->pressed.a && actor->state != ROLL && actor->state != JUMP && actor->state != FALLING) {
         
-        actor->input.released = 0;
+        actor->input.jump_hold = true;
+        actor->input.jump_released = false;
         actor_setState(actor, JUMP);
     }
 
-    if (data->held.a && actor->state == JUMP) {
-
-        actor->input.hold = 1; 
-        actor->input.time_held += frame_time;
+    else if (data->held.a && actor->state == JUMP) {
+        
+        actor->input.jump_time_held += frame_time;
     }
     else {
 
-        actor->input.released = 1;
-        actor->input.hold = 0;    
+        actor->input.jump_released = true;
+        actor->input.jump_hold = false;    
     }
 }
 

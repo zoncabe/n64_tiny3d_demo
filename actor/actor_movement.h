@@ -1,12 +1,6 @@
 #ifndef ACTOR_MOVEMENT_H
 #define ACTOR_MOVEMENT_H
 
-/* ACTOR_MOVEMENT.H
-here are all the actor movement related functions */
-
-
-#define ACTOR_GRAVITY 2000
-
 
 // function prototypes
 

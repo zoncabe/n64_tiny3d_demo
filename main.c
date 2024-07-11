@@ -3,7 +3,7 @@
 #include <t3d/t3dmath.h>
 #include <t3d/t3dmodel.h>
 
-#include "screen.h"
+#include "config/screen.h"
 #include "control/controls.h"
 #include "time/time.h"
 
@@ -22,7 +22,6 @@
 
 int main()
 {
-
 	debug_init_isviewer();
 	debug_init_usblog();
 	asset_init_compression(2);
@@ -50,10 +49,10 @@ int main()
 
 	//actor
 	Actor player = actor_create(0, "rom:/capsule.t3dm");
+    actor_setState(&player, STAND_IDLE);
 
 	//scenery
 	Scenery ground = scenery_create(0, "rom:/ground.t3dm");
-
 
 	for(;;)
 	{
@@ -62,25 +61,30 @@ int main()
 		controllerData_getInputs(&control);
 		time_setData(&timing);
 		
+		actorControl_setMotion(&player, &control, timing.frame_time_s, camera.angle_around_barycenter);
+		actor_integrate(&player, timing.frame_time_s);
+		actor_setState(&player, player.state);
+		actor_set(&player);
 
 		cameraControl_setOrbitalMovement(&camera, &control);
 		camera_getOrbitalPosition(&camera, player.body.position, timing.frame_time_s);
 		camera_set(&camera, &screen);
 
-		actorControl_setMotion(&player, &control, timing.frame_time_s, camera.angle_around_barycenter);
-		actor_integrate(&player, timing.frame_time_s);
-		actor_set(&player);
-
-		//scenery_set(&ground);
+		scenery_set(&ground);
 
 		// ======== Draw ======== //
+		
 		screen_clear(&screen);
-
+	
 		light_set(&light);
+    
+		t3d_matrix_push_pos(1);
 
 		actor_draw(&player);
 
 		scenery_draw(&ground);
+   
+   		t3d_matrix_pop(1);
 
 		rdpq_detach_show();
 	}

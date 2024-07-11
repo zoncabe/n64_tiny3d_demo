@@ -35,7 +35,7 @@ Scenery scenery_create(uint32_t id, const char *model_path)
         .model = t3d_model_load(model_path),
         .modelMat = malloc_uncached(sizeof(T3DMat4FP)), // needed for t3d
 
-        .scale = {1.0f, 1.0f, 1.0f},
+        .scale = {0.5f, 0.5f, 0.5f},
         .position = {0.0f, 0.0f, 0.0f},
         .rotation = {0.0f, 0.0f, 0.0f},
     };
@@ -60,10 +60,8 @@ void scenery_set(Scenery *scenery)
 
 void scenery_draw(Scenery *scenery)
 {
-    t3d_matrix_push_pos(1);
     t3d_matrix_set(scenery->modelMat, true);
     rspq_block_run(scenery->dl);
-    t3d_matrix_pop(1);
 }
 
 void scenery_delete(Scenery *scenery)

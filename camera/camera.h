@@ -87,12 +87,12 @@ void camera_set(Camera *camera, Screen* screen);
 Camera camera_create()
 {
     Camera camera = {
-        .distance_from_barycenter = 1200,
-        .target_distance = 1200,
+        .distance_from_barycenter = 1700,
+        .target_distance = 1700,
         .angle_around_barycenter = 180,
         .pitch = 20,
-        .offset_angle = 5,
-        .offset_height = 90,
+        .offset_angle = 6,
+        .offset_height = 180,
 
         .settings = {
             .orbitational_acceleration_rate = 15,
@@ -100,17 +100,17 @@ Camera camera_create()
 
             .zoom_acceleration_rate = 60,
             .zoom_deceleration_rate = 20,
-            .zoom_max_speed = 3800,
+            .zoom_max_speed = 3400,
 
-            .target_zoom = 1200,
+            .target_zoom = 1700,
             .target_zoom_aim = 470,
 
             .offset_acceleration_rate = 25,
             .offset_deceleration_rate = 45,
             .offset_max_speed = 80,
 
-            .target_offset = 5,
-            .target_offset_aim = 10,
+            .target_offset = 6,
+            .target_offset_aim = 30,
 
             .max_pitch = 80,
         },
@@ -167,8 +167,8 @@ void camera_set(Camera *camera, Screen* screen)
 {
     t3d_viewport_set_projection(
         &screen->viewport, 
-        T3D_DEG_TO_RAD(35.0f), 
-        0.1f, 
+        T3D_DEG_TO_RAD(45.0f), 
+        100.0f, 
         10000.0f
     );
 

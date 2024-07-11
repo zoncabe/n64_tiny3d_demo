@@ -1,9 +1,6 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 
-/* ACTOR.H
-here are all the structures and functions prototypes that involve the setting up of an actor */
-
 
 // structures
 
@@ -51,9 +48,9 @@ typedef struct {
 	float stick_magnitude;
 	float stick_x;
 	float stick_y;
-	float time_held;
-	int hold;
-	int released;
+	float jump_time_held;
+	bool jump_hold;
+	bool jump_released;
 
 }Actorinput;
 
@@ -82,13 +79,15 @@ typedef struct {
 } Actor;
 
 
+// function prototypes
+
 Actor actor_create(uint32_t id, const char *model_path);
 void actor_set(Actor *actor);
 void actor_draw(Actor *actor);
 void actor_delete(Actor *actor);
-void actor_animate(Actor *actor);
 
 
+// function implemenations
 
 Actor actor_create(uint32_t id, const char *model_path)
 {
@@ -115,8 +114,8 @@ Actor actor_create(uint32_t id, const char *model_path)
             .jump_acceleration_rate = 50.0f,
             .aerial_control_rate = 0.5,
             .walk_target_speed = 750.0f,
-            .run_target_speed = 1000.0f,
-            .sprint_target_speed = 1300.0f,
+            .run_target_speed = 1400.0f,
+            .sprint_target_speed = 2200.0f,
             .jump_target_speed = 850.0f,
             .jump_timer_max = 0.2f,
         },
@@ -131,8 +130,6 @@ Actor actor_create(uint32_t id, const char *model_path)
     return actor;
 }
 
-
-
 void actor_set(Actor *actor)
 {	
 	t3d_mat4fp_from_srt_euler(actor->modelMat,
@@ -142,25 +139,15 @@ void actor_set(Actor *actor)
 	);
 }
 
-
 void actor_draw(Actor *actor) 
 {	
-	t3d_matrix_push_pos(1);
 	t3d_matrix_set(actor->modelMat, true);
 	rspq_block_run(actor->dl);
-	t3d_matrix_pop(1);
 }
-
 
 void actor_delete(Actor *actor) 
 {
 	free_uncached(actor->modelMat);
-}
-
-void actor_animate(Actor *actor)
-{
-	if (actor->horizontal_speed > 1) actor->body.rotation.x = actor->horizontal_speed * 0.01f;
-	else actor->body.rotation.x = 0;
 }
 
 
