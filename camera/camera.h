@@ -111,7 +111,7 @@ Camera camera_create()
         	.zoom_deceleration_rate = 20,
         	.zoom_max_speed = 300,
         	.distance_from_baricenter = 700,
-        	.field_of_view = 65,
+        	.field_of_view = 55,
 	    	.field_of_view_aim = 45,
         	.offset_acceleration_rate = 25,
         	.offset_deceleration_rate = 45,
