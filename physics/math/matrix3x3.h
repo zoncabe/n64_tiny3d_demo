@@ -275,4 +275,5 @@ void matrix3x3_scale(Matrix3x3* matrix, float scalar) {
     matrix->row[2].x *= scalar; matrix->row[2].y *= scalar; matrix->row[2].z *= scalar;
 }
 
+
 #endif // MATRIX3X3_H

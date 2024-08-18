@@ -26,7 +26,7 @@ Quaternion quaternion_sum(const Quaternion* q, const Quaternion* r);
 Quaternion quaternion_difference(const Quaternion* q, const Quaternion* r);
 Quaternion quaternion_returnScaled(const Quaternion* q, float scalar);
 Quaternion quaternion_returnProduct(const Quaternion* q, const Quaternion* r);
-Vector3 quaternion_getProductVector(const Quaternion* q, const Vector3* vector);
+Vector3 quaternion_getVectorProduct(const Quaternion* q, const Vector3* vector);
 
 void quaternion_setIdentity(Quaternion* q);
 Vector3 quaternion_returnVectorV(const Quaternion* q);
@@ -47,9 +47,9 @@ bool quaternion_isValid(const Quaternion* q);
 bool quaternion_equals(const Quaternion* q, const Quaternion* r);
 
 void quaternion_setFromEulerAngles(Quaternion* quaternion, float angleX, float angleY, float angleZ);
-Quaternion quaternion_returnFromEulerAngles(float angleX, float angleY, float angleZ);
-Quaternion quaternion_returnFromVector(const Vector3* rotation);
-Quaternion quaternion_returnFromMatrix(const Matrix3x3* matrix);
+Quaternion quaternion_getFromEulerAngles(float angleX, float angleY, float angleZ);
+Quaternion quaternion_getFromVector(const Vector3* rotation);
+Quaternion quaternion_getFromMatrix(const Matrix3x3* matrix);
 
 void quaternion_setRotationAngleAxis(Quaternion* quaternion, float* angle, Vector3* axis);
 Matrix3x3 quaternion_getMatrix(const Quaternion* quaternion);
@@ -187,7 +187,7 @@ Quaternion quaternion_returnProduct(const Quaternion* q, const Quaternion* r) {
 }
 
 /* Multiplies the quaternion by a vector. */
-Vector3 quaternion_getProductVector(const Quaternion* q, const Vector3* vector) {
+Vector3 quaternion_getVectorProduct(const Quaternion* q, const Vector3* vector) {
     float prodX = q->w * vector->x + q->y * vector->z - q->z * vector->y;
     float prodY = q->w * vector->y + q->z * vector->x - q->x * vector->z;
     float prodZ = q->w * vector->z + q->x * vector->y - q->y * vector->x;
@@ -230,25 +230,25 @@ void quaternion_setFromEulerAngles(Quaternion* quaternion, float angleX, float a
     quaternion->w = cosX * cosYcosZ + sinX * sinYsinZ;
 
     /* Normalize the quaternion */
-    quaternion_normalize(quaternion);
+    //quaternion_normalize(quaternion);
 }
 
 /* Returns a quaternion constructed from Euler angles (in radians). */
-Quaternion quaternion_returnFromEulerAngles(float angleX, float angleY, float angleZ) {
+Quaternion quaternion_getFromEulerAngles(float angleX, float angleY, float angleZ) {
     Quaternion quaternion;
     quaternion_setFromEulerAngles(&quaternion, angleX, angleY, angleZ);
     return quaternion;
 }
 
 /* Returns a quaternion constructed from Euler angles (in radians). */
-Quaternion quaternion_returnFromVector(const Vector3* rotation) {
+Quaternion quaternion_getFromVector(const Vector3* rotation) {
     Quaternion quaternion;
     quaternion_setFromEulerAngles(&quaternion, rotation->x, rotation->y, rotation->z);
     return quaternion;
 }
 
 /* Creates a unit quaternion from a rotation matrix. */
-Quaternion quaternion_returnFromMatrix(const Matrix3x3* matrix) {
+Quaternion quaternion_getFromMatrix(const Matrix3x3* matrix) {
     Quaternion quaternion;
 
     /* Get the trace of the matrix */
@@ -361,7 +361,6 @@ Matrix3x3 quaternion_getMatrix(const Quaternion* quaternion) {
     };
 }
 
-
 Quaternion quaternion_slerp(const Quaternion* q, const Quaternion* r, float t) {
     assert(t >= 0.0f && t <= 1.0f);
 
@@ -402,4 +401,19 @@ Quaternion quaternion_slerp(const Quaternion* q, const Quaternion* r, float t) {
     return quaternion_sum(&q1, &q2);
 }
 
-#endif // QUATERNION_H
+Vector3 quaternion_rotateVector(Vector3 v, Quaternion q) {
+    Vector3 u = {q.x, q.y, q.z};
+    float s = q.w;
+
+    Vector3 rv1 = vector3_returnScaled(&u, 2.0f * vector3_returnDotProduct(&u, &v));
+    Vector3 rv2 = vector3_returnScaled(&v, (s * s - vector3_returnDotProduct(&u, &u)));
+    Vector3 crossProduct = vector3_returnCrossProduct(&u, &v);
+    Vector3 rv3 = vector3_returnScaled(&crossProduct, 2.0f * s);
+
+    Vector3 result = vector3_sum(&rv1, &rv2);
+    result = vector3_sum(&result, &rv3);
+
+    return result;
+}
+
+#endif

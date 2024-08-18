@@ -20,10 +20,11 @@ filesystem/%.sprite: assets/%.png
 	@echo "    [SPRITE] $@"
 	$(N64_MKSPRITE) $(MKSPRITE_FLAGS) -o filesystem "$<"
 
+
 filesystem/%.t3dm: assets/%.glb
 	@mkdir -p $(dir $@)
 	@echo "    [T3D-MODEL] $@"
-	$(T3D_GLTF_TO_3D) "$<" $@
+	$(T3D_GLTF_TO_3D) "$<" $@ --base-scale=1
 	$(N64_BINDIR)/mkasset -c 2 -o filesystem $@
 
 $(BUILD_DIR)/game.dfs: $(assets_conv)

@@ -15,6 +15,9 @@ typedef struct RigidBody {
     Vector3 velocity;
     Vector3 position;
     Vector3 rotation;
+
+    Vector3 previous_position;
+    
     //Quaternion orientation;
 
 
@@ -22,4 +25,4 @@ typedef struct RigidBody {
 
 
 
-#endif // PHYSICS_BODY_H
+#endif

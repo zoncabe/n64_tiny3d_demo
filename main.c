@@ -61,7 +61,7 @@ int main()
 		controllerData_getInputs(&control);
 		time_setData(&timing);
 		
-		actorControl_setMotion(&player, &control, timing.frame_time_s, camera.angle_around_barycenter);
+		actorControl_setMotion(&player, &control, timing.frame_time_s, camera.angle_around_barycenter, camera.offset_angle);
 		actor_integrate(&player, timing.frame_time_s);
 		actor_setState(&player, player.state);
 		actor_set(&player);

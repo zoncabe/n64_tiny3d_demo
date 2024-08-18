@@ -6,8 +6,6 @@
 #include <math.h>
 #include <float.h>
 
-#include "../physics_config.h"
-
 #include "math_common.h"
 
 #include "vector2.h"
@@ -19,8 +17,6 @@
 #include "quaternion.h"
 
 #include "transform.h"
-
-#include "ray.h"
 
 #include "math_functions.h"
 

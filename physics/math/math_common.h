@@ -2,6 +2,11 @@
 #define PHYSICS_MATH_COMMON_H
 
 
+#define PI 3.141592653589f
+#define PI_TIMES_2 6.28318530f
+
+#define TOLERANCE 1e-6f
+
 // ---------- Mathematics functions ---------- //
 
 float qi_sqrt(float number);
@@ -10,7 +15,7 @@ float rad(float angle);
 float deg(float rad);
 
 int clamp_int(int value, int lowerLimit, int upperLimit);
-float clamp_float(float value, float lowerLimit, float upperLimit);
+float clamp(float value, float lowerLimit, float upperLimit);
 
 float max2(float a, float b);
 float min2(float a, float b);
@@ -25,7 +30,7 @@ bool isfinite(float x);
 
 
 /* quick inverse square root */
-float qi_sqrt(float number) 
+inline float qi_sqrt(float number) 
 {
     float x2, y;
     const float threehalfs = 1.5F;
@@ -48,17 +53,14 @@ float qi_sqrt(float number)
     return y;
 }
 
-
 /* degrees to radians */
-
-float rad(float angle)
+inline float rad(float angle)
 {
 	return PI / 180 * angle;
 }
 
 /* radians to degrees */
-
-float deg(float rad)
+inline float deg(float rad)
 {
 	return 180 / PI * rad;
 }
@@ -72,20 +74,20 @@ inline int clamp_int(int value, int lowerLimit, int upperLimit)
 }
 
 /* return the result of the "value" clamped by "lowerLimit" and "upperLimit" */
-inline float clamp_float(float value, float lowerLimit, float upperLimit)
+inline float clamp(float value, float lowerLimit, float upperLimit)
 {
     assert(lowerLimit <= upperLimit);
     return (value < lowerLimit) ? lowerLimit : (value > upperLimit) ? upperLimit : value;
 }
 
 /* return higher value*/
-float max2(float a, float b) 
+inline float max2(float a, float b) 
 {
     return (a > b) ? a : b;
 }
 
 /* return lower value*/
-float min2(float a, float b) 
+inline float min2(float a, float b) 
 {
     return (a < b) ? a : b;
 }
@@ -110,13 +112,13 @@ inline bool sameSign(float a, float b)
 
 /* Function to test if two real numbers are (almost) equal
 We test if two numbers a and b are such that (a-b) are in [-EPSILON; EPSILON] */
-bool approxEqual(float a, float b) 
+inline bool approxEqual(float a, float b) 
 {
     return (fabsf(a - b) < FLT_EPSILON);
 }
 
 
-bool isfinite(float x)
+inline bool isfinite(float x)
 {
     return (x == x) && (x != INFINITY) && (x != -INFINITY);
 }

@@ -21,15 +21,17 @@ typedef struct {
 	float zoom_deceleration_rate;
 	float zoom_max_speed;
 
-	float target_zoom;
-	float target_zoom_aim;
+	float distance_from_baricenter;
+	
+    float field_of_view;
+	float field_of_view_aim;
 
 	float offset_acceleration_rate;
 	float offset_deceleration_rate;
 	float offset_max_speed;
 
-	float target_offset;
-	float target_offset_aim;
+	float offset_angle;
+	float offset_angle_aim;
 	
 	float max_pitch;
 
@@ -65,12 +67,16 @@ typedef struct {
 	float offset_speed;
 	int offset_direction;
 
+	float field_of_view;
+	
 	float zoom_acceleration;
 	float zoom_speed;
 	int zoom_direction;
 
+	float near_clipping;
+	float far_clipping;
+
 	CameraSettings settings;
-	
 } Camera;
 
 
@@ -87,32 +93,32 @@ void camera_set(Camera *camera, Screen* screen);
 Camera camera_create()
 {
     Camera camera = {
-        .distance_from_barycenter = 1700,
-        .target_distance = 1700,
-        .angle_around_barycenter = 180,
-        .pitch = 20,
-        .offset_angle = 6,
+        .distance_from_barycenter = 700,
+        .target_distance = 700,
+        .angle_around_barycenter = 0,
+        .pitch = 15,
+        .offset_angle = 23,
         .offset_height = 180,
+		.field_of_view = 65,
+		.near_clipping = 100,
+		.far_clipping = 10000,
 
         .settings = {
-            .orbitational_acceleration_rate = 15,
-            .orbitational_max_velocity = {120, 160},
-
-            .zoom_acceleration_rate = 60,
-            .zoom_deceleration_rate = 20,
-            .zoom_max_speed = 3400,
-
-            .target_zoom = 1700,
-            .target_zoom_aim = 470,
-
-            .offset_acceleration_rate = 25,
-            .offset_deceleration_rate = 45,
-            .offset_max_speed = 80,
-
-            .target_offset = 6,
-            .target_offset_aim = 30,
-
-            .max_pitch = 80,
+        
+        	.orbitational_acceleration_rate = 15,
+        	.orbitational_max_velocity = {120, 100},
+        	.zoom_acceleration_rate = 60,
+        	.zoom_deceleration_rate = 20,
+        	.zoom_max_speed = 300,
+        	.distance_from_baricenter = 700,
+        	.field_of_view = 65,
+	    	.field_of_view_aim = 45,
+        	.offset_acceleration_rate = 25,
+        	.offset_deceleration_rate = 45,
+        	.offset_max_speed = 160,
+        	.offset_angle = 23,
+        	.offset_angle_aim = 30,
+        	.max_pitch = 70,
         },
     };
 
@@ -126,26 +132,24 @@ void camera_getOrbitalPosition(Camera *camera, Vector3 barycenter, float frame_t
 	camera->zoom_speed += camera->zoom_acceleration * frame_time;
 	camera->offset_speed += camera->offset_acceleration * frame_time;
 
-	if (fabs(camera->orbitational_velocity.x) < 1 && fabs(camera->orbitational_velocity.y) < 1 && fabs(camera->zoom_speed) < 1 && fabs(camera->offset_speed) < 1)
-	{
+	if (fabs(camera->orbitational_velocity.x) < 1 && fabs(camera->orbitational_velocity.y) < 1 && fabs(camera->zoom_speed) < 1 && fabs(camera->offset_speed) < 1){
 		camera->orbitational_velocity.x = 0;
 		camera->orbitational_velocity.y = 0;
 		camera->zoom_speed = 0;
 		camera->offset_speed = 0;
-
 	}
 
     camera->pitch += camera->orbitational_velocity.x * frame_time;
 	camera->angle_around_barycenter += camera->orbitational_velocity.y * frame_time;
 	
-	camera->distance_from_barycenter += camera->zoom_direction * camera->zoom_speed * frame_time;
+	camera->field_of_view += camera->zoom_direction * camera->zoom_speed * frame_time;
 	camera->offset_angle += camera->offset_direction * camera->offset_speed * frame_time;
 
 	if (camera->angle_around_barycenter > 360) camera->angle_around_barycenter -= 360;
     if (camera->angle_around_barycenter < 0) camera->angle_around_barycenter  += 360;
 
     if (camera->pitch > camera->settings.max_pitch) camera->pitch = camera->settings.max_pitch;
-    if (camera->pitch < -camera->settings.max_pitch) camera->pitch = -camera->settings.max_pitch;
+    if (camera->pitch < -camera->settings.max_pitch + 30) camera->pitch = -camera->settings.max_pitch + 30; // this hard coded + 20 is for the near plane to not enter the actor geometry during "camera collision"
 
     camera->horizontal_barycenter_distance = camera->distance_from_barycenter * cosf(rad(camera->pitch));
 	camera->vertical_barycenter_distance = camera->distance_from_barycenter * sinf(rad(camera->pitch));
@@ -157,6 +161,21 @@ void camera_getOrbitalPosition(Camera *camera, Vector3 barycenter, float frame_t
     camera->position.y = barycenter.y - (camera->horizontal_barycenter_distance * cosf(rad(camera->angle_around_barycenter - camera->offset_angle)));
     camera->position.z = barycenter.z + camera->offset_height + camera->vertical_barycenter_distance;
 	
+	/* this is a temporary brute force abomination to "collide" the camera with an horizontal plane at height 20 simulating the floor,
+    will be modyfied when camera collision happens */
+	/*
+	*/
+	camera->distance_from_barycenter = camera->settings.distance_from_baricenter;
+	while (camera->position.z < 30)  {
+		camera->distance_from_barycenter--; 
+		camera->horizontal_barycenter_distance = camera->distance_from_barycenter * cosf(rad(camera->pitch));
+		camera->vertical_barycenter_distance = camera->distance_from_barycenter * sinf(rad(camera->pitch));
+
+		camera->position.x = barycenter.x - camera->horizontal_barycenter_distance * sinf(rad(camera->angle_around_barycenter - camera->offset_angle));
+		camera->position.y = barycenter.y - camera->horizontal_barycenter_distance * cosf(rad(camera->angle_around_barycenter - camera->offset_angle));
+		camera->position.z = barycenter.z + camera->offset_height + camera->vertical_barycenter_distance;
+	}
+
 	camera->target.x = barycenter.x - camera-> horizontal_target_distance * sinf(rad(camera->angle_around_barycenter + 180));
 	camera->target.y = barycenter.y - camera-> horizontal_target_distance * cosf(rad(camera->angle_around_barycenter + 180));
 	camera->target.z = barycenter.z + camera->offset_height + camera->vertical_target_distance;
@@ -167,9 +186,9 @@ void camera_set(Camera *camera, Screen* screen)
 {
     t3d_viewport_set_projection(
         &screen->viewport, 
-        T3D_DEG_TO_RAD(45.0f), 
-        100.0f, 
-        10000.0f
+        T3D_DEG_TO_RAD(camera->field_of_view), 
+        camera->near_clipping,
+		camera->far_clipping
     );
 
     t3d_viewport_look_at(

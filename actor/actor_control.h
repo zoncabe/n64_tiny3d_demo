@@ -6,8 +6,8 @@
 
 void jump(Actor* actor, ControllerData *data, float frame_time);
 void roll(Actor* actor, ControllerData *data);
-void move_with_stick(Actor* actor, ControllerData *data, float camera_angle_around);
-void actorControl_setMotion(Actor* actor, ControllerData *data, float frame_time, float camera_angle_around);
+void move_with_stick(Actor* actor, ControllerData *data, float camera_angle_around, float camera_offset);
+void actorControl_setMotion(Actor* actor, ControllerData *data, float frame_time, float camera_angle_around, float camera_offset);
 
 
 // function implementations
@@ -37,7 +37,7 @@ void roll(Actor* actor, ControllerData *data)
 
 }
 
-void move_with_stick(Actor *actor, ControllerData *data, float camera_angle_around)
+void move_with_stick(Actor *actor, ControllerData *data, float camera_angle_around, float camera_offset)
 {
     int deadzone = 8;
     float stick_magnitude = 0; 
@@ -47,7 +47,7 @@ void move_with_stick(Actor *actor, ControllerData *data, float camera_angle_arou
         Vector2 stick = {data->input.stick_x, data->input.stick_y};
         
         stick_magnitude = vector2_magnitude(&stick);
-        actor->target_yaw = deg(atan2(data->input.stick_x, -data->input.stick_y) - rad(camera_angle_around));
+        actor->target_yaw = deg(atan2(data->input.stick_x, -data->input.stick_y) - rad(camera_angle_around - (0.5 * camera_offset)));
     }
 
     
@@ -69,12 +69,12 @@ void move_with_stick(Actor *actor, ControllerData *data, float camera_angle_arou
 }
 
 
-void actorControl_setMotion(Actor* actor, ControllerData *data, float frame_time, float camera_angle_around)
+void actorControl_setMotion(Actor* actor, ControllerData *data, float frame_time, float camera_angle_around, float camera_offset)
 {    
    
     jump(actor, data, frame_time);
 
-    move_with_stick(actor, data, camera_angle_around);
+    move_with_stick(actor, data, camera_angle_around, camera_offset);
 
 }
 

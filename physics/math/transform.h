@@ -45,7 +45,7 @@ void transform_init(Transform* transform) {
 /* Initializes the transform with a given position and orientation matrix. */
 void transform_initWithMatrix(Transform* transform, const Vector3* position, const Matrix3x3* orientation) {
     transform->position = *position;
-    transform->orientation = quaternion_returnFromMatrix(orientation);
+    transform->orientation = quaternion_getFromMatrix(orientation);
 }
 
 /* Initializes the transform with a given position and orientation quaternion. */
@@ -84,7 +84,7 @@ void transform_setIdentity(Transform* transform) {
 Transform transform_getInverse(const Transform* transform) {
     Quaternion invQuaternion = quaternion_getInverse(&transform->orientation);
     Vector3 invertedPosition = vector3_getInverse(&transform->position);
-    Vector3 invPosition = quaternion_getProductVector(&invQuaternion, &invertedPosition);
+    Vector3 invPosition = quaternion_getVectorProduct(&invQuaternion, &invertedPosition);
     Transform inverseTransform = {invPosition, invQuaternion};
     return inverseTransform;
 }
@@ -113,13 +113,13 @@ bool transform_isValid(const Transform* transform) {
 
 /* Returns the transformed vector. */
 Vector3 transform_getProductVector(const Transform* transform, const Vector3* vector) {
-    Vector3 rotatedVector = quaternion_getProductVector(&transform->orientation, vector);
+    Vector3 rotatedVector = quaternion_getVectorProduct(&transform->orientation, vector);
     return vector3_sum(&rotatedVector, &transform->position);
 }
 
 /* Multiplies two transforms. */
 Transform transform_product(const Transform* t1, const Transform* t2) {
-    Vector3 rotatedPosition = quaternion_getProductVector(&t1->orientation, &t2->position);
+    Vector3 rotatedPosition = quaternion_getVectorProduct(&t1->orientation, &t2->position);
     Vector3 newPosition = vector3_sum(&t1->position, &rotatedPosition);
     Quaternion newOrientation = quaternion_returnProduct(&t1->orientation, &t2->orientation);
     Transform result = {newPosition, newOrientation};
