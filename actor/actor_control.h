@@ -4,80 +4,75 @@
 
 // function prototypes
 
-void jump(Actor* actor, ControllerData *data, float frame_time);
-void roll(Actor* actor, ControllerData *data);
-void move_with_stick(Actor* actor, ControllerData *data, float camera_angle_around, float camera_offset);
-void actorControl_setMotion(Actor* actor, ControllerData *data, float frame_time, float camera_angle_around, float camera_offset);
+void actorControl_setJump(Actor* actor, ControllerData *control, float frame_time);
+void actorControl_setRoll(Actor* actor, ControllerData *control);
+void actorControl_moveWithStick(Actor* actor, ControllerData *control, float camera_angle_around, float camera_offset);
+void actor_setControlData(Actor* actor, ControllerData *control, float camera_angle_around, float camera_offset, float frame_time);
 
 
 // function implementations
 
-void jump(Actor* actor, ControllerData *data, float frame_time)
+void actorControl_setJump(Actor* actor, ControllerData *control, float frame_time)
 {    
-    if (data->pressed.a && actor->state != ROLL && actor->state != JUMP && actor->state != FALLING) {
+    if (control->pressed.a && actor->state != ROLLING && actor->state != JUMPING && actor->state != FALLING) {
         
         actor->input.jump_hold = true;
-        actor->input.jump_released = false;
-        actor_setState(actor, JUMP);
+        actor_setState(actor, JUMPING);
     }
 
-    else if (data->held.a && actor->state == JUMP) {
+    else if (control->held.a && actor->state == JUMPING) {
         
         actor->input.jump_time_held += frame_time;
     }
     else {
 
-        actor->input.jump_released = true;
         actor->input.jump_hold = false;    
     }
 }
 
-void roll(Actor* actor, ControllerData *data)
+void actorControl_setRoll(Actor* actor, ControllerData *control)
 {
 
 }
 
-void move_with_stick(Actor *actor, ControllerData *data, float camera_angle_around, float camera_offset)
+void actorControl_moveWithStick(Actor *actor, ControllerData *control, float camera_angle_around, float camera_offset)
 {
-    int deadzone = 8;
+    int deadzone = 6;
     float stick_magnitude = 0; 
 
-    if (fabs(data->input.stick_x) >= deadzone || fabs(data->input.stick_y) >= deadzone) {
+    if (fabs(control->input.stick_x) >= deadzone || fabs(control->input.stick_y) >= deadzone) {
 
-        Vector2 stick = {data->input.stick_x, data->input.stick_y};
+        Vector2 stick = {control->input.stick_x, control->input.stick_y};
         
         stick_magnitude = vector2_magnitude(&stick);
-        actor->target_yaw = deg(atan2(data->input.stick_x, -data->input.stick_y) - rad(camera_angle_around - (0.5 * camera_offset)));
+        actor->target_yaw = deg(atan2(control->input.stick_x, -control->input.stick_y) - rad(camera_angle_around - (0.5 * camera_offset)));
     }
 
     
-    if (stick_magnitude == 0 && actor->state != ROLL && actor->state != JUMP && actor->state != FALLING){
+    if (stick_magnitude == 0 && actor->state != ROLLING && actor->state != JUMPING && actor->state != FALLING){
         actor_setState(actor, STAND_IDLE);
     }
 
-    else if (stick_magnitude > 0 && stick_magnitude <= 64 && actor->state != ROLL && actor->state != JUMP && actor->state != FALLING){
+    else if (stick_magnitude > 0 && stick_magnitude <= 65 && actor->state != ROLLING && actor->state != JUMPING && actor->state != FALLING){
         actor_setState(actor, WALKING);
     }
 
-    else if (data->held.r && stick_magnitude > 64 && actor->state != ROLL && actor->state != JUMP && actor->state != FALLING){
+    else if (control->held.r && stick_magnitude > 65 && actor->state != ROLLING && actor->state != JUMPING && actor->state != FALLING){
         actor_setState(actor, SPRINTING);
     }
 
-    else if (stick_magnitude > 64 && actor->state != ROLL && actor->state != JUMP && actor->state != FALLING){
+    else if (stick_magnitude > 65 && actor->state != ROLLING && actor->state != JUMPING && actor->state != FALLING){
         actor_setState(actor, RUNNING);
     }
 }
 
-
-void actorControl_setMotion(Actor* actor, ControllerData *data, float frame_time, float camera_angle_around, float camera_offset)
+void actor_setControlData(Actor* actor, ControllerData *control, float camera_angle_around, float camera_offset, float frame_time)
 {    
    
-    jump(actor, data, frame_time);
+    actorControl_setJump(actor, control, frame_time);
 
-    move_with_stick(actor, data, camera_angle_around, camera_offset);
+    actorControl_moveWithStick(actor, control, camera_angle_around, camera_offset);
 
 }
-
-
 
 #endif

@@ -99,11 +99,11 @@ void actorCollision_setResponse(Actor* actor, ActorContactData* contact, ActorCo
     actorCollider_setVertical(collider, &actor->body.position);
 }
 
-void actorCollision_collideWithPlayground(Actor* actor) {
-    if (actor->body.position.x > 1870) actor->body.position.x = 1875;
-    if (actor->body.position.x < -1870) actor->body.position.x = -1875;
-    if (actor->body.position.y > 1870) actor->body.position.y = 1875;
-    if (actor->body.position.y < -1870) actor->body.position.y = -1875;
+void actorCollision_collideWithRoom(Actor* actor) {
+    if (actor->body.position.x > 2450) actor->body.position.x = 2450;
+    if (actor->body.position.x < -2450) actor->body.position.x = -2450;
+    if (actor->body.position.y > 2450) actor->body.position.y = 2450;
+    if (actor->body.position.y < -2450) actor->body.position.y = -2450;
     if (actor->body.position.z < 0) actor->body.position.z = 0;
 }
 

@@ -2,9 +2,18 @@
 #include <t3d/t3d.h>
 #include <t3d/t3dmath.h>
 #include <t3d/t3dmodel.h>
+#include <t3d/t3dskeleton.h>
+#include <t3d/t3danim.h>
+#include <t3d/t3ddebug.h>
 
-#include "config/screen.h"
-#include "control/controls.h"
+
+#define PLAYER_COUNT 1
+#define ACTOR_COUNT 1
+#define SCENERY_COUNT 2
+
+
+#include "screen/screen.h"
+#include "control/control.h"
 #include "time/time.h"
 
 #include "physics/physics.h"
@@ -15,80 +24,76 @@
 
 #include "actor/actor.h"
 #include "actor/actor_states.h"
+#include "actor/actor_motion.h"
 #include "actor/actor_control.h"
 
+#include "physics/actor_collision/actor_collision_detection.h"
+#include "physics/actor_collision/actor_collision_response.h"
+
+#include "actor/actor_animation.h"
+
+#include "scene/scene.h"
 #include "scene/scenery.h"
+
+#include "ui/ui.h"
+
+#include "player/player.h"
+#include "game/game.h"
+#include "player/player_control.h"
+#include "game/game_states.h"
+
+
+Game game;
+
+Player player[PLAYER_COUNT];
+
+Actor actor[ACTOR_COUNT];
+
+Scenery scenery[SCENERY_COUNT];
 
 
 int main()
 {
-	debug_init_isviewer();
-	debug_init_usblog();
+	// ======== Init ======== //
+
+	//debug_init_isviewer();
+	//debug_init_usblog();
+	
 	asset_init_compression(2);
-
 	dfs_init(DFS_DEFAULT_LOCATION);
+	
+	game_init(&game);
 
-	Screen screen;
-	screen_init(&screen);
+	actor[0] = actor_create(0, "rom:/male_steroids.t3dm");
 
-	rdpq_init();
-	joypad_init();
+	scenery[0] = scenery_create(0, "rom:/room.t3dm");
+	scenery[1] = scenery_create(1, "rom:/n64logo.t3dm");
 
-	TimeData timing;
-	time_init(&timing);
+	actor[0].body.position.x = -200;
+	actor[0].body.position.y = -200;
 
-	ControllerData control;
 
-	t3d_init((T3DInitParams){});
-
-	//camera
-	Camera camera = camera_create();
-
-	//light
-	LightData light = light_create();
-
-	//actor
-	Actor player = actor_create(0, "rom:/capsule.t3dm");
-    actor_setState(&player, STAND_IDLE);
-
-	//scenery
-	Scenery ground = scenery_create(0, "rom:/ground.t3dm");
+	// ======== Main Loop ======== //
 
 	for(;;)
 	{
-		// ======== Update ======== //
-
-		controllerData_getInputs(&control);
-		time_setData(&timing);
 		
-		actorControl_setMotion(&player, &control, timing.frame_time_s, camera.angle_around_barycenter, camera.offset_angle);
-		actor_integrate(&player, timing.frame_time_s);
-		actor_setState(&player, player.state);
-		actor_set(&player);
-
-		cameraControl_setOrbitalMovement(&camera, &control);
-		camera_getOrbitalPosition(&camera, player.body.position, timing.frame_time_s);
-		camera_set(&camera, &screen);
-
-		scenery_set(&ground);
-
-		// ======== Draw ======== //
+		time_setData(&game.timing);
 		
-		screen_clear(&screen);
-	
-		light_set(&light);
-    
-		t3d_matrix_push_pos(1);
+		player_setControllerData(&player[0]);
 
-		actor_draw(&player);
+		game_setState(&game, player, actor, scenery);
 
-		scenery_draw(&ground);
-   
-   		t3d_matrix_pop(1);
-
-		rdpq_detach_show();
 	}
 
+	// ======== Clean Up ======== //
+
+	actor_delete(&actor[0]);
+
+	scenery_delete(&scenery[0]);
+	scenery_delete(&scenery[1]);
+
 	t3d_destroy();
+
 	return 0;
 }

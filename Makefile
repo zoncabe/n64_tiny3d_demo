@@ -9,9 +9,10 @@ src = main.c
 
 assets_png = $(wildcard assets/*.png)
 assets_gltf = $(wildcard assets/*.glb)
+assets_ttf = $(wildcard assets/*.ttf)
 assets_conv = $(addprefix filesystem/,$(notdir $(assets_png:%.png=%.sprite))) \
-			  $(addprefix filesystem/,$(notdir $(assets_ttf:%.ttf=%.font64))) \
-			  $(addprefix filesystem/,$(notdir $(assets_gltf:%.glb=%.t3dm)))
+			  $(addprefix filesystem/,$(notdir $(assets_gltf:%.glb=%.t3dm))) \
+			  $(addprefix filesystem/,$(notdir $(assets_ttf:%.ttf=%.font64))) 
 
 all: game.z64
 
@@ -26,6 +27,11 @@ filesystem/%.t3dm: assets/%.glb
 	@echo "    [T3D-MODEL] $@"
 	$(T3D_GLTF_TO_3D) "$<" $@ --base-scale=1
 	$(N64_BINDIR)/mkasset -c 2 -o filesystem $@
+
+filesystem/%.font64: assets/%.ttf
+	@mkdir -p $(dir $@)
+	@echo "    [FONT] $@"
+	$(N64_MKFONT) $(MKFONT_FLAGS) -s 9 -o filesystem "$<"
 
 $(BUILD_DIR)/game.dfs: $(assets_conv)
 $(BUILD_DIR)/game.elf: $(src:%.c=$(BUILD_DIR)/%.o)

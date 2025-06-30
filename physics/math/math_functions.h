@@ -3,6 +3,8 @@
 
 // function prototypes
 
+
+float lerpf(float a, float b, float t);
 Vector3 vector3_multiplyByMatrix3x3(const Matrix3x3 *matrix, const Vector3 *vector);
 Vector3 vector3_rotateByQuaternion(const Vector3 *v, const Quaternion *q);
 
@@ -38,6 +40,12 @@ void rotate_normal(Vector3 *vector, const Vector3 *rotation);
 
 
 // function implementations
+
+inline float lerpf(float a, float b, float t)
+{
+    return a + t * (b - a);
+}
+
 
 inline Vector3 vector3_multiplyByMatrix3x3(const Matrix3x3 *matrix, const Vector3 *vector)
 {
@@ -117,7 +125,7 @@ inline Vector3 vector3_clamp(const Vector3 *vector, float maxLength)
     float lengthSquare = vector->x * vector->x + vector->y * vector->y + vector->z * vector->z;
     if (lengthSquare > maxLength * maxLength)
     {
-        float length = 1 / qi_sqrt(lengthSquare);
+        float length = sqrt(lengthSquare);
         return (Vector3){vector->x * maxLength / length, vector->y * maxLength / length, vector->z * maxLength / length};
     }
     return *vector;
@@ -275,22 +283,22 @@ inline float plane_intersectionWithSegment(const Vector3 *a, const Vector3 *b, f
 compute the distance between a point "point" and a line given by the points "linePointA" and "linePointB" */
 inline float line_distanceToPoint(const Vector3 *linePointA, const Vector3 *linePointB, const Vector3 *point)
 {
-    float distAB = 1 / qi_sqrt((linePointB->x - linePointA->x) * (linePointB->x - linePointA->x) +
-                               (linePointB->y - linePointA->y) * (linePointB->y - linePointA->y) +
-                               (linePointB->z - linePointA->z) * (linePointB->z - linePointA->z));
+    float distAB = sqrt((linePointB->x - linePointA->x) * (linePointB->x - linePointA->x) +
+                        (linePointB->y - linePointA->y) * (linePointB->y - linePointA->y) +
+                        (linePointB->z - linePointA->z) * (linePointB->z - linePointA->z));
 
     if (distAB < 1e-6f)
     {
-        return 1 / qi_sqrt((point->x - linePointA->x) * (point->x - linePointA->x) +
-                           (point->y - linePointA->y) * (point->y - linePointA->y) +
-                           (point->z - linePointA->z) * (point->z - linePointA->z));
+        return sqrt((point->x - linePointA->x) * (point->x - linePointA->x) +
+                    (point->y - linePointA->y) * (point->y - linePointA->y) +
+                    (point->z - linePointA->z) * (point->z - linePointA->z));
     }
 
     Vector3 crossProduct = {(point->y - linePointA->y) * (point->z - linePointB->z) - (point->z - linePointA->z) * (point->y - linePointB->y),
                             (point->z - linePointA->z) * (point->x - linePointB->x) - (point->x - linePointA->x) * (point->z - linePointB->z),
                             (point->x - linePointA->x) * (point->y - linePointB->y) - (point->y - linePointA->y) * (point->x - linePointB->x)};
 
-    float crossLength = 1 / qi_sqrt(crossProduct.x * crossProduct.x + crossProduct.y * crossProduct.y + crossProduct.z * crossProduct.z);
+    float crossLength = sqrt(crossProduct.x * crossProduct.x + crossProduct.y * crossProduct.y + crossProduct.z * crossProduct.z);
 
     return crossLength / distAB;
 }

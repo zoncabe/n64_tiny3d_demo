@@ -7,9 +7,10 @@
 typedef struct {
 
   	uint32_t id;
+
 	rspq_block_t *dl;
-	T3DMat4FP *modelMat;
 	T3DModel *model;
+	T3DMat4FP *modelMat;
     
 	Vector3 scale;
 	Vector3 position;
@@ -21,6 +22,7 @@ typedef struct {
 // function prototypes
 
 Scenery scenery_create(uint32_t id, const char *model_path);
+void scenery_init(Scenery* scenery, uint32_t id, const char *model_path);
 void scenery_set(Scenery *scenery);
 void scenery_draw(Scenery *scenery);
 void scenery_delete(Scenery *scenery);
@@ -40,35 +42,34 @@ Scenery scenery_create(uint32_t id, const char *model_path)
         .rotation = {0.0f, 0.0f, 0.0f},
     };
 
+    t3d_matrix_set(scenery.modelMat, true);
+    t3d_mat4fp_identity(scenery.modelMat);
+
     rspq_block_begin();
     t3d_model_draw(scenery.model);
     scenery.dl = rspq_block_end();
 
-    t3d_mat4fp_identity(scenery.modelMat);
-
     return scenery;
-}
-
-void scenery_set(Scenery *scenery)
-{
-    t3d_mat4fp_from_srt_euler(scenery->modelMat,
-        (float[3]){scenery->scale.x, scenery->scale.y, scenery->scale.z},
-        (float[3]){rad(scenery->rotation.x), rad(scenery->rotation.y), rad(scenery->rotation.z)},
-        (float[3]){scenery->position.x, scenery->position.y, scenery->position.z}
-    );
 }
 
 void scenery_draw(Scenery *scenery)
 {
-    t3d_matrix_set(scenery->modelMat, true);
-    rspq_block_run(scenery->dl);
+    for (uint8_t i = 0; i < SCENERY_COUNT; i++) {
+
+        t3d_mat4fp_from_srt_euler(scenery[i].modelMat,
+            (float[3]){scenery[i].scale.x, scenery[i].scale.y, scenery[i].scale.z},
+            (float[3]){rad(scenery[i].rotation.x), rad(scenery[i].rotation.y), rad(scenery[i].rotation.z)},
+            (float[3]){scenery[i].position.x, scenery[i].position.y, scenery[i].position.z}
+        );
+        t3d_matrix_set(scenery[i].modelMat, true);
+        rspq_block_run(scenery[i].dl);
+	};
 }
 
 void scenery_delete(Scenery *scenery)
 {
-    free_uncached(scenery->modelMat);
+	t3d_model_free(scenery->model);
+	rspq_block_free(scenery->dl);
 }
-
-
 
 #endif

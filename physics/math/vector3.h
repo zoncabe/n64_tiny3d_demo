@@ -1,6 +1,10 @@
 #ifndef VECTOR_3_H
 #define VECTOR_3_H
 
+#define T3DVec3_toVector3(t3dVec) ((Vector3){(t3dVec).v[0], (t3dVec).v[1], (t3dVec).v[2]})
+#define Vector3_toT3DVec3(vec) ((T3DVec3){{(vec).x, (vec).y, (vec).z}})
+
+
 // structures
 
 typedef struct Vector3 {
@@ -43,6 +47,7 @@ float vector3_squaredMagnitude(const Vector3 *v);
 void vector3_normalize(Vector3 *v);
 Vector3 vector3_returnNormalized(const Vector3 *v);
 Vector3 vector3_returnAbsoluteVector(const Vector3* v);
+Vector3 vector3_lerp(const Vector3* v, const Vector3* w, float t);
 
 Vector3 vector3_min(const Vector3* v, const Vector3* w);
 Vector3 vector3_max(const Vector3* v, const Vector3* w);
@@ -223,6 +228,15 @@ inline Vector3 vector3_returnAbsoluteVector(const Vector3* v)
 {
     return (Vector3){fabsf(v->x), fabsf(v->y), fabsf(v->z)};
 
+}
+
+inline Vector3 vector3_lerp(const Vector3* v, const Vector3* w, float t) 
+{
+    Vector3 result;
+    result.x = v->x + (w->x - v->x) * t;
+    result.y = v->y + (w->y - v->y) * t;
+    result.z = v->z + (w->z - v->z) * t;
+    return result;
 }
 
 inline int vector3_returnMinAxis(const Vector3* v) 

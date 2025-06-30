@@ -4,25 +4,12 @@
 
 // structures
 
-typedef enum {
-
-	EMPTY,
-    STAND_IDLE,
-    WALKING,
-    RUNNING,
-	SPRINTING,
-	ROLL,
-	JUMP,
-	FALLING,
-
-} ActorState;
-
-
 typedef struct {
 
 	float idle_acceleration_rate;
 	float walk_acceleration_rate;
 	float run_acceleration_rate;
+	float sprint_acceleration_rate;
 	float roll_acceleration_rate;
 	float roll_acceleration_grip_rate;
 	float jump_acceleration_rate;
@@ -55,23 +42,86 @@ typedef struct {
 }Actorinput;
 
 
+typedef struct{
+
+	T3DSkeleton main;
+	T3DSkeleton blend;
+
+} ActorArmature;
+
+
+typedef struct {
+
+	T3DAnim breathing_idle;
+
+	T3DAnim transition_left;
+	T3DAnim transition_right;
+
+	T3DAnim action_idle_left;
+	T3DAnim action_idle_right; 
+	
+	T3DAnim walking_left;
+
+	T3DAnim running_left;
+
+	T3DAnim sprinting_left;
+
+	//T3DAnim roll_left;
+	//T3DAnim roll_right;
+
+	T3DAnim jump_left;
+	T3DAnim jump_right;
+
+	T3DAnim falling_left;
+	T3DAnim falling_right;	
+	
+	T3DAnim land_left;
+	T3DAnim land_right;
+
+} AnimationSet;
+
+
+typedef struct {
+
+	AnimationSet set;
+
+	uint8_t current;
+	uint8_t previous;
+	
+	float blending_ratio;
+	float speed;
+	
+	bool transition;
+
+} ActorAnimation;
+
+
 typedef struct {
 
 	uint32_t id;
-	rspq_block_t *dl;
-	T3DMat4FP *modelMat;
-	T3DModel *model;
 	
+	rspq_block_t *dl;
+	T3DModel *model;
+	T3DMat4FP *transform_matrix;
 	Vector3 scale;
+	
+	char model_path;
+	ActorArmature armature;
+	ActorAnimation animation;
+
 	RigidBody body;
+
 	float target_yaw;
+	float horizontal_target_speed;
 	Vector3 target_velocity;
+
 	float horizontal_speed;
 	bool grounded;
 	float grounding_height;
 
-	ActorState previous_state;
-	ActorState state;
+	uint8_t locomotion_state;
+	uint8_t previous_state;
+	uint8_t state;
 
 	ActorSettings settings;
 	Actorinput input;
@@ -81,81 +131,40 @@ typedef struct {
 
 // function prototypes
 
-Actor actor_create(uint32_t id, const char *model_path);
-void actor_set(Actor *actor);
 void actor_draw(Actor *actor);
 void actor_delete(Actor *actor);
 
 
 // function implemenations
 
-Actor actor_create(uint32_t id, const char *model_path)
-{
-    Actor actor = {
-
-        .id = id,
-		.model = t3d_model_load(model_path),
-        .modelMat = malloc_uncached(sizeof(T3DMat4FP)), // needed for t3d
-
-        .scale = {1.0f, 1.0f, 1.0f},
-        
-		.body = {
-            .position = {0.0f, 0.0f, 0.0f},
-            .velocity = {0.0f, 0.0f, 0.0f},
-            .rotation = {0.0f, 0.0f, 0.0f},
-        },
-        
-		.grounding_height = 0.0f,
-        
-		.settings = {
-			.idle_acceleration_rate = 9,
-			.walk_acceleration_rate = 4,
-			.run_acceleration_rate = 6,
-			.roll_acceleration_rate = 20,
-			.roll_acceleration_grip_rate = 2,
-			.jump_acceleration_rate = 50,
-			.aerial_control_rate = 2.5,
-			.walk_target_speed = 200,
-			.run_target_speed = 650,
-			.sprint_target_speed = 900,
-			.idle_to_roll_target_speed = 300,
-			.idle_to_roll_grip_target_speed = 50,
-			.walk_to_roll_target_speed = 400,
-			.run_to_roll_target_speed = 780,
-			.sprint_to_roll_target_speed = 980,
-			.jump_target_speed = 800, 
-			.jump_timer_max = 0.13
-        },
-    };
-
-    rspq_block_begin();
-    t3d_model_draw(actor.model);
-    actor.dl = rspq_block_end();
-
-    t3d_mat4fp_identity(actor.modelMat);
-
-    return actor;
-}
-
-void actor_set(Actor *actor)
+void actor_draw(Actor *actor)
 {	
-	t3d_mat4fp_from_srt_euler(actor->modelMat,
-		(float[3]){actor->scale.x, actor->scale.y, actor->scale.z},
-		(float[3]){rad(actor->body.rotation.x), rad(actor->body.rotation.y), rad(actor->body.rotation.z)},
-		(float[3]){actor->body.position.x, actor->body.position.y, actor->body.position.z}
-	);
+	for (uint8_t i = 0; i < ACTOR_COUNT; i++) {
+				
+		t3d_matrix_set(actor->transform_matrix, true);
+		t3d_mat4fp_from_srt_euler(actor[i].transform_matrix,
+			(float[3]){actor[i].scale.x, actor[i].scale.y, actor[i].scale.z},
+			(float[3]){rad(actor[i].body.rotation.x), rad(actor[i].body.rotation.y), rad(actor[i].body.rotation.z)},
+			(float[3]){actor[i].body.position.x, actor[i].body.position.y, actor[i].body.position.z}
+		);
+		rspq_block_run(actor[i].dl);
+	};
 }
 
-void actor_draw(Actor *actor) 
-{	
-	t3d_matrix_set(actor->modelMat, true);
-	rspq_block_run(actor->dl);
-}
-
+// lol i will finish this someday
 void actor_delete(Actor *actor) 
 {
-	free_uncached(actor->modelMat);
+	t3d_skeleton_destroy(&actor->armature.main);
+	t3d_skeleton_destroy(&actor->armature.blend);
+	
+	t3d_anim_destroy(&actor->animation.set.breathing_idle);
+	t3d_anim_destroy(&actor->animation.set.running_left);
+	t3d_anim_destroy(&actor->animation.set.jump_left);
+	t3d_anim_destroy(&actor->animation.set.falling_left);
+	t3d_anim_destroy(&actor->animation.set.land_left);
+	
+	t3d_model_free(actor->model);
+	rspq_block_free(actor->dl);
 }
-
 
 #endif
