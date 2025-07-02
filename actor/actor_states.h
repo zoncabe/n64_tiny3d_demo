@@ -3,7 +3,6 @@
 
 
 #define STAND_IDLE 1
-#define GROUNDED_LOCOMOTION 8
 #define WALKING 2
 #define RUNNING 3
 #define SPRINTING 4
@@ -21,13 +20,6 @@ void actor_setState(Actor *actor, uint8_t state)
             actor->previous_state = actor->state;
             actor->state = STAND_IDLE;
             actor->locomotion_state = STAND_IDLE;
-            break;
-        }
-
-        case GROUNDED_LOCOMOTION: {
-            if (actor->state == GROUNDED_LOCOMOTION) return;
-            actor->previous_state = actor->state;
-            actor->state = GROUNDED_LOCOMOTION;
             break;
         }
 

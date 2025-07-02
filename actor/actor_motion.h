@@ -2,7 +2,7 @@
 #define ACTOR_MOVEMENT_H
 
 
-#define ACTOR_GRAVITY -2000
+#define ACTOR_GRAVITY -1000
 
 
 // function prototypes
@@ -46,7 +46,6 @@ void actorMotiion_setJumpAcceleration(Actor *actor, float target_speed, float ac
 {
     actor->body.acceleration.z = acceleration_rate * (target_speed - actor->body.velocity.z);
 }
-
 
 void actorMotion_integrate (Actor *actor, float frame_time)
 {
@@ -113,28 +112,40 @@ void actorMotion_setSprinting(Actor *actor)
     actorMotion_setHorizontalAcceleration (actor, actor->settings.sprint_target_speed, actor->settings.sprint_acceleration_rate);
 }
 
-void actorMotion_setJump(Actor *actor)
+void actorMotion_setJump(Actor *actor, float frame_time)
 {
           
-    if (actor->input.jump_hold && actor->input.jump_time_held < actor->settings.jump_timer_max){
+    if (actor->input.jump_hold && actor->input.jump_timer < actor->settings.jump_timer_max){
 
-        actorMotiion_setJumpAcceleration (actor, actor->settings.jump_target_speed, actor->settings.jump_acceleration_rate);
+        //actorMotiion_setJumpAcceleration (actor, actor->settings.jump_max_speed, actor->settings.jump_acceleration_rate);
         actorMotion_setHorizontalAcceleration (actor, actor->horizontal_speed, actor->settings.aerial_control_rate);
+
+        actor->input.jump_timer += frame_time;
+        actor->input.jump_force = actor->input.jump_timer;
     } 
     
-    else if (actor->body.velocity.z > 0){
 
+    else if (actor->input.jump_force > 0){
+        
+        actorMotion_setHorizontalAcceleration (actor, actor->horizontal_speed, actor->settings.aerial_control_rate);
+        actor->body.velocity.z = actor->input.jump_force * 2000;
+        if (actor->body.velocity.z < 200) actor->body.velocity.z = 200;
+        actor->input.jump_force = 0;
+    }
+    
+    else if (actor->body.velocity.z > 0){
+        
         actorMotion_setHorizontalAcceleration (actor, actor->horizontal_speed, actor->settings.aerial_control_rate);
         actor->body.acceleration.z = ACTOR_GRAVITY;
     }
     
     else {
-
+        
         actorMotion_setHorizontalAcceleration (actor, actor->horizontal_speed, actor->settings.aerial_control_rate);
         actor->body.acceleration.z = ACTOR_GRAVITY;
+        actor->input.jump_timer = 0;
         
         actor->state = FALLING;
-        actor->input.jump_time_held = 0;
         return;
     }
 }
@@ -179,7 +190,7 @@ void actor_setMotion(Actor *actor, float frame_time)
             break;
         }
         case JUMPING: {
-            actorMotion_setJump(actor);
+            actorMotion_setJump(actor, frame_time);
             break;
         }
         case FALLING: {

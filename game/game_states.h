@@ -28,7 +28,7 @@ void gameState_setGameplay(Game* game, Player* player, Actor* actor, Scenery* sc
 	
 	actorCollision_collideWithRoom(&actor[0]);
 	
-	camera_update(&game->scene.camera, &player[0].control, &game->screen, &actor[0].body.position, game->timing.frame_time_s);
+	camera_update(&game->scene.camera, &player[1].control, &game->screen, &actor[0].body.position, game->timing.frame_time_s);
 
 	scene_draw(game, actor, scenery);
 }

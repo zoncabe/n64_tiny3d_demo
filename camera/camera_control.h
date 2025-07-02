@@ -79,7 +79,8 @@ void cameraControl_aim(Camera *camera, ControllerData *data)
 
 void cameraControl_setOrbitalMovement(Camera *camera, ControllerData *data)
 {
-    cameraControl_orbit_withCButtons(camera, data);
+    //cameraControl_orbit_withCButtons(camera, data);
+    cameraControl_orbit_withStick(camera, data);
     cameraControl_aim(camera, data);
 }
 

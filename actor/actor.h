@@ -23,9 +23,10 @@ typedef struct {
 	float walk_to_roll_target_speed;
 	float run_to_roll_target_speed;
 	float sprint_to_roll_target_speed;
-	float jump_target_speed;
+	float jump_max_speed;
 	
 	float jump_timer_max;
+	float run_sync_timer_max;
 
 }ActorSettings;
 
@@ -35,7 +36,9 @@ typedef struct {
 	float stick_magnitude;
 	float stick_x;
 	float stick_y;
-	float jump_time_held;
+	float run_sync_timer;
+	float jump_timer;
+	float jump_force;
 	bool jump_hold;
 	bool jump_released;
 
@@ -46,6 +49,7 @@ typedef struct{
 
 	T3DSkeleton main;
 	T3DSkeleton blend;
+	T3DSkeleton blend2;
 
 } ActorArmature;
 
@@ -60,24 +64,30 @@ typedef struct {
 	T3DAnim action_idle_left;
 	T3DAnim action_idle_right; 
 	
-	T3DAnim walking_left;
+	T3DAnim walking;
 
-	T3DAnim running_left;
+	T3DAnim running;
 
-	T3DAnim sprinting_left;
+	T3DAnim sprinting;
+	
+	T3DAnim action_roll_left;
+	T3DAnim action_roll_right;
 
-	//T3DAnim roll_left;
-	//T3DAnim roll_right;
+	T3DAnim idle_roll;
 
-	T3DAnim jump_left;
-	T3DAnim jump_right;
+	T3DAnim action_jump_left;
+	T3DAnim action_jump_right;
+
+	T3DAnim idle_jump;
 
 	T3DAnim falling_left;
 	T3DAnim falling_right;	
 	
 	T3DAnim land_left;
 	T3DAnim land_right;
-
+	
+	T3DAnim idle_land;
+	
 } AnimationSet;
 
 
@@ -158,8 +168,8 @@ void actor_delete(Actor *actor)
 	t3d_skeleton_destroy(&actor->armature.blend);
 	
 	t3d_anim_destroy(&actor->animation.set.breathing_idle);
-	t3d_anim_destroy(&actor->animation.set.running_left);
-	t3d_anim_destroy(&actor->animation.set.jump_left);
+	t3d_anim_destroy(&actor->animation.set.running);
+	t3d_anim_destroy(&actor->animation.set.action_jump_left);
 	t3d_anim_destroy(&actor->animation.set.falling_left);
 	t3d_anim_destroy(&actor->animation.set.land_left);
 	

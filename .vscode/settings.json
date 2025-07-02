@@ -5,6 +5,8 @@
         "actor_states.h": "c",
         "actor_movement.h": "c",
         "game_states.h": "c",
-        "game.h": "c"
+        "game.h": "c",
+        "t3danim.h": "c",
+        "actor_collision_response.h": "c"
     }
 }

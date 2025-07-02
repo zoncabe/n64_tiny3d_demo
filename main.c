@@ -7,7 +7,7 @@
 #include <t3d/t3ddebug.h>
 
 
-#define PLAYER_COUNT 1
+#define PLAYER_COUNT 2
 #define ACTOR_COUNT 1
 #define SCENERY_COUNT 2
 
@@ -79,6 +79,8 @@ int main()
 	{
 		
 		time_setData(&game.timing);
+
+		game.timing.frame_time_s *= 2.0f;
 		
 		player_setControllerData(&player[0]);
 

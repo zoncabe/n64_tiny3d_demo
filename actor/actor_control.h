@@ -4,27 +4,24 @@
 
 // function prototypes
 
-void actorControl_setJump(Actor* actor, ControllerData *control, float frame_time);
+void actorControl_setJump(Actor* actor, ControllerData *control);
 void actorControl_setRoll(Actor* actor, ControllerData *control);
 void actorControl_moveWithStick(Actor* actor, ControllerData *control, float camera_angle_around, float camera_offset);
-void actor_setControlData(Actor* actor, ControllerData *control, float camera_angle_around, float camera_offset, float frame_time);
+void actor_setControlData(Actor* actor, ControllerData *control, float camera_angle_around, float camera_offset);
 
 
 // function implementations
 
-void actorControl_setJump(Actor* actor, ControllerData *control, float frame_time)
+void actorControl_setJump(Actor* actor, ControllerData *control)
 {    
-    if (control->pressed.a && actor->state != ROLLING && actor->state != JUMPING && actor->state != FALLING) {
+    if (control->pressed.a && actor->state != ROLLING && actor->state != JUMPING && actor->state != FALLING){
         
         actor->input.jump_hold = true;
         actor_setState(actor, JUMPING);
     }
-
-    else if (control->held.a && actor->state == JUMPING) {
-        
-        actor->input.jump_time_held += frame_time;
+    else if (control->held.a){
     }
-    else {
+    else{
 
         actor->input.jump_hold = false;    
     }
@@ -66,10 +63,10 @@ void actorControl_moveWithStick(Actor *actor, ControllerData *control, float cam
     }
 }
 
-void actor_setControlData(Actor* actor, ControllerData *control, float camera_angle_around, float camera_offset, float frame_time)
+void actor_setControlData(Actor* actor, ControllerData *control, float camera_angle_around, float camera_offset)
 {    
    
-    actorControl_setJump(actor, control, frame_time);
+    actorControl_setJump(actor, control);
 
     actorControl_moveWithStick(actor, control, camera_angle_around, camera_offset);
 
