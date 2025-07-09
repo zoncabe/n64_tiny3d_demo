@@ -26,8 +26,7 @@ void game_init(Game *game);
 
 void game_init(Game *game)
 {
-	screen_initDisplay(&game->screen);
-	screen_initT3dViewport(&game->screen);
+	screen_init(&game->screen);
 
 	rdpq_init();
 	joypad_init();
@@ -58,7 +57,7 @@ void scene_draw(Game* game, Actor* actor, Scenery* scenery)
 
 	t3d_matrix_pop(1);
 
-	//ui_printDebugData(&game->ui, actor);
+	ui_printDebugData(&game->ui, actor, game->timing);
 
 	rdpq_detach_show();
 

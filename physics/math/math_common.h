@@ -9,7 +9,7 @@
 
 // ---------- Mathematics functions ---------- //
 
-float qi_sqrt(float number);
+float qi_sqrt(float number); //LOL
 
 float rad(float angle);
 float deg(float rad);

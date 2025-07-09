@@ -122,16 +122,21 @@ void ui_printActorPreviousAnimation(UI* ui, Actor* actor)
     }
 }
 
-void ui_printDebugData(UI* ui, Actor* actor)
+void ui_printDebugData(UI* ui, Actor* actor, TimeData time)
 {
-	rdpq_text_printf(NULL, DROID_SANS, 10, 10, "speed %d", (int)actor->horizontal_speed);
-    ui_printActorState(ui, actor);
-    ui_printActorAnimation(ui, actor);
-    ui_printActorPreviousAnimation(ui, actor);
-	rdpq_text_printf(NULL, DROID_SANS, 10, 50, "transition %d", (int)actor->animation.transition);
-	rdpq_text_printf(NULL, DROID_SANS, 10, 60, "blending ratio %f", actor->animation.blending_ratio);
-    rdpq_text_printf(NULL, DROID_SANS, 10, 70, "anim speed %f", actor->animation.speed);
-    rdpq_text_printf(NULL, DROID_SANS, 10, 80, "test %f", ((1.0f - RTWratio) * actor->animation.blending_ratio));
+	//rdpq_text_printf(NULL, DROID_SANS, 10, 10, "speed %d", (int)actor->horizontal_speed);
+    //ui_printActorState(ui, actor);
+    //ui_printActorAnimation(ui, actor);
+    //ui_printActorPreviousAnimation(ui, actor);
+	//rdpq_text_printf(NULL, DROID_SANS, 10, 10, "footing blending ratio %f", actor->animation.footing_blending_ratio);
+    //rdpq_text_printf(NULL, DROID_SANS, 10, 20, "action blending ratio %f", actor->animation.action_blending_ratio);
+
+	rdpq_text_printf(NULL, DROID_SANS, 250, 15, "FPS %f", time.frame_rate);
+	rdpq_text_printf(NULL, DROID_SANS, 224, 25, "frame time %f", time.frame_time);
+
+    //rdpq_text_printf(NULL, DROID_SANS, 10, 30, "walking time %f", actor->animation.set.walking.time);
+    //rdpq_text_printf(NULL, DROID_SANS, 10, 40, "running time %f", actor->animation.set.running.time);
+    //rdpq_text_printf(NULL, DROID_SANS, 10, 50, "sprinting time %f", actor->animation.set.sprinting.time);
     
 }
 

@@ -6,11 +6,7 @@
 
 typedef struct
 {
-
-    float current_frame_s;
-    float current_frame_ms;
-    float last_frame_ms;
-    float frame_time_s;
+    float frame_time;
     float frame_rate;
 
   	rspq_syncpoint_t syncPoint;
@@ -29,27 +25,17 @@ void time_setData(TimeData *time);
 /* sets time data values to zero */
 void time_init(TimeData *time)
 {
-    time->current_frame_s = 0.0f;
-    time->current_frame_ms = 0.0f;
-    time->last_frame_ms = 0.0f;
-    time->frame_time_s = 0.0f;
+    time->frame_time = 0.0f;
     time->frame_rate = 0.0f;
   	time->syncPoint = 0.0f;
 }
 
 
 /* sets timing data */
-void time_setData(TimeData *time)
+void time_setData(TimeData* time)
 {
-    time->current_frame_ms = get_ticks_ms();
-
-    time->current_frame_s = time->current_frame_ms * 0.001f;
-
-    time->frame_time_s = (time->current_frame_ms - time->last_frame_ms) * 0.001f;
-
-    time->frame_rate = 1 / time->frame_time_s;
-
-    time->last_frame_ms = time->current_frame_ms;
+    time->frame_time = display_get_delta_time();
+    time->frame_rate = display_get_fps();
 }
 
 #endif

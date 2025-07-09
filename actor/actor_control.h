@@ -17,6 +17,7 @@ void actorControl_setJump(Actor* actor, ControllerData *control)
     if (control->pressed.a && actor->state != ROLLING && actor->state != JUMPING && actor->state != FALLING){
         
         actor->input.jump_hold = true;
+        actor->input.jump_initial_velocity = actor->body.velocity;
         actor_setState(actor, JUMPING);
     }
     else if (control->held.a){
@@ -29,7 +30,10 @@ void actorControl_setJump(Actor* actor, ControllerData *control)
 
 void actorControl_setRoll(Actor* actor, ControllerData *control)
 {
+    if (control->pressed.b && actor->state != ROLLING && actor->state != JUMPING && actor->state != FALLING){
 
+        actor_setState(actor, ROLLING);
+    }
 }
 
 void actorControl_moveWithStick(Actor *actor, ControllerData *control, float camera_angle_around, float camera_offset)

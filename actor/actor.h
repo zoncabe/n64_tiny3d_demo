@@ -10,23 +10,17 @@ typedef struct {
 	float walk_acceleration_rate;
 	float run_acceleration_rate;
 	float sprint_acceleration_rate;
-	float roll_acceleration_rate;
-	float roll_acceleration_grip_rate;
-	float jump_acceleration_rate;
-	float aerial_control_rate;
-
+	
 	float walk_target_speed;
 	float run_target_speed;
 	float sprint_target_speed;
-	float idle_to_roll_target_speed;
-	float idle_to_roll_grip_target_speed;
-	float walk_to_roll_target_speed;
-	float run_to_roll_target_speed;
-	float sprint_to_roll_target_speed;
-	float jump_max_speed;
 	
+	float roll_change_grip_time;
+	
+	float aerial_control_rate;
+	float jump_acceleration_rate;
+	float jump_max_speed;
 	float jump_timer_max;
-	float run_sync_timer_max;
 
 }ActorSettings;
 
@@ -36,14 +30,13 @@ typedef struct {
 	float stick_magnitude;
 	float stick_x;
 	float stick_y;
-	float run_sync_timer;
+	
+	Vector3 jump_initial_velocity;
 	float jump_timer;
 	float jump_force;
 	bool jump_hold;
-	bool jump_released;
 
 }Actorinput;
-
 
 typedef struct{
 
@@ -53,7 +46,6 @@ typedef struct{
 
 } ActorArmature;
 
-
 typedef struct {
 
 	T3DAnim breathing_idle;
@@ -61,8 +53,8 @@ typedef struct {
 	T3DAnim transition_left;
 	T3DAnim transition_right;
 
-	T3DAnim action_idle_left;
-	T3DAnim action_idle_right; 
+	T3DAnim standing_idle_left;
+	T3DAnim standing_idle_right; 
 	
 	T3DAnim walking;
 
@@ -70,23 +62,20 @@ typedef struct {
 
 	T3DAnim sprinting;
 	
-	T3DAnim action_roll_left;
-	T3DAnim action_roll_right;
+	T3DAnim run_to_rolling_left;
+	T3DAnim run_to_rolling_right;
 
-	T3DAnim idle_roll;
+	T3DAnim stand_to_rolling_left;
+	T3DAnim stand_to_rolling_right;
 
-	T3DAnim action_jump_left;
-	T3DAnim action_jump_right;
-
-	T3DAnim idle_jump;
+	T3DAnim jump_left;
+	T3DAnim jump_right;
 
 	T3DAnim falling_left;
 	T3DAnim falling_right;	
 	
 	T3DAnim land_left;
 	T3DAnim land_right;
-	
-	T3DAnim idle_land;
 	
 } AnimationSet;
 
@@ -98,10 +87,13 @@ typedef struct {
 	uint8_t current;
 	uint8_t previous;
 	
-	float blending_ratio;
+	float locomotion_blending_ratio;
+	float action_blending_ratio;
+	float footing_blending_ratio;
 	float speed;
 	
 	bool transition;
+	bool short_jump;
 
 } ActorAnimation;
 
@@ -113,6 +105,7 @@ typedef struct {
 	rspq_block_t *dl;
 	T3DModel *model;
 	T3DMat4FP *transform_matrix;
+	uint32_t matrix_index;
 	Vector3 scale;
 	
 	char model_path;
@@ -169,7 +162,7 @@ void actor_delete(Actor *actor)
 	
 	t3d_anim_destroy(&actor->animation.set.breathing_idle);
 	t3d_anim_destroy(&actor->animation.set.running);
-	t3d_anim_destroy(&actor->animation.set.action_jump_left);
+	t3d_anim_destroy(&actor->animation.set.jump_left);
 	t3d_anim_destroy(&actor->animation.set.falling_left);
 	t3d_anim_destroy(&actor->animation.set.land_left);
 	

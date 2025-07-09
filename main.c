@@ -69,9 +69,11 @@ int main()
 	scenery[0] = scenery_create(0, "rom:/room.t3dm");
 	scenery[1] = scenery_create(1, "rom:/n64logo.t3dm");
 
-	actor[0].body.position.x = -200;
 	actor[0].body.position.y = -200;
+	actor[0].body.position.x = -200;
 
+	scenery[0].position.z = -10;
+	scenery[1].position.z = -10;
 
 	// ======== Main Loop ======== //
 
@@ -80,7 +82,7 @@ int main()
 		
 		time_setData(&game.timing);
 
-		game.timing.frame_time_s *= 2.0f;
+		game.timing.frame_time *= 2.0f;      // i use this as a workaround for my crappy pc not running ares fullspeed :')
 		
 		player_setControllerData(&player[0]);
 

@@ -24,11 +24,11 @@ void gameState_setMainMenu()
 
 void gameState_setGameplay(Game* game, Player* player, Actor* actor, Scenery* scenery)
 {
-	actor_update(&actor[0], &player[0].control, game->scene.camera.angle_around_barycenter, game->scene.camera.offset_angle, game->timing.frame_time_s, &game->timing.syncPoint);	
+	actor_update(&actor[0], &player[0].control, game->scene.camera.angle_around_barycenter, game->scene.camera.offset_angle, game->timing.frame_time, &game->timing.syncPoint);	
 	
 	actorCollision_collideWithRoom(&actor[0]);
 	
-	camera_update(&game->scene.camera, &player[1].control, &game->screen, &actor[0].body.position, game->timing.frame_time_s);
+	camera_update(&game->scene.camera, &player[0].control, &game->screen, &actor[0].body.position, game->timing.frame_time);
 
 	scene_draw(game, actor, scenery);
 }

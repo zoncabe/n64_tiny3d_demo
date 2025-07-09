@@ -46,6 +46,9 @@ void actor_setState(Actor *actor, uint8_t state)
         }
 
         case ROLLING: {
+            if (actor->state == ROLLING) return;
+            actor->previous_state = actor->state;
+            actor->state = ROLLING;
             break;
         }
         
