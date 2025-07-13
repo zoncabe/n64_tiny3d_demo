@@ -20,17 +20,20 @@ void actorControl_setJump(Actor* actor, ControllerData *control)
         actor->input.jump_initial_velocity = actor->body.velocity;
         actor_setState(actor, JUMPING);
     }
-    else if (control->held.a){
-    }
-    else{
-
-        actor->input.jump_hold = false;    
-    }
+    
+    else if (control->held.a) return;
+    
+    else actor->input.jump_hold = false;
 }
 
 void actorControl_setRoll(Actor* actor, ControllerData *control)
 {
-    if (control->pressed.b && actor->state != ROLLING && actor->state != JUMPING && actor->state != FALLING){
+    if (control->pressed.b 
+        && actor->state != ROLLING
+        && actor->state != STAND_IDLE
+        && actor->state != WALKING
+        && actor->state != JUMPING
+        && actor->state != FALLING){
 
         actor_setState(actor, ROLLING);
     }
@@ -69,11 +72,11 @@ void actorControl_moveWithStick(Actor *actor, ControllerData *control, float cam
 
 void actor_setControlData(Actor* actor, ControllerData *control, float camera_angle_around, float camera_offset)
 {    
-   
+    actorControl_setRoll(actor, control);
+    
     actorControl_setJump(actor, control);
-
+    
     actorControl_moveWithStick(actor, control, camera_angle_around, camera_offset);
-
 }
 
 #endif

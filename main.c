@@ -82,7 +82,7 @@ int main()
 		
 		time_setData(&game.timing);
 
-		game.timing.frame_time *= 2.0f;      // i use this as a workaround for my crappy pc not running ares fullspeed :')
+		//game.timing.frame_time *= 2.0f;      // i use this as a workaround for my crappy pc not running ares fullspeed :')
 		
 		player_setControllerData(&player[0]);
 

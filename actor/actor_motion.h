@@ -29,7 +29,7 @@ void actorMotion_setHorizontalAcceleration(Actor *actor, float target_speed, flo
 
 void actorMotion_setHorizontalInertiaAcceleration(Actor *actor, float target_speed, float acceleration_rate)
 {
-    actor->target_velocity.x = target_speed * sinf(rad(actor->body.rotation.z));
+    actor->target_velocity.x = target_speed * -sinf(rad(actor->body.rotation.z));
     actor->target_velocity.y = target_speed * -cosf(rad(actor->body.rotation.z));
 
     actor->body.acceleration.x = acceleration_rate * (actor->target_velocity.x - actor->body.velocity.x);
@@ -72,10 +72,18 @@ void actorMotion_integrate (Actor *actor, float frame_time)
         if (target_yaw > actor->body.rotation.z + 180) target_yaw -= 360;
         if (target_yaw < actor->body.rotation.z - 180) target_yaw += 360;
         
-        if (target_yaw < actor->body.rotation.z - 1 || target_yaw > actor->body.rotation.z + 1) 
-            actor->body.rotation.z = lerpf(actor->body.rotation.z, target_yaw, 0.5f);
-        else 
+        if(actor->state == ROLLING){
+
+            actor->body.rotation.z = deg(atan2(-actor->body.velocity.x, -actor->body.velocity.y));
+        }
+
+        else {   
+
+            if (target_yaw < actor->body.rotation.z - 1 || target_yaw > actor->body.rotation.z + 1) 
+            actor->body.rotation.z = lerpf(actor->body.rotation.z, target_yaw, 0.45f);
+            else 
             actor->body.rotation.z = target_yaw;
+        }
 
         Vector2 horizontal_velocity = {actor->body.velocity.x, actor->body.velocity.y};
         actor->horizontal_speed = vector2_magnitude(&horizontal_velocity);       
@@ -112,12 +120,24 @@ void actorMotion_setSprinting(Actor *actor)
     actorMotion_setHorizontalAcceleration (actor, actor->settings.sprint_target_speed, actor->settings.sprint_acceleration_rate);
 }
 
-void actorMotion_setRolling(Actor *actor)
-{    
-    if (actor->animation.set.run_to_rolling_left.time > actor->settings.roll_change_grip_time || actor->animation.set.run_to_rolling_right.time > actor->settings.roll_change_grip_time) 
-        actorMotion_setHorizontalInertiaAcceleration (actor, actor->settings.run_target_speed, actor->settings.run_acceleration_rate);
+void actorMotion_setRolling(Actor *actor, float frame_time)
+{
+    if (actor->input.roll_timer < actor->settings.roll_change_grip_time){
+
+        actorMotion_setHorizontalInertiaAcceleration (actor, (actor->horizontal_speed * 1.05f), actor->settings.run_acceleration_rate);
+        actor->input.roll_timer += frame_time;
+    }
+
+    else if (actor->input.roll_timer < actor->settings.roll_timer_max){ 
+        
+        actorMotion_setHorizontalAcceleration (actor, actor->horizontal_speed, actor->settings.roll_acceleration_grip_rate);
+        actor->input.roll_timer += frame_time;
+    }
     
-    else actorMotion_setHorizontalAcceleration (actor, actor->horizontal_target_speed, actor->settings.run_acceleration_rate);
+    else {
+        actor_setState(actor, actor->locomotion_state);
+        actor->input.roll_timer = 0;
+    }
 }
 
 void actorMotion_setJump(Actor *actor, float frame_time)
@@ -137,17 +157,21 @@ void actorMotion_setJump(Actor *actor, float frame_time)
     
     else if (actor->input.jump_force > 0){
         
+        actor->input.jump_timer += frame_time;
+
         actor->body.velocity = actor->input.jump_initial_velocity;
         vector3_scale(&actor->body.velocity, 0.8f);
 
-        actor->body.velocity.z = actor->input.jump_force * 1800;         // THIS 1200 ACTOR SETTINGS JUMP FORCE MULTIPLIER
-        if (actor->body.velocity.z < 300) actor->body.velocity.z = 300;  // THIS 220 ACTOR SETTING MINIMUM JUMP SPEED
+        actor->body.velocity.z = actor->input.jump_force * 1900;         // THIS 2000 ACTOR SETTINGS JUMP FORCE MULTIPLIER
+        if (actor->body.velocity.z < 300) actor->body.velocity.z = 300;  // THIS 300 ACTOR SETTING MINIMUM JUMP SPEED
 
         actor->input.jump_force = 0;
     }
     
     else if (actor->body.velocity.z > 0){
-        
+
+        actor->input.jump_timer += frame_time;
+                
         actor->body.acceleration.z = ACTOR_GRAVITY;
     }
     
@@ -156,7 +180,7 @@ void actorMotion_setJump(Actor *actor, float frame_time)
         actor->body.acceleration.z = ACTOR_GRAVITY;
         actor->input.jump_timer = 0;
         
-        actor->state = FALLING;
+        actor_setState(actor, FALLING);
         return;
     }
 }
@@ -174,7 +198,7 @@ void actorMotion_setFalling(Actor *actor)
         actor->body.velocity.z = 0;
         actor->body.position.z = actor->grounding_height;
 
-        actor->state = actor->locomotion_state;
+        actor_setState(actor, actor->locomotion_state);
 
         return;
     }
@@ -201,16 +225,16 @@ void actor_setMotion(Actor *actor, float frame_time)
             actorMotion_setSprinting(actor);
             break;
         }
+        case ROLLING: {
+            actorMotion_setRolling(actor, frame_time);
+            break;
+        }
         case JUMPING: {
             actorMotion_setJump(actor, frame_time);
             break;
         }
         case FALLING: {
             actorMotion_setFalling(actor);
-            break;
-        }
-        case ROLLING: {
-            actorMotion_setRolling(actor);
             break;
         }
     }

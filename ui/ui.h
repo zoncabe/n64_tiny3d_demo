@@ -124,20 +124,15 @@ void ui_printActorPreviousAnimation(UI* ui, Actor* actor)
 
 void ui_printDebugData(UI* ui, Actor* actor, TimeData time)
 {
-	//rdpq_text_printf(NULL, DROID_SANS, 10, 10, "speed %d", (int)actor->horizontal_speed);
     //ui_printActorState(ui, actor);
     //ui_printActorAnimation(ui, actor);
     //ui_printActorPreviousAnimation(ui, actor);
-	//rdpq_text_printf(NULL, DROID_SANS, 10, 10, "footing blending ratio %f", actor->animation.footing_blending_ratio);
-    //rdpq_text_printf(NULL, DROID_SANS, 10, 20, "action blending ratio %f", actor->animation.action_blending_ratio);
+
+	//rdpq_text_printf(NULL, DROID_SANS, 10, 15, "action blending ratio %f", actor->animation.action_blending_ratio);
+	//rdpq_text_printf(NULL, DROID_SANS, 10, 25, "rolling timer %f", actor->input.roll_timer);
 
 	rdpq_text_printf(NULL, DROID_SANS, 250, 15, "FPS %f", time.frame_rate);
-	rdpq_text_printf(NULL, DROID_SANS, 224, 25, "frame time %f", time.frame_time);
-
-    //rdpq_text_printf(NULL, DROID_SANS, 10, 30, "walking time %f", actor->animation.set.walking.time);
-    //rdpq_text_printf(NULL, DROID_SANS, 10, 40, "running time %f", actor->animation.set.running.time);
-    //rdpq_text_printf(NULL, DROID_SANS, 10, 50, "sprinting time %f", actor->animation.set.sprinting.time);
-    
+	rdpq_text_printf(NULL, DROID_SANS, 224, 25, "frame time %f", time.frame_time);  
 }
 
 #endif 

@@ -10,12 +10,14 @@ typedef struct {
 	float walk_acceleration_rate;
 	float run_acceleration_rate;
 	float sprint_acceleration_rate;
+	float roll_acceleration_grip_rate;
 	
 	float walk_target_speed;
 	float run_target_speed;
 	float sprint_target_speed;
 	
 	float roll_change_grip_time;
+	float roll_timer_max;
 	
 	float aerial_control_rate;
 	float jump_acceleration_rate;
@@ -30,7 +32,8 @@ typedef struct {
 	float stick_magnitude;
 	float stick_x;
 	float stick_y;
-	
+	float roll_timer;
+
 	Vector3 jump_initial_velocity;
 	float jump_timer;
 	float jump_force;
@@ -115,7 +118,6 @@ typedef struct {
 	RigidBody body;
 
 	float target_yaw;
-	float horizontal_target_speed;
 	Vector3 target_velocity;
 
 	float horizontal_speed;
