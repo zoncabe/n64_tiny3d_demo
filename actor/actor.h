@@ -6,6 +6,20 @@
 
 typedef struct {
 
+	float value_0;
+	float value_1;
+	float value_2;
+	float value_3;
+	float value_4;
+	float value_5;
+	float value_6;
+	float value_7;
+	float value_8;
+
+}ActorDebug;
+
+typedef struct {
+
 	float idle_acceleration_rate;
 	float walk_acceleration_rate;
 	float run_acceleration_rate;
@@ -25,7 +39,6 @@ typedef struct {
 	float jump_timer_max;
 
 }ActorSettings;
-
 
 typedef struct {
 
@@ -82,7 +95,6 @@ typedef struct {
 	
 } AnimationSet;
 
-
 typedef struct {
 
 	AnimationSet set;
@@ -104,6 +116,7 @@ typedef struct {
 typedef struct {
 
 	uint32_t id;
+	ActorDebug debug_data;
 	
 	rspq_block_t *dl;
 	T3DModel *model;

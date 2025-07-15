@@ -92,8 +92,8 @@ void camera_set(Camera *camera, Screen* screen);
 
 void camera_init(Camera* camera)
 {
-        camera->distance_from_barycenter = 200;
-        camera->target_distance = 200;
+        camera->distance_from_barycenter = 280;
+        camera->target_distance = 300;
         camera->angle_around_barycenter = 10;
         camera->pitch = 8;
         camera->offset_angle = 40;
@@ -107,7 +107,7 @@ void camera_init(Camera* camera)
         camera->settings.zoom_acceleration_rate = 60;
         camera->settings.zoom_deceleration_rate = 20;
         camera->settings.zoom_max_speed = 300;
-        camera->settings.distance_from_baricenter = 200;
+        camera->settings.distance_from_baricenter = 280;
         camera->settings.field_of_view = 57;
 	    camera->settings.field_of_view_aim = 45;
         camera->settings.offset_acceleration_rate = 25;

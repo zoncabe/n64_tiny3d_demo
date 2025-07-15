@@ -124,13 +124,17 @@ void ui_printActorPreviousAnimation(UI* ui, Actor* actor)
 
 void ui_printDebugData(UI* ui, Actor* actor, TimeData time)
 {
+    rdpq_sync_pipe();
     //ui_printActorState(ui, actor);
     //ui_printActorAnimation(ui, actor);
     //ui_printActorPreviousAnimation(ui, actor);
 
 	//rdpq_text_printf(NULL, DROID_SANS, 10, 15, "action blending ratio %f", actor->animation.action_blending_ratio);
-	//rdpq_text_printf(NULL, DROID_SANS, 10, 25, "rolling timer %f", actor->input.roll_timer);
-
+	//rdpq_text_printf(NULL, DROID_SANS, 10, 25, "footing blending ratio %f", actor->animation.footing_blending_ratio);
+	//rdpq_text_printf(NULL, DROID_SANS, 10, 35, "rolling timer %f", actor->input.roll_timer);
+	rdpq_text_printf(NULL, DROID_SANS, 10, 45, "running debug 1 %f", actor->debug_data.value_0);
+	rdpq_text_printf(NULL, DROID_SANS, 10, 55, "running anim time %f", actor->animation.set.running.time);
+	rdpq_text_printf(NULL, DROID_SANS, 10, 65, "sprinting anim time %f", actor->animation.set.sprinting.time);
 	rdpq_text_printf(NULL, DROID_SANS, 250, 15, "FPS %f", time.frame_rate);
 	rdpq_text_printf(NULL, DROID_SANS, 224, 25, "frame time %f", time.frame_time);  
 }

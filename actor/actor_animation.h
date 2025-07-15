@@ -40,7 +40,7 @@
 #define JUMP_ANIM_LENGTH 0.633333f
 #define JUMP_ANIM_CROUCH 0.1f
 #define JUMP_ANIM_AIR 0.233333f
-#define JUMP_MAX_BLENDING_RATIO 0.8f
+#define JUMP_MAX_BLENDING_RATIO 0.75f
 
 #define LAND_ANIM_LENGTH 0.9f
 #define LAND_ANIM_GROUND 0.266666f
@@ -163,13 +163,17 @@ void actorAnimation_init(Actor *actor)
 
 void actorAnimation_setLocomotionBlendingRatio(Actor *actor)
 {
-	if (actor->horizontal_speed == 0) actor->animation.locomotion_blending_ratio = 0;
+	if (actor->horizontal_speed == 0)
+		actor->animation.locomotion_blending_ratio = 0;
 
-	else if (actor->horizontal_speed > 0 && actor->horizontal_speed <= actor->settings.walk_target_speed) actor->animation.locomotion_blending_ratio = (actor->horizontal_speed / actor->settings.walk_target_speed);
+	else if (actor->horizontal_speed <= actor->settings.walk_target_speed)
+		actor->animation.locomotion_blending_ratio = (actor->horizontal_speed / actor->settings.walk_target_speed);
 
-	else if (actor->horizontal_speed > actor->settings.walk_target_speed && actor->horizontal_speed <= actor->settings.run_target_speed) actor->animation.locomotion_blending_ratio = 1.0f - ((actor->horizontal_speed - actor->settings.walk_target_speed) / (actor->settings.run_target_speed - actor->settings.walk_target_speed));
+	else if (actor->horizontal_speed > actor->settings.walk_target_speed && actor->horizontal_speed <= actor->settings.run_target_speed) 
+		actor->animation.locomotion_blending_ratio = 1.0f - ((actor->horizontal_speed - actor->settings.walk_target_speed) / (actor->settings.run_target_speed - actor->settings.walk_target_speed));
 
-	else if (actor->horizontal_speed > actor->settings.run_target_speed) actor->animation.locomotion_blending_ratio = ((actor->horizontal_speed - actor->settings.run_target_speed) / (actor->settings.sprint_target_speed - actor->settings.run_target_speed));
+	else if (actor->horizontal_speed > actor->settings.run_target_speed) 
+		actor->animation.locomotion_blending_ratio = ((actor->horizontal_speed - actor->settings.run_target_speed) / (actor->settings.sprint_target_speed - actor->settings.run_target_speed));
 
 	if (actor->animation.locomotion_blending_ratio > 1.0f) actor->animation.locomotion_blending_ratio = 1.0f;
 	if (actor->animation.locomotion_blending_ratio < 0.0f) actor->animation.locomotion_blending_ratio = 0.0f;
@@ -189,17 +193,22 @@ void actorAnimation_setFootingBlendingRatio(Actor *actor, float action_time, flo
 
 void actorAnimation_setRollingBlendingRatio(Actor *actor, float frame_time)
 {
-
-	if (actor->input.roll_timer < RUN_TO_ROLLING_ANIM_GROUND && actor->animation.action_blending_ratio <= 1.0f) actor->animation.action_blending_ratio += (frame_time * 3);
-	
+	/* might as well hardcode them damn magic numbers for performance gawddamit
+	if (actor->input.roll_timer < RUN_TO_ROLLING_ANIM_GROUND && actor->animation.action_blending_ratio <= 1.0f) actor->animation.action_blending_ratio += (frame_time * 3.333333f);
 	if (actor->input.roll_timer > RUN_TO_ROLLING_ANIM_STAND && actor->animation.action_blending_ratio > 0.0f) actor->animation.action_blending_ratio -= (frame_time * 1.875f);
+	*/
 
+	if (actor->input.roll_timer < RUN_TO_ROLLING_ANIM_GROUND && actor->animation.action_blending_ratio <= 1.0f) actor->animation.action_blending_ratio += (frame_time / RUN_TO_ROLLING_ANIM_GROUND);
+	if (actor->input.roll_timer > RUN_TO_ROLLING_ANIM_STAND && actor->animation.action_blending_ratio > 0.0f) actor->animation.action_blending_ratio -= (frame_time / (2 * (RUN_TO_ROLLING_ANIM_LENGHT - RUN_TO_ROLLING_ANIM_STAND)));
+	
 	if (actor->animation.action_blending_ratio > 1.0f) {
 		
 		actor->animation.action_blending_ratio = 1.0f;
 
-		//if (actor->animation.footing_blending_ratio >= 0.5f) t3d_anim_set_time(&actor->animation.set.running, RUN_TO_ROLLING_ANIM_LENGHT);
-		//if (actor->animation.footing_blending_ratio < 0.5f) t3d_anim_set_time(&actor->animation.set.running, (0.4f));
+		if (actor->animation.footing_blending_ratio < 0.5f) t3d_anim_set_time(&actor->animation.set.running, RUNNING_ANIM_LENGTH_HALF - (RUN_TO_ROLLING_ANIM_LENGHT - RUN_TO_ROLLING_ANIM_STAND) + frame_time);
+		if (actor->animation.footing_blending_ratio >= 0.5f) t3d_anim_set_time(&actor->animation.set.walking, RUNNING_ANIM_LENGTH - (RUN_TO_ROLLING_ANIM_LENGHT - RUN_TO_ROLLING_ANIM_STAND) + frame_time);
+		t3d_anim_set_time(&actor->animation.set.walking, (actor->animation.set.running.time * RTWratio));
+		t3d_anim_set_time(&actor->animation.set.sprinting, (actor->animation.set.running.time * RTSratio));			
 	}
 
 	if (actor->animation.action_blending_ratio < 0.0f) actor->animation.action_blending_ratio = 0.0f;
@@ -207,8 +216,11 @@ void actorAnimation_setRollingBlendingRatio(Actor *actor, float frame_time)
 
 void actorAnimation_setJumpBlendingRatio(Actor *actor, float frame_time)
 {
-	if (actor->animation.action_blending_ratio < 0.7f) actor->animation.action_blending_ratio += (frame_time * 3);
-	if (actor->animation.locomotion_blending_ratio > 1.0f) actor->animation.locomotion_blending_ratio = 1.0f;
+	if (actor->animation.locomotion_blending_ratio == JUMP_MAX_BLENDING_RATIO) return;
+
+	if (actor->animation.action_blending_ratio < JUMP_MAX_BLENDING_RATIO) actor->animation.action_blending_ratio += (frame_time * 3);
+
+	if (actor->animation.action_blending_ratio > JUMP_MAX_BLENDING_RATIO) actor->animation.action_blending_ratio = JUMP_MAX_BLENDING_RATIO;
 }
 
 void actorAnimation_setLandingBlendingRatio(Actor *actor, float frame_time)
@@ -249,14 +261,16 @@ void actorAnimation_setStandingIdle(Actor *actor, float frame_time)
 
 void actorAnimation_setWalking(Actor *actor, float frame_time)
 {
-	actorAnimation_setLocomotionBlendingRatio(actor);
+	//actorAnimation_setLocomotionBlendingRatio(actor);
+	//actorAnimation_setWalkingSpeed(actor);
 	t3d_anim_update(&actor->animation.set.walking, frame_time);
 	t3d_skeleton_blend(&actor->armature.main, &actor->armature.main, &actor->armature.blend, actor->animation.locomotion_blending_ratio);
 }
 
 void actorAnimation_setRunning(Actor *actor, float frame_time)
 {
-	actorAnimation_setLocomotionBlendingRatio(actor);
+	//actorAnimation_setLocomotionBlendingRatio(actor);
+	//actorAnimation_setRunningSpeed(actor);
 	t3d_anim_update(&actor->animation.set.running, frame_time);
 	t3d_anim_update(&actor->animation.set.walking, frame_time);
 	t3d_skeleton_blend(&actor->armature.main, &actor->armature.main, &actor->armature.blend, actor->animation.locomotion_blending_ratio);
@@ -264,7 +278,8 @@ void actorAnimation_setRunning(Actor *actor, float frame_time)
 
 void actorAnimation_setSprinting(Actor *actor, float frame_time)
 {
-	actorAnimation_setLocomotionBlendingRatio(actor);
+	//actorAnimation_setLocomotionBlendingRatio(actor);
+	//actorAnimation_setSprintingSpeed(actor);
 	t3d_anim_update(&actor->animation.set.running, frame_time);
 	t3d_anim_update(&actor->animation.set.sprinting, frame_time);
 	t3d_skeleton_blend(&actor->armature.main, &actor->armature.main, &actor->armature.blend, actor->animation.locomotion_blending_ratio);
@@ -273,37 +288,27 @@ void actorAnimation_setSprinting(Actor *actor, float frame_time)
 void actorAnimation_setRunToRolling(Actor *actor, float frame_time)
 {
 	actorAnimation_setRollingBlendingRatio(actor, frame_time);
-	
-	if (actor->animation.action_blending_ratio > 0.0f){
 
-		
-		if (actor->animation.footing_blending_ratio <= 0.5f){
-			
-			if (actor->animation.set.run_to_rolling_right.isPlaying && (actor->animation.set.run_to_rolling_right.time + frame_time) < (RUN_TO_ROLLING_ANIM_LENGHT)){
+	if (actor->animation.footing_blending_ratio <= 0.5f){
 				
-				actorAnimation_setRollingBlendingRatio(actor, frame_time);
-				t3d_anim_update(&actor->animation.set.run_to_rolling_right, frame_time);
-				t3d_skeleton_blend(&actor->armature.main, 
-					&actor->armature.main, 
-					&actor->armature.blend2,
-					actor->animation.action_blending_ratio
-				);
-			}
-		}
-		
-		if (actor->animation.footing_blending_ratio > 0.5f){
+		actorAnimation_setRollingBlendingRatio(actor, frame_time);
+		t3d_anim_update(&actor->animation.set.run_to_rolling_right, frame_time);
+		t3d_skeleton_blend(&actor->armature.main, 
+			&actor->armature.main, 
+			&actor->armature.blend2,
+			actor->animation.action_blending_ratio
+		);
+	}
+	
+	if (actor->animation.footing_blending_ratio > 0.5f){
 			
-			if (actor->animation.set.run_to_rolling_left.isPlaying  && (actor->animation.set.run_to_rolling_left.time + frame_time) < (RUN_TO_ROLLING_ANIM_LENGHT)){
-				
-				actorAnimation_setRollingBlendingRatio(actor, frame_time);
-				t3d_anim_update(&actor->animation.set.run_to_rolling_left, frame_time);
-				t3d_skeleton_blend(&actor->armature.main, 
-					&actor->armature.main, 
-					&actor->armature.blend,
-					actor->animation.action_blending_ratio
-				);
-			}
-		}
+		actorAnimation_setRollingBlendingRatio(actor, frame_time);
+		t3d_anim_update(&actor->animation.set.run_to_rolling_left, frame_time);
+		t3d_skeleton_blend(&actor->armature.main, 
+			&actor->armature.main, 
+			&actor->armature.blend,
+			actor->animation.action_blending_ratio
+		);
 	}
 }
 
@@ -364,11 +369,15 @@ void actorAnimation_setStandingLocomotion(Actor *actor, const float frame_time)
 			actor->animation.previous = actor->animation.current;
 			actor->animation.current = WALKING;
 		}
+
 		actorAnimation_setFootingBlendingRatio(actor, actor->animation.set.walking.time, WALKING_ANIM_LENGTH);
-		actorAnimation_setWalkingSpeed(actor);
 
 		actorAnimation_setStandingIdle(actor, frame_time);
+
+	    actorAnimation_setLocomotionBlendingRatio(actor);
+		actorAnimation_setWalkingSpeed(actor);
 		actorAnimation_setWalking(actor, frame_time);
+
 		actorAnimation_setLanding(actor, frame_time);
 	}
 
@@ -382,10 +391,13 @@ void actorAnimation_setStandingLocomotion(Actor *actor, const float frame_time)
 			if (actor->animation.previous == WALKING) t3d_anim_set_time(&actor->animation.set.running, (actor->animation.set.walking.time * WTRratio));
 			else if (actor->animation.previous == SPRINTING) t3d_anim_set_time(&actor->animation.set.walking, (actor->animation.set.sprinting.time * STWratio));
 		}
-		actorAnimation_setFootingBlendingRatio(actor, actor->animation.set.walking.time, WALKING_ANIM_LENGTH);
-		actorAnimation_setRunningSpeed(actor);
 
+		actorAnimation_setFootingBlendingRatio(actor, actor->animation.set.walking.time, WALKING_ANIM_LENGTH);
+
+	    actorAnimation_setLocomotionBlendingRatio(actor);
+		actorAnimation_setRunningSpeed(actor);
 		actorAnimation_setRunning(actor, frame_time);
+	
 		actorAnimation_setLanding(actor, frame_time);
 	}
 
@@ -396,13 +408,16 @@ void actorAnimation_setStandingLocomotion(Actor *actor, const float frame_time)
 			actor->animation.current = SPRINTING;
 			t3d_anim_set_time(&actor->animation.set.sprinting, (actor->animation.set.running.time * RTSratio));
 		}
+
 		//actorAnimation_setFootingBlendingRatio(actor, actor->animation.set.running.time, RUNNING_ANIM_LENGTH); 
 		// workaround to get consistent footing blending :')
 		t3d_anim_update(&actor->animation.set.walking, frame_time);  
 		actorAnimation_setFootingBlendingRatio(actor, actor->animation.set.walking.time, WALKING_ANIM_LENGTH);
-		actorAnimation_setSprintingSpeed(actor);
 
+	    actorAnimation_setLocomotionBlendingRatio(actor);		
+		actorAnimation_setSprintingSpeed(actor);
 		actorAnimation_setSprinting(actor, frame_time);
+
 		actorAnimation_setLanding(actor, frame_time);
 	}
 }
@@ -424,7 +439,10 @@ void actorAnimation_setRolling(Actor *actor, const float frame_time)
 	
 	if (actor->horizontal_speed <= actor->settings.run_target_speed){		
 		
+		actorAnimation_setLocomotionBlendingRatio(actor);
 		actorAnimation_setRunningSpeed(actor);
+		actor->animation.set.walking.speed *= (1 - actor->animation.action_blending_ratio);
+		actor->animation.set.running.speed *= (1 - actor->animation.action_blending_ratio);
 		
 		actorAnimation_setRunning(actor, frame_time);
 		actorAnimation_setLanding(actor, frame_time);
@@ -433,11 +451,14 @@ void actorAnimation_setRolling(Actor *actor, const float frame_time)
 
 	else if (actor->horizontal_speed > actor->settings.run_target_speed){
 
-		actor->animation.set.running.speed = fabs(1 - actor->animation.action_blending_ratio);
-		actor->animation.set.sprinting.speed = fabs(1 - actor->animation.action_blending_ratio);
+		actorAnimation_setLocomotionBlendingRatio(actor);
+		actorAnimation_setSprintingSpeed(actor);
+		actor->animation.set.sprinting.speed *= (1 - actor->animation.action_blending_ratio);
+		actor->animation.set.running.speed *= (1 - actor->animation.action_blending_ratio);
 
 		actorAnimation_setSprinting(actor, frame_time);
 		actorAnimation_setLanding(actor, frame_time);
+		
 		actorAnimation_setRunToRolling(actor, frame_time);
 	}
 }
@@ -459,31 +480,20 @@ void actorAnimation_setJumping(Actor *actor, const float frame_time)
 
 	if (actor->horizontal_speed == 0){
 
-		if (actor->animation.set.land_left.isPlaying && actor->animation.set.jump_left.time < JUMP_ANIM_CROUCH){
-
-			actorAnimation_setLandingBlendingRatio(actor, frame_time);
-			actorAnimation_setLanding(actor, frame_time);
-		}
-
-		
 		actorAnimation_setStandingIdle(actor, frame_time);	
-		actorAnimation_setLanding(actor, frame_time);
+		if (actor->animation.set.jump_left.time < JUMP_ANIM_CROUCH) actorAnimation_setLanding(actor, frame_time);
 		actorAnimation_setJump(actor, frame_time);
 	}
 
 	else if (actor->horizontal_speed > 0 && actor->horizontal_speed <= actor->settings.walk_target_speed){
 
 		actorAnimation_setFootingBlendingRatio(actor, actor->animation.set.walking.time, WALKING_ANIM_LENGTH);
-
-		if (actor->animation.set.jump_left.time < JUMP_ANIM_CROUCH){
-
-			actorAnimation_setLanding(actor, frame_time);
-		}
-
+		actorAnimation_setLocomotionBlendingRatio(actor);
 		actorAnimation_setWalkingSpeed(actor);
 		actor->animation.set.walking.speed *= (1 - actor->animation.action_blending_ratio);
-
+		
 		actorAnimation_setStandingIdle(actor, frame_time);
+		if (actor->animation.set.jump_left.time < JUMP_ANIM_CROUCH) actorAnimation_setLanding(actor, frame_time);
 		actorAnimation_setWalking(actor, frame_time);
 		actorAnimation_setJump(actor, frame_time);
 	}
@@ -491,37 +501,29 @@ void actorAnimation_setJumping(Actor *actor, const float frame_time)
 	else if (actor->horizontal_speed > actor->settings.walk_target_speed && actor->horizontal_speed <= actor->settings.run_target_speed){
 		
 		actorAnimation_setFootingBlendingRatio(actor, actor->animation.set.walking.time, WALKING_ANIM_LENGTH);
-
-		if (actor->animation.set.jump_left.time < JUMP_ANIM_CROUCH){
-		
-			actorAnimation_setLanding(actor, frame_time);
-		}
-
+		actorAnimation_setLocomotionBlendingRatio(actor);
 		actorAnimation_setRunningSpeed(actor);
 		actor->animation.set.walking.speed *= (1 - actor->animation.action_blending_ratio);
 		actor->animation.set.running.speed *= (1 - actor->animation.action_blending_ratio);
-
+		
 		actorAnimation_setRunning(actor, frame_time);
+		if (actor->animation.set.jump_left.time < JUMP_ANIM_CROUCH) actorAnimation_setLanding(actor, frame_time);
 		actorAnimation_setJump(actor, frame_time);
 	}
 
 	else if (actor->horizontal_speed > actor->settings.run_target_speed){
 
-		if (actor->animation.set.jump_left.time < JUMP_ANIM_CROUCH){
-		
-			actorAnimation_setLanding(actor, frame_time);
-		}
-
 		//actorAnimation_setFootingBlendingRatio(actor, actor->animation.set.running.time, RUNNING_ANIM_LENGTH);
 		t3d_anim_update(&actor->animation.set.walking, frame_time); // damn workaround
 		actorAnimation_setFootingBlendingRatio(actor, actor->animation.set.walking.time, WALKING_ANIM_LENGTH);
-
+		actorAnimation_setLocomotionBlendingRatio(actor);
 		actorAnimation_setSprintingSpeed(actor);
 		actor->animation.set.walking.speed *= (1 - actor->animation.action_blending_ratio);
 		actor->animation.set.running.speed *= (1 - actor->animation.action_blending_ratio);
 		actor->animation.set.sprinting.speed *= (1 - actor->animation.action_blending_ratio);
-
+		
 		actorAnimation_setSprinting(actor, frame_time);
+		if (actor->animation.set.jump_left.time < JUMP_ANIM_CROUCH) actorAnimation_setLanding(actor, frame_time);
 		actorAnimation_setJump(actor, frame_time);
 	}
 }
@@ -545,39 +547,32 @@ void actorAnimation_setFalling(Actor *actor, const float frame_time)
 
 		// workaround until collision happens
 		if (actor->body.position.z < 80) actorAnimation_setLanding(actor, frame_time);
-
 		else actorAnimation_setFallingIdle(actor, frame_time);
 	}
 
 	else if (actor->horizontal_speed > 0 && actor->horizontal_speed <= actor->settings.walk_target_speed){
 		
 		actorAnimation_setFootingBlendingRatio(actor, actor->animation.set.walking.time, WALKING_ANIM_LENGTH);
-
+		actorAnimation_setLocomotionBlendingRatio(actor);
 		actorAnimation_setWalkingSpeed(actor);
 		actor->animation.set.walking.speed *= (1 - actor->animation.action_blending_ratio);
 
 		actorAnimation_setStandingIdle(actor, frame_time);
-
-		t3d_anim_update(&actor->animation.set.walking, frame_time);
-		t3d_skeleton_blend(&actor->armature.main, &actor->armature.main, &actor->armature.blend, actor->animation.locomotion_blending_ratio);
-		
+		actorAnimation_setWalking(actor, frame_time);
 		if (actor->body.position.z < 80) actorAnimation_setLanding(actor, frame_time);
-
 		else actorAnimation_setFallingIdle(actor, frame_time);
 	}
 
 	else if (actor->horizontal_speed > actor->settings.walk_target_speed && actor->horizontal_speed <= actor->settings.run_target_speed){
 		
 		actorAnimation_setFootingBlendingRatio(actor, actor->animation.set.walking.time, WALKING_ANIM_LENGTH);
-
+		actorAnimation_setLocomotionBlendingRatio(actor);
 		actorAnimation_setRunningSpeed(actor);
 		actor->animation.set.walking.speed *= (1 - actor->animation.action_blending_ratio);
 		actor->animation.set.running.speed *= (1 - actor->animation.action_blending_ratio);
 
 		actorAnimation_setRunning(actor, frame_time);
-		
 		if (actor->body.position.z < 80) actorAnimation_setLanding(actor, frame_time);
-		
 		else actorAnimation_setFallingIdle(actor, frame_time);
 	}
 
@@ -586,16 +581,14 @@ void actorAnimation_setFalling(Actor *actor, const float frame_time)
 		//actorAnimation_setFootingBlendingRatio(actor, actor->animation.set.running.time, RUNNING_ANIM_LENGTH);
 		t3d_anim_update(&actor->animation.set.walking, frame_time);
 		actorAnimation_setFootingBlendingRatio(actor, actor->animation.set.walking.time, WALKING_ANIM_LENGTH);
-
+		actorAnimation_setLocomotionBlendingRatio(actor);
 		actorAnimation_setSprintingSpeed(actor);
 		actor->animation.set.walking.speed *= (1 - actor->animation.action_blending_ratio);
 		actor->animation.set.running.speed *= (1 - actor->animation.action_blending_ratio);
 		actor->animation.set.sprinting.speed *= (1 - actor->animation.action_blending_ratio);
 
 		actorAnimation_setSprinting(actor, frame_time);
-
 		if (actor->body.position.z < 80) actorAnimation_setLanding(actor, frame_time);
-		
 		else actorAnimation_setFallingIdle(actor, frame_time);
 	}
 }
@@ -683,18 +676,18 @@ Actor actor_create(uint32_t id, const char *model_path)
 		},
 
 		.settings = {
-			.idle_acceleration_rate = 8,
-			.walk_acceleration_rate = 4,
-			.run_acceleration_rate = 6,
+			.idle_acceleration_rate = 9,
+			.walk_acceleration_rate = 3,
+			.run_acceleration_rate = 5,
 			.sprint_acceleration_rate = 8,
 			.roll_acceleration_grip_rate = 2,
 
 			.jump_acceleration_rate = 50,
 			.aerial_control_rate = 0.5f,
 
-			.walk_target_speed = 175,
-			.run_target_speed = 330,
-			.sprint_target_speed = 480,
+			.walk_target_speed = 185,
+			.run_target_speed = 390,
+			.sprint_target_speed = 520,
 
 			.roll_change_grip_time = RUN_TO_ROLLING_ANIM_GRIP,
 			.roll_timer_max = RUN_TO_ROLLING_ANIM_LENGHT,

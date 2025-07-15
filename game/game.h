@@ -57,7 +57,7 @@ void scene_draw(Game* game, Actor* actor, Scenery* scenery)
 
 	t3d_matrix_pop(1);
 
-	ui_printDebugData(&game->ui, actor, game->timing);
+	//ui_printDebugData(&game->ui, actor, game->timing);
 
 	rdpq_detach_show();
 
