@@ -29,6 +29,7 @@ void game_init(Game *game)
 	screen_init(&game->screen);
 
 	rdpq_init();
+	
 	joypad_init();
 
 	time_init(&game->timing);
