@@ -104,6 +104,8 @@ typedef struct {
 	
 	float locomotion_blending_ratio;
 	float action_blending_ratio;
+	float jump_blending_ratio;
+	float roll_blending_ratio;
 	float footing_blending_ratio;
 	float speed;
 	

@@ -49,7 +49,6 @@ void actorMotiion_setJumpAcceleration(Actor *actor, float target_speed, float ac
 
 void actorMotion_integrate (Actor *actor, float frame_time)
 {
-
     if (actor->body.acceleration.x != 0 || actor->body.acceleration.y != 0 || actor->body.acceleration.z != 0){
         vector3_addScaledVector(&actor->body.velocity, &actor->body.acceleration, frame_time);
     }
@@ -67,21 +66,16 @@ void actorMotion_integrate (Actor *actor, float frame_time)
         Vector2 horizontal_velocity = {actor->body.velocity.x, actor->body.velocity.y};
         actor->horizontal_speed = vector2_magnitude(&horizontal_velocity);
 
-        actor->target_yaw = deg(atan2(-actor->body.velocity.x, -actor->body.velocity.y));
+        float target_yaw = deg(atan2(-actor->body.velocity.x, -actor->body.velocity.y));
 
-        if (actor->target_yaw > actor->body.rotation.z + 180) actor->target_yaw -= 360;
-        if (actor->target_yaw < actor->body.rotation.z - 180) actor->target_yaw += 360;
+        if (target_yaw > actor->body.rotation.z + 180) target_yaw -= 360;
+        if (target_yaw < actor->body.rotation.z - 180) target_yaw += 360;
         
         
         if(actor->state == ROLLING) actor->body.rotation.z = deg(atan2(-actor->body.velocity.x, -actor->body.velocity.y));
         
-        else if (actor->target_yaw < actor->body.rotation.z - 1 || actor->target_yaw > actor->body.rotation.z + 1) {
-            
-            if  (actor->horizontal_speed <= actor->settings.walk_target_speed) actor->body.rotation.z = lerpf(actor->body.rotation.z, actor->target_yaw, actor->horizontal_speed / actor->settings.sprint_target_speed);
-            else if (actor->horizontal_speed > actor->settings.walk_target_speed && actor->horizontal_speed <= actor->settings.run_target_speed) actor->body.rotation.z = lerpf(actor->body.rotation.z, actor->target_yaw, actor->horizontal_speed / actor->settings.run_target_speed);
-        	else actor->body.rotation.z = lerpf(actor->body.rotation.z, actor->target_yaw, actor->horizontal_speed / actor->settings.sprint_target_speed);
-        }
-        else actor->body.rotation.z = actor->target_yaw;
+        else if (target_yaw < actor->body.rotation.z - 1 || target_yaw > actor->body.rotation.z + 1) actor->body.rotation.z = lerpf(actor->body.rotation.z, target_yaw, actor->horizontal_speed / actor->settings.sprint_target_speed);
+        else actor->body.rotation.z = target_yaw;
 
         if (actor->body.rotation.z > 180) actor->body.rotation.z -= 360;
         if (actor->body.rotation.z < -180) actor->body.rotation.z += 360;
@@ -95,8 +89,7 @@ void actorMotion_setIdle(Actor *actor)
     if  (fabs(actor->body.velocity.x) < 1 && fabs(actor->body.velocity.y) < 1){
 
         vector3_init(&actor->body.velocity);
-        actor->horizontal_speed = 0;    
-        actor->target_yaw = actor->body.rotation.z;
+        actor->horizontal_speed = 0;
     }
 }
 
@@ -122,7 +115,7 @@ void actorMotion_setRolling(Actor *actor, float frame_time)
 {
     if (actor->input.roll_timer < actor->settings.roll_change_grip_time){
 
-        actorMotion_setHorizontalInertiaAcceleration (actor, (actor->horizontal_speed * 1.05f), actor->settings.run_acceleration_rate);
+        actorMotion_setHorizontalInertiaAcceleration (actor, (actor->horizontal_speed), actor->settings.run_acceleration_rate);
         actor->input.roll_timer += frame_time;
     }
 

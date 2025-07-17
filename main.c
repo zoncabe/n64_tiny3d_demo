@@ -12,35 +12,27 @@
 #define SCENERY_COUNT 2
 
 
-#include "screen/screen.h"
-#include "control/control.h"
-#include "time/time.h"
-
-#include "physics/physics.h"
-
-#include "camera/camera.h"
-#include "camera/camera_states.h"
-#include "camera/camera_control.h"
-
-#include "actor/actor.h"
-#include "actor/actor_states.h"
-#include "actor/actor_motion.h"
-#include "actor/actor_control.h"
-
-#include "physics/actor_collision/actor_collision_detection.h"
-#include "physics/actor_collision/actor_collision_response.h"
-
-#include "actor/actor_animation.h"
-
-#include "scene/scene.h"
-#include "scene/scenery.h"
-
-#include "ui/ui.h"
-
-#include "player/player.h"
-#include "game/game.h"
-#include "player/player_control.h"
-#include "game/game_states.h"
+#include "include/screen/screen.h"
+#include "include/control/control.h"
+#include "include/time/time.h"
+#include "include/physics/physics.h"
+#include "include/camera/camera.h"
+#include "include/camera/camera_states.h"
+#include "include/camera/camera_control.h"
+#include "include/actor/actor.h"
+#include "include/actor/actor_states.h"
+#include "include/actor/actor_motion.h"
+#include "include/actor/actor_control.h"
+#include "include/physics/actor_collision/actor_collision_detection.h"
+#include "include/physics/actor_collision/actor_collision_response.h"
+#include "include/actor/actor_animation.h"
+#include "include/scene/scene.h"
+#include "include/scene/scenery.h"
+#include "include/ui/ui.h"
+#include "include/player/player.h"
+#include "include/game/game.h"
+#include "include/player/player_control.h"
+#include "include/game/game_states.h"
 
 
 Game game;

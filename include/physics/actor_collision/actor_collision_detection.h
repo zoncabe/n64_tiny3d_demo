@@ -30,14 +30,14 @@ typedef struct {
 } ActorCollider;
 
 typedef struct {
-    Vector3 axis_closest_to_point;     // closest point in the capsule axis to the point of contact
+    Vector3 axis_closest_to_contact;     // closest point in the capsule axis to the point of contact
     Vector3 velocity_penetration;      // penetration vector in the direction of the velocity
     float slope;                       // angle of inclination of the the plane of contact
     float angle_of_incidence;          // angle between the velocity vector and the plane of contact
     float displacement;                // distance from the origin to the plane of contact
     float ground_distance;          // vertical distance from the actor's position to the nearest plane of contact
     ContactData data;
-} ActorContactData;
+} ActorContact;
 
 
 void actorCollider_init(ActorCollider* collider)
@@ -55,9 +55,9 @@ void actorCollider_set(ActorCollider* collider, Vector3* position, Vector3* rota
 {
 }
 
-void actorContactData_clear(ActorContactData* contact)
+void actorContact_clear(ActorContact* contact)
 {
-    contact->axis_closest_to_point = (Vector3){0.0f, 0.0f, 0.0f};
+    contact->axis_closest_to_contact = (Vector3){0.0f, 0.0f, 0.0f};
     contact->velocity_penetration = (Vector3){0.0f, 0.0f, 0.0f};
     contact->slope = 1000.0f;                                      // Set the slope to an out of range value to indicate no contact
     contact->displacement = 0.0f;
@@ -65,12 +65,12 @@ void actorContactData_clear(ActorContactData* contact)
     contactData_init(&contact->data);
 }
 
-void actorContactData_setAxisClosestToPoint(ActorContactData* contact, const ActorCollider* collider)
+void actorContact_setAxisClosestPoint(ActorContact* contact, ActorCollider* collider)
 {
-    contact->axis_closest_to_point = segment_closestToPoint(&collider->body.start, &collider->body.end, &contact->data.point);
+    contact->axis_closest_to_contact = segment_closestToPoint(&collider->body.start, &collider->body.end, &contact->data.point);
 }
 
-void actorContactData_setSlope(ActorContactData* contact) 
+void actorContact_setSlope(ActorContact* contact) 
 {
     float magnitude = vector3_magnitude(&contact->data.normal);
     float cos_slope = contact->data.normal.z / magnitude;         // Calculate the cosine of the angle between the normal and the z-axis
@@ -78,20 +78,28 @@ void actorContactData_setSlope(ActorContactData* contact)
     contact->slope = deg(slope);
 }
 
-void actorContactData_setAngleOfIncidence(ActorContactData* contact, const Vector3 *velocity) 
+void actorContact_setAngleOfIncidence(ActorContact* contact, const Vector3 *velocity) 
 {
     contact->angle_of_incidence = -deg((M_PI * 0.5f) - acosf(vector3_returnDotProduct(velocity, &contact->data.normal) / vector3_magnitude(velocity)));
 }
 
-void actorContactData_setDisplacement(ActorContactData* contact)
+void actorContact_setDisplacement(ActorContact* contact)
 {
     contact->displacement = vector3_returnDotProduct(&contact->data.point, &contact->data.normal);
 }
 
-void actorCollision_setGroundDistance(ActorContactData* contact, Vector3* position)
+void actorContact_setGroundDistance(ActorContact* contact, Vector3* position)
 {    
     if (contact->data.normal.z == 0.0f) contact->ground_distance = 1000.0;   // arbitrary large value to indicate no grounding
     else contact->ground_distance = (contact->displacement - vector3_returnDotProduct(position, &contact->data.normal)) / -contact->data.normal.z;
+}
+
+
+void actorContact_setData(ActorContact* contact, ActorCollider* collider){
+
+    actorContact_setSlope(contact);
+    actorContact_setDisplacement(contact);
+    actorContact_setAxisClosestPoint(contact, collider);
 }
 
 bool actorCollision_contactSphere(const ActorCollider* collider, const Sphere* sphere)
@@ -99,12 +107,10 @@ bool actorCollision_contactSphere(const ActorCollider* collider, const Sphere* s
     return capsule_contactSphere(&collider->body, sphere);
 }
 
-void actorCollision_contactSphereSetData(ActorContactData* contact, const ActorCollider* collider, const Sphere* sphere)
+void actorCollision_contactSphereSetData(ActorContact* contact, ActorCollider* collider, const Sphere* sphere)
 {
     capsule_contactSphereSetData(&contact->data, &collider->body, sphere);
-    actorContactData_setSlope(contact);
-    actorContactData_setDisplacement(contact);
-    actorContactData_setAxisClosestToPoint(contact, collider);
+    actorContact_setData(contact, collider);
 }
 
 bool actorCollision_contactAABB(const ActorCollider* collider, const AABB* aabb)
@@ -112,12 +118,10 @@ bool actorCollision_contactAABB(const ActorCollider* collider, const AABB* aabb)
     return capsule_contactAABB(&collider->body, aabb);
 }
 
-void actorCollision_contactAABBsetData(ActorContactData* contact, const ActorCollider* collider, const AABB* aabb)
+void actorCollision_contactAABBsetData(ActorContact* contact, ActorCollider* collider, const AABB* aabb)
 {
     capsule_contactAABBSetData(&contact->data, &collider->body, aabb);
-    actorContactData_setSlope(contact);
-    actorContactData_setDisplacement(contact);
-    actorContactData_setAxisClosestToPoint(contact, collider);
+    actorContact_setData(contact, collider);
 }
 
 bool actorCollision_contactBox(const ActorCollider* collider, const Box* box)
@@ -125,12 +129,10 @@ bool actorCollision_contactBox(const ActorCollider* collider, const Box* box)
     return capsule_contactBox(&collider->body, box);
 }
 
-void actorCollision_contactBoxSetData(ActorContactData* contact, const ActorCollider* collider, const Box* box)
+void actorCollision_contactBoxSetData(ActorContact* contact, ActorCollider* collider, const Box* box)
 {   
     capsule_contactBoxSetData(&contact->data, &collider->body, box);
-    actorContactData_setSlope(contact);
-    actorContactData_setDisplacement(contact);
-    actorContactData_setAxisClosestToPoint(contact, collider);
+    actorContact_setData(contact, collider);
 }
 
 bool actorCollision_contactPlane(const ActorCollider* collider, const Plane* plane)
@@ -138,12 +140,12 @@ bool actorCollision_contactPlane(const ActorCollider* collider, const Plane* pla
     return capsule_contactPlane(&collider->body, plane);
 }
 
-void actorCollision_contactPlaneSetData(ActorContactData* contact, const ActorCollider* collider, const Plane* plane)
+void actorCollision_contactPlaneSetData(ActorContact* contact, ActorCollider* collider, const Plane* plane)
 {
     capsule_contactPlaneSetData(&contact->data, &collider->body, plane);
-    actorContactData_setSlope(contact);
+    actorContact_setSlope(contact);
     contact->displacement = plane->displacement;
-    actorContactData_setAxisClosestToPoint(contact, collider);
+    actorContact_setAxisClosestPoint(contact, collider);
 }
 
 bool actorCollision_intersectionRay(const ActorCollider* collider, const Ray* ray)
