@@ -652,7 +652,9 @@ Actor actor_create(uint32_t id, const char *model_path)
 			.roll_change_grip_time = RUN_TO_ROLLING_ANIM_GRIP,
 			.roll_timer_max = RUN_TO_ROLLING_ANIM_LENGHT,
 
-			.jump_max_speed = 400,
+			.jump_force_multiplier = JUMP_FORCE_MULTIPLIER,  
+			.jump_minimum_speed = JUMP_MINIMUM_SPEED,
+
 			.jump_timer_max = JUMP_ANIM_AIR,
 		},
 

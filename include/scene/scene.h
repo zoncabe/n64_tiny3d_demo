@@ -2,6 +2,7 @@
 #define SCENE_H
 
 
+#include "../../include/camera/camera.h"
 #include "../../include/camera/lighting.h"
 
 
@@ -13,10 +14,6 @@ typedef struct
 }Scene;
 
 
-void scene_init(Scene *scene)
-{
-    camera_init(&scene->camera);
-    scene->light = light_create();
-}
+void scene_init(Scene *scene);
 
 #endif

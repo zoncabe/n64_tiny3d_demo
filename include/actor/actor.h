@@ -48,7 +48,8 @@ typedef struct {
 	
 	float aerial_control_rate;
 	float jump_acceleration_rate;
-	float jump_max_speed;
+	float jump_force_multiplier;
+	float jump_minimum_speed;
 	float jump_timer_max;
 
 }ActorSettings;
@@ -147,6 +148,7 @@ typedef struct {
 
 	float target_yaw;
 	Vector3 target_velocity;
+	float horizontal_target_speed;
 
 	float horizontal_speed;
 	bool grounded;

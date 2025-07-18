@@ -1,15 +1,5 @@
-#ifndef PLAYER_H
-#define PLAYER_H
 
-
-typedef struct {
-
-    uint8_t id;
-    uint8_t actor_id;
-    
-    ControllerData control;
-
-} Player;
+#include "../../include/player/player.h"
 
 
 void player_init(Player* player)
@@ -25,5 +15,3 @@ void player_setControllerData(Player* player)
         controllerData_getInputs(&player[i].control, i);
     } 
 }
-
-#endif

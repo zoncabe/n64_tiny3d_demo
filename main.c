@@ -7,10 +7,6 @@
 #include <t3d/t3ddebug.h>
 
 
-#define PLAYER_COUNT 2
-#define SCENERY_COUNT 2
-
-
 #include "include/time/time.h"
 
 #include "include/physics/physics.h"
@@ -21,8 +17,6 @@
 
 #include "include/actor/actor.h"
 #include "include/actor/actor_states.h"
-#include "include/actor/actor_motion.h"
-#include "include/actor/actor_control.h"
 
 #include "include/physics/actor_collision/actor_collision_detection.h"
 #include "include/physics/actor_collision/actor_collision_response.h"

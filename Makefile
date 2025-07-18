@@ -12,10 +12,15 @@ src =   $(wildcard *.c) \
 		$(wildcard src/time/*.c) \
 		$(wildcard src/physics/math/*.c) \
 		$(wildcard src/physics/collision/*.c) \
+		$(wildcard src/physics/actor_collision/*.c) \
 		$(wildcard src/physics/collision/shapes/*.c) \
 		$(wildcard src/control/*.c) \
 		$(wildcard src/camera/*.c) \
-		$(wildcard src/actor/*.c)
+		$(wildcard src/actor/*.c) \
+		$(wildcard src/game/*.c) \
+		$(wildcard src/player/*.c) \
+		$(wildcard src/scene/*.c) \
+		$(wildcard src/ui/*.c) \
 
 assets_png = $(wildcard assets/*.png)
 assets_gltf = $(wildcard assets/*.glb)

@@ -1,27 +1,6 @@
-#ifndef GAME_H
-#define GAME_H
 
-#define INTRO 0
-#define MAIN_MENU 1
-#define GAMEPLAY 2
-#define PAUSE 3
-#define GAME_OVER 4
-
-
-typedef struct
-{
-
-    uint8_t state;
-    Screen screen;
-    TimeData timing;
-
-    Scene scene;
-	UI ui;
-
-}Game;
-
-
-void game_init(Game *game);
+#include "../../include/game/game.h"
+#include "../../include/game/game_states.h"
 
 
 void game_init(Game *game)
@@ -64,5 +43,3 @@ void scene_draw(Game* game, Actor* actor, Scenery* scenery)
 
 	game->timing.syncPoint = rspq_syncpoint_new();
 }	
-
-#endif

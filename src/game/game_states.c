@@ -1,26 +1,15 @@
-#ifndef GAME_STATES_H
-#define GAME_STATES_H
 
-
-// function prototypes
-
-void gameState_setIntro();
-void gameState_setMainMenu();
-
-void gameState_setGameplay(Game* game, Player* player, Actor* actor, Scenery* scenery);
-void gameState_setPause(Game* game, Player* player, Actor* actor, Scenery* scenery);
-
-void gameState_setGameOver();
-
-void game_setState(Game* game, Player* player, Actor* actor, Scenery* scenery);
+#include "../../include/game/game_states.h"
+#include "../../include/camera/camera_control.h"
+#include "../../include/player/player_control.h"
+#include "../../include/physics/actor_collision/actor_collision_response.h"
+#include "../../include/actor/actor_animation.h"
 
 
 void gameState_setIntro()
-{
-}
+{}
 void gameState_setMainMenu()
-{
-}
+{}
 
 void gameState_setGameplay(Game* game, Player* player, Actor* actor, Scenery* scenery)
 {
@@ -72,5 +61,3 @@ void game_setState(Game* game, Player* player, Actor* actor, Scenery* scenery)
 		}
 	}
 }
-
-#endif

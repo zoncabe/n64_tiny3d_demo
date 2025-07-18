@@ -82,21 +82,23 @@ void actorMotion_setIdle(Actor *actor)
     }
 }
 
+void actorMotion_setlocomotion(Actor *actor)
+{
+    actorMotion_setHorizontalAcceleration (actor, actor->horizontal_target_speed, actor->settings.walk_acceleration_rate);
+}
+
 void actorMotion_setWalking(Actor *actor)
 {
-    //actorMotion_setHorizontalAcceleration (actor, actor->horizontal_target_speed, actor->settings.walk_acceleration_rate);
     actorMotion_setHorizontalAcceleration (actor, actor->settings.walk_target_speed, actor->settings.walk_acceleration_rate);
 }
 
 void actorMotion_setRunning(Actor *actor)
 {    
-    //actorMotion_setHorizontalAcceleration (actor, actor->horizontal_target_speed, actor->settings.run_acceleration_rate);
     actorMotion_setHorizontalAcceleration (actor, actor->settings.run_target_speed, actor->settings.run_acceleration_rate);
 }
 
 void actorMotion_setSprinting(Actor *actor)
 {
-    //actorMotion_setHorizontalAcceleration (actor, actor->horizontal_target_speed * 1.15f, actor->settings.run_acceleration_rate);
     actorMotion_setHorizontalAcceleration (actor, actor->settings.sprint_target_speed, actor->settings.sprint_acceleration_rate);
 }
 
@@ -142,8 +144,8 @@ void actorMotion_setJump(Actor *actor, float frame_time)
         actor->body.velocity = actor->input.jump_initial_velocity;
         vector3_scale(&actor->body.velocity, 0.8f);
 
-        actor->body.velocity.z = actor->input.jump_force * 3000;         // THIS 2000 ACTOR SETTINGS JUMP FORCE MULTIPLIER
-        if (actor->body.velocity.z < 600) actor->body.velocity.z = 600;  // THIS 300 ACTOR SETTING MINIMUM JUMP SPEED
+        actor->body.velocity.z = actor->input.jump_force * 3000;         // THIS 3000 ACTOR SETTINGS JUMP FORCE MULTIPLIER
+        if (actor->body.velocity.z < 600) actor->body.velocity.z = 500;  // THIS 500 ACTOR SETTING MINIMUM JUMP SPEED
 
         actor->input.jump_force = 0;
     }

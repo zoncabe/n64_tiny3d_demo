@@ -1,5 +1,6 @@
-#ifndef PLAYER_CONTROLS_H
-#define PLAYER_CONTROLS_H
+
+#include "../../include/player/player_control.h"
+#include "../../include/game/game_states.h"
 
 
 void playerControl_skipIntro(Game* game, Player* player)
@@ -45,5 +46,3 @@ void playerControl_setGameState(Game* game, Player* player)
     //playerControl_handlePauseMenu(game, player);
     //playerControl_handleGameOverMenu(game, player);
 }
-
-#endif

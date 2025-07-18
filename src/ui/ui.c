@@ -1,17 +1,6 @@
-#ifndef UI_H
-#define UI_H
 
-#define DROID_SANS 1
-
-
-typedef struct {
-
-    rdpq_font_t *font;
-    int box_width;
-    int box_height;
-
-} UI;
-
+#include "../../include/ui/ui.h"
+#include "../../include/actor/actor_states.h"
 
 
 void ui_init(UI* ui)
@@ -138,5 +127,3 @@ void ui_printDebugData(UI* ui, Actor* actor, TimeData time)
 	rdpq_text_printf(NULL, DROID_SANS, 250, 15, "FPS %f", time.frame_rate);
 	rdpq_text_printf(NULL, DROID_SANS, 224, 25, "frame time %f", time.frame_time);  
 }
-
-#endif 

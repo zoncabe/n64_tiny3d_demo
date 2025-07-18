@@ -1,32 +1,7 @@
-#ifndef SCENERY_H
-#define SCENERY_H
 
 
-// structures
-
-typedef struct {
-
-  	uint32_t id;
-
-	rspq_block_t *dl;
-	T3DModel *model;
-	T3DMat4FP *matrix;
-    
-	Vector3 scale;
-	Vector3 position;
-	Vector3 rotation;
-
-} Scenery;
-
-
-// function prototypes
-
-Scenery scenery_create(uint32_t id, const char *model_path);
-void scenery_init(Scenery* scenery, uint32_t id, const char *model_path);
-void scenery_set(Scenery *scenery);
-void scenery_draw(Scenery *scenery);
-void scenery_delete(Scenery *scenery);
-
+#include "../../include/scene/scenery.h"
+#include "../../include/physics/math/math_common.h"
 
 //function implementations
 
@@ -71,5 +46,3 @@ void scenery_delete(Scenery *scenery)
 	t3d_model_free(scenery->model);
 	rspq_block_free(scenery->dl);
 }
-
-#endif

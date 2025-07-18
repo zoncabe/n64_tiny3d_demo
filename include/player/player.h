@@ -1,6 +1,12 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include <stdint.h>
+
+#include "../../include/control/control.h"
+
+
+#define PLAYER_COUNT 2
 
 typedef struct {
 
@@ -12,18 +18,8 @@ typedef struct {
 } Player;
 
 
-void player_init(Player* player)
-{
-}
+void player_init(Player* player);
+void player_setControllerData(Player* player);
 
-void player_setControllerData(Player* player)
-{
-    joypad_poll();
-    
-    for (int i = 0; i < PLAYER_COUNT; i++) {
-        
-        controllerData_getInputs(&player[i].control, i);
-    } 
-}
 
 #endif
