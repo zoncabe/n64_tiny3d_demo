@@ -9,6 +9,9 @@
 #define RIGID_BODY_H
 
 
+#include "../../../include/physics/math/vector3.h"
+
+
 typedef struct RigidBody {
 
     Vector3 acceleration;

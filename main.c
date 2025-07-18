@@ -8,27 +8,32 @@
 
 
 #define PLAYER_COUNT 2
-#define ACTOR_COUNT 1
 #define SCENERY_COUNT 2
 
 
-#include "include/screen/screen.h"
-#include "include/control/control.h"
 #include "include/time/time.h"
+
 #include "include/physics/physics.h"
+
 #include "include/camera/camera.h"
 #include "include/camera/camera_states.h"
 #include "include/camera/camera_control.h"
+
 #include "include/actor/actor.h"
 #include "include/actor/actor_states.h"
 #include "include/actor/actor_motion.h"
 #include "include/actor/actor_control.h"
+
 #include "include/physics/actor_collision/actor_collision_detection.h"
 #include "include/physics/actor_collision/actor_collision_response.h"
+
 #include "include/actor/actor_animation.h"
+
 #include "include/scene/scene.h"
 #include "include/scene/scenery.h"
+
 #include "include/ui/ui.h"
+
 #include "include/player/player.h"
 #include "include/game/game.h"
 #include "include/player/player_control.h"

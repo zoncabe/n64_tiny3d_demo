@@ -3,6 +3,8 @@
 
 #define MAX_CONTACTS 3
 
+#include "../../../include/physics/math/vector3.h"
+
 
 typedef struct {
     Vector3 point;
@@ -10,11 +12,6 @@ typedef struct {
     float penetration;
 }ContactData;
 
-void contactData_init(ContactData* contact)
-{
-    contact->point = (Vector3){0, 0, 0};
-    contact->normal = (Vector3){0, 0, 0};
-    contact->penetration = 0.0f;
-}
+void contactData_init(ContactData* contact);
     
 #endif

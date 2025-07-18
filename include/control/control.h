@@ -1,6 +1,7 @@
 #ifndef CONTROLS_H
 #define CONTROLS_H
 
+#include <libdragon.h>
 
 
 typedef struct {
@@ -13,12 +14,5 @@ typedef struct {
 
 
 void controllerData_getInputs(ControllerData*data, uint8_t port);
-
-void controllerData_getInputs(ControllerData* data, uint8_t port)
-{    
-    data->pressed = joypad_get_buttons_pressed(port);
-    data->held = joypad_get_buttons_held(port);
-    data->input = joypad_get_inputs(port); 
-}
 
 #endif

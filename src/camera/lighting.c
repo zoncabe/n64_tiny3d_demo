@@ -1,18 +1,6 @@
-#ifndef LIGHT_H
-#define LIGHT_H
 
 
-typedef struct{
-
-	uint8_t ambient_color[4];
-	uint8_t directional_color[4];
-	T3DVec3 direction;
-	
-} LightData;
-
-
-void light_set(LightData *light);
-
+#include "../../include/camera/lighting.h"
 
 
 LightData light_create() {
@@ -35,5 +23,3 @@ void light_set(LightData *light)
     t3d_light_set_directional(0, light->directional_color, &light->direction);
     t3d_light_set_count(1);
 }
-
-#endif
