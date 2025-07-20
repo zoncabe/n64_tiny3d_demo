@@ -1,13 +1,10 @@
-#include <stdint.h>
-#include <t3d/t3dskeleton.h>
 #include <t3d/t3danim.h>
 
 #include "../../include/physics/physics.h"
 #include "../../include/control/control.h"
 #include "../../include/actor/actor.h"
-#include "../../include/actor/actor_animation.h"
 #include "../../include/actor/actor_states.h"
-#include "../../include/physics/math/vector3.h"
+#include "../../include/actor/actor_animation.h"
 
 
 // custom T3D function for my engine

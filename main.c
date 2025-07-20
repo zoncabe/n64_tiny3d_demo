@@ -6,6 +6,7 @@
 #include <t3d/t3danim.h>
 //#include <t3d/t3ddebug.h>
 
+
 #include "include/time/time.h"
 #include "include/physics/physics.h"
 
@@ -62,7 +63,7 @@ int main()
 		
 		time_setData(&game.timing);
 
-		game.timing.frame_time *= 2.0f;      // i use this as a workaround for my crappy pc not running ares fullspeed :')
+		//game.timing.frame_time *= 2.0f;      // i use this as a workaround for my crappy pc not running ares fullspeed :')
 		
 		player_setControllerData(&player[0]);
 

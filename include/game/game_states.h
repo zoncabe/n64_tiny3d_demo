@@ -10,7 +10,7 @@
 
 // function prototypes
 
-void gameState_setIntro();
+void gameState_setIntro(Game* game);
 void gameState_setMainMenu();
 
 void gameState_setGameplay(Game* game, Player* player, Actor** actor, Scenery** scenery);

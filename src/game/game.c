@@ -40,7 +40,7 @@ void game_init(Game *game)
 
     scene_init(&game->scene);
 	
-	game->state = GAMEPLAY;
+	game->state = INTRO;
 }
 
 

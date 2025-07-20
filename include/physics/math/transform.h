@@ -36,7 +36,6 @@ Transform transform_product(const Transform* t1, const Transform* t2);
 bool transform_isValid(const Transform* transform);
 bool transform_equals(const Transform* t1, const Transform* t2);
 bool transform_notEquals(const Transform* t1, const Transform* t2);
-void transform_toString(const Transform* transform, char* buffer, size_t bufferSize);
 
 
 #endif

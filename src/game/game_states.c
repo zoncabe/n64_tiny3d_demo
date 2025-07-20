@@ -1,5 +1,3 @@
-#include <stdint.h>
-#include <t3d/t3dskeleton.h>
 #include <t3d/t3danim.h>
 
 #include "../../include/physics/physics.h"
@@ -21,9 +19,17 @@
 
 #include "../../include/game/game_states.h"
 
+#include "../../include/game/intro.h"
 
-void gameState_setIntro()
-{}
+
+void gameState_setIntro(Game* game)
+{
+	n64brew_logo();
+	libdragon_logo();
+
+	game->state = GAMEPLAY;
+}
+
 void gameState_setMainMenu()
 {}
 
@@ -56,7 +62,7 @@ void game_setState(Game* game, Player* player, Actor** actor, Scenery** scenery)
 	switch(game->state)
 	{
 		case INTRO:{
-			gameState_setIntro();
+			gameState_setIntro(game);
 			break;
 		}
 		case MAIN_MENU:{

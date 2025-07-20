@@ -1,8 +1,3 @@
-#include <libdragon.h>
-#include <t3d/t3d.h>
-#include <t3d/t3dmath.h>
-#include <t3d/t3dmodel.h>
-#include <t3d/t3dskeleton.h>
 #include <t3d/t3danim.h>
 
 #include "../../include/physics/physics.h"
@@ -19,20 +14,6 @@ Actor* actor[ACTOR_COUNT];
 
 
 // function implemenations
-
-void actor_draw(Actor **actor)
-{	
-	for (uint8_t i = 0; i < ACTOR_COUNT; i++) {
-				
-		t3d_matrix_set(actor[i]->t3d_matrix, true);
-		t3d_mat4fp_from_srt_euler(actor[i]->t3d_matrix,
-			(float[3]){actor[i]->scale.x, actor[i]->scale.y, actor[i]->scale.z},
-			(float[3]){rad(actor[i]->body.rotation.x), rad(actor[i]->body.rotation.y), rad(actor[i]->body.rotation.z)},
-			(float[3]){actor[i]->body.position.x, actor[i]->body.position.y, actor[i]->body.position.z}
-		);
-		rspq_block_run(actor[i]->dl);
-	};
-}
 
 void actor_init(Actor *actor)
 {     
@@ -91,4 +72,18 @@ void actor_update(Actor *actor, ControllerData *control, float camera_angle_arou
 	actor_setControlData(actor, control, camera_angle_around, camera_offset);
 	actor_setAnimation(actor, frame_time, syncpoint);
 	actor_setMotion(actor, frame_time);
+}
+
+void actor_draw(Actor** actor)
+{	
+	for (uint8_t i = 0; i < ACTOR_COUNT; i++) {
+				
+		t3d_matrix_set(actor[i]->t3d_matrix, true);
+		t3d_mat4fp_from_srt_euler(actor[i]->t3d_matrix,
+			(float[3]){actor[i]->scale.x, actor[i]->scale.y, actor[i]->scale.z},
+			(float[3]){rad(actor[i]->body.rotation.x), rad(actor[i]->body.rotation.y), rad(actor[i]->body.rotation.z)},
+			(float[3]){actor[i]->body.position.x, actor[i]->body.position.y, actor[i]->body.position.z}
+		);
+		rspq_block_run(actor[i]->dl);
+	};
 }

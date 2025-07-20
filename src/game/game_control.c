@@ -1,5 +1,3 @@
-#include <stdint.h>
-#include <t3d/t3dskeleton.h>
 #include <t3d/t3danim.h>
 
 #include "../../include/physics/physics.h"
@@ -24,7 +22,7 @@ void playerControl_skipIntro(Game* game, Player* player)
 
         if (player[i].control.pressed.start) {
 
-            if (game->state == INTRO) game->state = MAIN_MENU;
+            if (game->state == INTRO) game->state = GAMEPLAY;
         }
     }
 }
@@ -55,7 +53,7 @@ void playerControl_handleGameOverMenu(Game* game, Player* player)
 
 void playerControl_setGameState(Game* game, Player* player)
 {
-    //playerControl_skipIntro(game, player);
+    playerControl_skipIntro(game, player);
     //playerControl_handleMainMenu(game, player);
     playerControl_setPause(game, player);
     //playerControl_handlePauseMenu(game, player);

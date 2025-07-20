@@ -1,4 +1,3 @@
-#include <t3d/t3dskeleton.h>
 #include <t3d/t3danim.h>
 
 #include "../../include/physics/physics.h"
