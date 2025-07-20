@@ -1,11 +1,9 @@
-
-
 #include <assert.h>
 #include <math.h>
 #include <float.h>
 
-#include "../../../include/physics/math/math_functions.h"
-#include "../../../include/physics/math/math_common.h"
+#include "../../../include/physics/physics.h"
+
 
 // function implementations
 

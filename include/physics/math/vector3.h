@@ -1,9 +1,6 @@
 #ifndef VECTOR_3_H
 #define VECTOR_3_H
 
-#define T3DVec3_toVector3(t3dVec) ((Vector3){(t3dVec).v[0], (t3dVec).v[1], (t3dVec).v[2]})
-#define Vector3_toT3DVec3(vec) ((T3DVec3){{(vec).x, (vec).y, (vec).z}})
-
 
 // structures
 

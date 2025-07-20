@@ -7,6 +7,8 @@ N64_CFLAGS += -std=gnu2x
 
 PROJECT_NAME = game
 
+# src := $(shell find -type f -name '*.c')
+
 src =   $(wildcard *.c) \
 		$(wildcard src/screen/*.c) \
 		$(wildcard src/time/*.c) \
@@ -21,6 +23,7 @@ src =   $(wildcard *.c) \
 		$(wildcard src/player/*.c) \
 		$(wildcard src/scene/*.c) \
 		$(wildcard src/ui/*.c) \
+		$(wildcard src/memory/*.c) \
 
 assets_png = $(wildcard assets/*.png)
 assets_gltf = $(wildcard assets/*.glb)

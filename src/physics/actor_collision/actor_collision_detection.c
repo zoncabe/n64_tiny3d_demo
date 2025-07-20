@@ -1,9 +1,12 @@
+#include <stdint.h>
+#include <t3d/t3dskeleton.h>
+#include <t3d/t3danim.h>
 
-#include <math.h>
-
+#include "../../../include/physics/physics.h"
+#include "../../../include/control/control.h"
+#include "../../../include/actor/actor.h"
+#include "../../../include/physics/physics.h"
 #include "../../../include/physics/actor_collision/actor_collision_detection.h"
-#include "../../../include/physics/math/math_common.h"
-#include "../../../include/physics/math/math_functions.h"
 
 
 void actorCollider_init(ActorCollider* collider)

@@ -2,10 +2,6 @@
 #define ACTOR_COLLISION_RESPONSE_H     
 
 
-#include "../../../include/actor/actor.h"
-#include "actor_collision_detection.h"
-
-
 void actorCollision_pushTowardsNormal(Actor* actor, ActorContact* contact);
 
 void actorCollision_projectAcceleration(Actor* actor, ActorContact* contact);

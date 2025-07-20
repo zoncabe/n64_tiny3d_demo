@@ -1,10 +1,4 @@
-
-#include <math.h>
-
-#include "../../../../include/physics/collision/shapes/capsule.h"
-#include "../../../../include/physics/math/math_common.h"
-#include "../../../../include/physics/math/math_functions.h"
-
+#include "../../../../include/physics/physics.h"
 
 
 // Function implementations

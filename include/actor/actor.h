@@ -1,18 +1,6 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 
-
-#include <libdragon.h>
-#include <t3d/t3d.h>
-#include <t3d/t3dmath.h>
-#include <t3d/t3dmodel.h>
-#include <t3d/t3dskeleton.h>
-#include <t3d/t3danim.h>
-
-
-#include "../../include/physics/body/rigid_body.h"
-
-
 #define ACTOR_COUNT 1
 
 // structures
@@ -136,7 +124,7 @@ typedef struct {
 	
 	rspq_block_t *dl;
 	T3DModel *model;
-	T3DMat4FP *transform_matrix;
+	T3DMat4FP *t3d_matrix;
 	uint32_t matrix_index;
 	Vector3 scale;
 	
@@ -167,7 +155,10 @@ typedef struct {
 // function prototypes
 
 void actor_draw(Actor *actor);
-void actor_delete(Actor *actor);
+
+void actor_init(Actor *actor);
+
+void actor_update(Actor *actor, ControllerData *control, float camera_angle_around, float camera_offset, float frame_time, rspq_syncpoint_t *syncpoint);
 
 
 #endif

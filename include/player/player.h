@@ -1,12 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <stdint.h>
-
-#include "../../include/control/control.h"
-
-
 #define PLAYER_COUNT 2
+
 
 typedef struct {
 

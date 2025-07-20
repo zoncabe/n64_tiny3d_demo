@@ -1,9 +1,6 @@
 #ifndef UI_H
 #define UI_H
 
-#include "../../include/actor/actor.h"
-#include "../../include/time/time.h"
-
 #define DROID_SANS 1
 
 

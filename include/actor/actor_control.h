@@ -2,10 +2,6 @@
 #define ACTOR_CONTROLS_H
 
 
-#include "../../include/actor/actor.h"
-#include "../../include/control/control.h"
-
-
 // function prototypes
 
 void actorControl_setJump(Actor* actor, ControllerData *control);

@@ -1,10 +1,11 @@
+#include <t3d/t3dskeleton.h>
+#include <t3d/t3danim.h>
 
-
-#include "../../include/actor/actor_motion.h"
+#include "../../include/physics/physics.h"
+#include "../../include/control/control.h"
+#include "../../include/actor/actor.h"
 #include "../../include/actor/actor_states.h"
-#include "../../include/physics/math/math_common.h"
-#include "../../include/physics/math/math_functions.h"
-#include "../../include/physics/math/vector2.h"
+#include "../../include/actor/actor_motion.h"
 
 
 void actorMotion_setHorizontalAcceleration(Actor *actor, float target_speed, float acceleration_rate)
@@ -144,8 +145,8 @@ void actorMotion_setJump(Actor *actor, float frame_time)
         actor->body.velocity = actor->input.jump_initial_velocity;
         vector3_scale(&actor->body.velocity, 0.8f);
 
-        actor->body.velocity.z = actor->input.jump_force * 3000;         // THIS 3000 ACTOR SETTINGS JUMP FORCE MULTIPLIER
-        if (actor->body.velocity.z < 600) actor->body.velocity.z = 500;  // THIS 500 ACTOR SETTING MINIMUM JUMP SPEED
+        actor->body.velocity.z = actor->input.jump_force * actor->settings.jump_force_multiplier;
+        if (actor->body.velocity.z < actor->settings.jump_minimum_speed) actor->body.velocity.z = actor->settings.jump_minimum_speed; 
 
         actor->input.jump_force = 0;
     }

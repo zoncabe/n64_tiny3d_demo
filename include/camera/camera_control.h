@@ -2,13 +2,6 @@
 #define CAMERA_CONTROLS_H
 
 
-#include "../../include/camera/camera.h"
-#include "../../include/control/control.h"
-#include "../../include/screen/screen.h"
-
-
-
-
 int input(int input);
 
 void cameraControl_orbit_withStick(Camera *camera, ControllerData *data);

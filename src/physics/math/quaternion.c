@@ -1,10 +1,9 @@
-
 #include <assert.h>
 #include <math.h>
 #include <float.h>
 
-#include "../../../include/physics/math/quaternion.h"
-#include "../../../include/physics/math/math_common.h"
+#include "../../../include/physics/physics.h"
+
 
 // Function implementations
 

@@ -2,8 +2,6 @@
 #define ACTORSTATES_H
 
 
-#include "../../include/actor/actor.h"
-
 #define STAND_IDLE 1
 #define WALKING 2
 #define RUNNING 3

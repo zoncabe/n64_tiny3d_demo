@@ -1,5 +1,10 @@
+#include <t3d/t3d.h>
 
-
+#include "../../include/control/control.h"
+#include "../../include/physics/physics.h"
+#include "../../include/screen/screen.h"
+#include "../../include/camera/lighting.h"
+#include "../../include/camera/camera.h"
 #include "../../include/camera/camera_control.h"
 #include "../../include/camera/camera_states.h"
 

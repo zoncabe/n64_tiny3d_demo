@@ -2,14 +2,6 @@
 #define CAMERA_H
 
 
-#include <t3d/t3d.h>
-
-#include "../../include/physics/math/vector2.h"
-#include "../../include/physics/math/vector3.h"
-#include "../../include/physics/math/math_common.h"
-#include "../../include/screen/screen.h"
-
-
 // structures
 
 typedef enum {

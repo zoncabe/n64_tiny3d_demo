@@ -1,10 +1,6 @@
 #ifndef ACTOR_COLLISION_H
 #define ACTOR_COLLISION_H
 
-#include <math.h>
-
-#include "../collision/shapes/shapes.h"
-
 
 // collision types
 

@@ -1,10 +1,6 @@
 #ifndef BOX_H
 #define BOX_H
 
-#include "../../../../include/physics/collision/contact_data.h"
-#include "../../../../include/physics/collision/shapes/AABB.h"
-#include "../../../../include/physics/collision/shapes/sphere.h"
-
 
 // structures
 

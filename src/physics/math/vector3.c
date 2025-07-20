@@ -1,11 +1,12 @@
-
 #include <assert.h>
 #include <math.h>
 #include <float.h>
 
+#include "../../../include/physics/physics.h"
 
-#include "../../../include/physics/math/vector3.h"
-#include "../../../include/physics/math/math_common.h"
+#define T3DVec3_toVector3(t3dVec) ((Vector3){(t3dVec).v[0], (t3dVec).v[1], (t3dVec).v[2]})
+#define Vector3_toT3DVec3(vec) ((T3DVec3){{(vec).x, (vec).y, (vec).z}})
+
 
 inline void vector3_init(Vector3 *v) 
 {

@@ -1,10 +1,8 @@
-
 #include <assert.h>
 #include <math.h>
 #include <float.h>
 
 #include "../../../include/physics/math/math_common.h"
-
 
 
 // function implemmentations

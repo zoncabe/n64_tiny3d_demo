@@ -2,9 +2,6 @@
 #define SCREEN_H
 
 
-#include <t3d/t3d.h>
-
-
 typedef struct {
 
 	T3DViewport t3d_viewport;

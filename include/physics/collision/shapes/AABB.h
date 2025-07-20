@@ -1,10 +1,6 @@
 #ifndef AABB_H
 #define AABB_H
 
-#include "../../../../include/physics/math/vector3.h"
-#include "../../../../include/physics/collision/contact_data.h"
-#include "../../../../include/physics/collision/shapes/sphere.h"
-
 
 // structures
 

@@ -1,11 +1,6 @@
 #ifndef GAME_STATES_H
 #define GAME_STATES_H
 
-#include "../../include/game/game.h"
-#include "../../include/player/player.h"
-#include "../../include/actor/actor.h"
-#include "../../include/scene/scenery.h"
-
 #define INTRO 0
 #define MAIN_MENU 1
 #define GAMEPLAY 2

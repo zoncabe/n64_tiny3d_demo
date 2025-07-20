@@ -1,4 +1,6 @@
-
+#include <stdint.h>
+#include <t3d/t3d.h>
+#include <t3d/t3dmath.h>
 
 #include "../../include/camera/lighting.h"
 

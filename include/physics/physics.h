@@ -2,7 +2,7 @@
 #define PHYSICS_H
 
 
-#include "math/physics_math.h"
+#include "math/math.h"
 
 #include "body/rigid_body.h"
 

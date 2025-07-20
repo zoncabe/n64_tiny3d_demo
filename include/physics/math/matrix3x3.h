@@ -7,7 +7,6 @@
 #ifndef MATRIX3X3_H
 #define MATRIX3X3_H
 
-#include "vector3.h"
 
 typedef struct {
 

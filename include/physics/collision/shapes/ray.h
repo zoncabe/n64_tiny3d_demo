@@ -1,13 +1,6 @@
 #ifndef RAY_H
 #define RAY_H
 
-#include "../../../../include/physics/math/vector3.h"
-#include "../../../../include/physics/collision/contact_data.h"
-#include "../../../../include/physics/collision/shapes/sphere.h"
-#include "../../../../include/physics/collision/shapes/AABB.h"
-#include "../../../../include/physics/collision/shapes/box.h"
-#include "../../../../include/physics/collision/shapes/plane.h"
-
 
 // structures
 

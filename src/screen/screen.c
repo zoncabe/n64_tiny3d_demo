@@ -1,8 +1,10 @@
-
 #include <libdragon.h>
+#include <t3d/t3d.h>
 
 #include "../../include/screen/screen.h"
 
+
+const resolution_t WIDESCREEN = {.width = 424, .height = 240, .interlaced = INTERLACE_OFF};
 
 void screen_init(Screen* screen)
 {

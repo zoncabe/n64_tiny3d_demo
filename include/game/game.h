@@ -1,14 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <stdint.h>
-
-#include "../../include/screen/screen.h"
-#include "../../include/time/time.h"
-#include "../../include/scene/scene.h"
-#include "../../include/scene/scenery.h"
-#include "../../include/ui/ui.h"
-
 
 typedef struct
 {

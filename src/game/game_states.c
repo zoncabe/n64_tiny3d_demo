@@ -1,9 +1,25 @@
+#include <stdint.h>
+#include <t3d/t3dskeleton.h>
+#include <t3d/t3danim.h>
+
+#include "../../include/physics/physics.h"
+#include "../../include/control/control.h"
+#include "../../include/actor/actor.h"
+#include "../../include/screen/screen.h"
+#include "../../include/camera/lighting.h"
+#include "../../include/camera/camera.h"
+#include "../../include/time/time.h"
+#include "../../include/scene/scene.h"
+#include "../../include/scene/scenery.h"
+#include "../../include/ui/ui.h"
+#include "../../include/player/player.h"
+#include "../../include/game/game.h"
+#include "../../include/camera/camera_control.h"
+#include "../../include/game/game_control.h"
+#include "../../include/physics/actor_collision/actor_collision_detection.h"
+#include "../../include/physics/actor_collision/actor_collision_response.h"
 
 #include "../../include/game/game_states.h"
-#include "../../include/camera/camera_control.h"
-#include "../../include/player/player_control.h"
-#include "../../include/physics/actor_collision/actor_collision_response.h"
-#include "../../include/actor/actor_animation.h"
 
 
 void gameState_setIntro()

@@ -1,10 +1,8 @@
-
-
 #include <assert.h>
 #include <math.h>
 #include <float.h>
 
-#include "../../../include/physics/math/transform.h"
+#include "../../../include/physics/physics.h"
 
 
 /* Initializes the transform to the identity transform. */

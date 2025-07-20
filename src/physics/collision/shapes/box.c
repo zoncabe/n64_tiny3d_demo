@@ -1,7 +1,4 @@
-
-#include "../../../../include/physics/collision/shapes/box.h"
-#include "../../../../include/physics/math/math_functions.h"
-
+#include "../../../../include/physics/physics.h"
 
 
 // function implementations

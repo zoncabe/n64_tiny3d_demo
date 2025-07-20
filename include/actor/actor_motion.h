@@ -2,12 +2,10 @@
 #define ACTOR_MOVEMENT_H
 
 
-#include "../../include/actor/actor.h"
-
 #define ACTOR_GRAVITY -1800
 
-#define JUMP_MINIMUM_SPEED 500
 #define JUMP_FORCE_MULTIPLIER 3000
+#define JUMP_MINIMUM_SPEED 450
 
 
 // function prototypes

@@ -3,8 +3,6 @@
 
 #define MAX_CONTACTS 3
 
-#include "../../../include/physics/math/vector3.h"
-
 
 typedef struct {
     Vector3 point;

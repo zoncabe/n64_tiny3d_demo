@@ -1,7 +1,6 @@
 #include <float.h>
 
-#include "../../../../include/physics/collision/shapes/AABB.h"
-#include "../../../../include/physics/math/math_common.h"
+#include "../../../../include/physics/physics.h"
 
 
 // function implementations

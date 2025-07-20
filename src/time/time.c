@@ -1,3 +1,4 @@
+#include <libdragon.h>
 
 #include "../../include/time/time.h"
 

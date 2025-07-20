@@ -1,6 +1,9 @@
+#include <t3d/t3d.h>
 
-#include "../../include/camera/camera.h"
+#include "../../include/physics/physics.h"
+#include "../../include/screen/screen.h"
 #include "../../include/camera/lighting.h"
+#include "../../include/camera/camera.h"
 
 
 // function implementations
@@ -15,7 +18,7 @@ void camera_init(Camera* camera)
         camera->offset_height = 140;
 		camera->field_of_view = 60;
 		camera->near_clipping = 100;
-		camera->far_clipping = 10000;
+		camera->far_clipping = 5000;
 		
         camera->settings.orbitational_acceleration_rate = 15;
         camera->settings.orbitational_max_velocity = (Vector2){120, 100};

@@ -1,11 +1,8 @@
-
 #include <assert.h>
 #include <math.h>
 #include <float.h>
 
-
-#include "../../../include/physics/math/vector2.h"
-#include "../../../include/physics/math/math_common.h"
+#include "../../../include/physics/physics.h"
 
 
 // Function implementations

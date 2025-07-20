@@ -2,10 +2,6 @@
 #define SCENE_H
 
 
-#include "../../include/camera/camera.h"
-#include "../../include/camera/lighting.h"
-
-
 typedef struct
 {
 	Camera camera;

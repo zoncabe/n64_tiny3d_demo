@@ -7,9 +7,6 @@
 #ifndef QUATERNION_H
 #define QUATERNION_H
 
-#include "../../../include/physics/math/matrix3x3.h"
-#include "../../../include/physics/math/vector3.h"
-
 
 typedef struct {
     float x;

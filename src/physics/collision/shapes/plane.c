@@ -1,8 +1,5 @@
+#include "../../../../include/physics/physics.h"
 
-#include <math.h>
-
-#include "../../../../include/physics/collision/shapes/plane.h"
-#include "../../../../include/physics/math/math_functions.h"
 
 // function implementations
 

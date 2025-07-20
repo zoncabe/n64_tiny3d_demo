@@ -2,10 +2,6 @@
 #define LIGHT_H
 
 
-#include <libdragon.h>
-#include <t3d/t3d.h>
-
-
 typedef struct{
 
 	uint8_t ambient_color[4];

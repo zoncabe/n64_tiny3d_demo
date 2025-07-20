@@ -1,11 +1,11 @@
 #ifndef PHYSICS_MATH_COMMON_H
 #define PHYSICS_MATH_COMMON_H
 
-
-#define PI 3.141592653589f
-#define PI_TIMES_2 6.28318530f
+#define PI 3.141592f
+#define PI_TIMES_2 6.283185f
 
 #define TOLERANCE 0.000001f
+
 
 // function prototypes
 

@@ -1,14 +1,6 @@
 #ifndef ACTOR_ANIMATION_H
 #define ACTOR_ANIMATION_H
 
-#include <stdint.h>
-
-#include <libdragon.h>
-#include <t3d/t3d.h>
-
-#include "../../include/actor/actor.h"
-#include "../../include/control/control.h"
-
 
 // convertion ratio between locomotion animation lenghts on the prototype asset
 
@@ -35,7 +27,7 @@
 #define SPRINTING_ANIM_LENGTH_HALF 0.333333f
 
 #define RUN_TO_ROLLING_ANIM_GROUND 0.3f
-#define RUN_TO_ROLLING_ANIM_GRIP 0.6f
+#define RUN_TO_ROLLING_ANIM_GRIP 0.9f
 #define RUN_TO_ROLLING_ANIM_STAND 0.9f
 #define RUN_TO_ROLLING_ANIM_LENGHT 1.166666f
 
@@ -45,7 +37,8 @@
 #define JUMP_ANIM_LENGTH 0.633333f
 #define JUMP_ANIM_CROUCH 0.1f
 #define JUMP_ANIM_AIR 0.233333f
-#define JUMP_MAX_BLENDING_RATIO 0.75f
+#define JUMP_MAX_BLENDING_RATIO 0.7f
+#define JUMP_FOOTING_SPEED 0.5f
 
 #define LAND_ANIM_LENGTH 0.9f
 #define LAND_ANIM_GROUND 0.266666f
@@ -60,8 +53,6 @@ void animationSet_attach(T3DSkeleton *main, T3DSkeleton *blend, T3DSkeleton *ble
 void actorAnimation_init(Actor *actor);
 
 void actor_setAnimation(Actor *actor, const float frame_time, rspq_syncpoint_t *syncpoint);
-Actor actor_create(uint32_t id, const char *model_path);
-void actor_update(Actor *actor, ControllerData *control, float camera_angle_around, float camera_offset, float frame_time, rspq_syncpoint_t *syncpoint);
 
 
 #endif

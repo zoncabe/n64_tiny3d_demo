@@ -1,6 +1,5 @@
+#include "../../../../include/physics/physics.h"
 
-
-#include "../../../../include/physics/collision/shapes/sphere.h"
 
 bool sphere_contactSphere(const Sphere* s, const Sphere* t);
 void sphere_collisionTestSphere(ContactData* contact, const Sphere* s, const Sphere* t);
