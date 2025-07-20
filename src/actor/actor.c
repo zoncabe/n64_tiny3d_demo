@@ -11,22 +11,26 @@
 #include "../../include/actor/actor_motion.h"
 #include "../../include/actor/actor_control.h"
 #include "../../include/actor/actor_animation.h"
-#include "../../include/physics/math/math_common.h"
+
+
+// global
+
+Actor* actor[ACTOR_COUNT];
 
 
 // function implemenations
 
-void actor_draw(Actor *actor)
+void actor_draw(Actor **actor)
 {	
 	for (uint8_t i = 0; i < ACTOR_COUNT; i++) {
 				
-		t3d_matrix_set(actor->t3d_matrix, true);
-		t3d_mat4fp_from_srt_euler(actor[i].t3d_matrix,
-			(float[3]){actor[i].scale.x, actor[i].scale.y, actor[i].scale.z},
-			(float[3]){rad(actor[i].body.rotation.x), rad(actor[i].body.rotation.y), rad(actor[i].body.rotation.z)},
-			(float[3]){actor[i].body.position.x, actor[i].body.position.y, actor[i].body.position.z}
+		t3d_matrix_set(actor[i]->t3d_matrix, true);
+		t3d_mat4fp_from_srt_euler(actor[i]->t3d_matrix,
+			(float[3]){actor[i]->scale.x, actor[i]->scale.y, actor[i]->scale.z},
+			(float[3]){rad(actor[i]->body.rotation.x), rad(actor[i]->body.rotation.y), rad(actor[i]->body.rotation.z)},
+			(float[3]){actor[i]->body.position.x, actor[i]->body.position.y, actor[i]->body.position.z}
 		);
-		rspq_block_run(actor[i].dl);
+		rspq_block_run(actor[i]->dl);
 	};
 }
 

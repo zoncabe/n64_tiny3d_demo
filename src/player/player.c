@@ -15,7 +15,11 @@
 #include "../../include/scene/scenery.h"
 #include "../../include/ui/ui.h"
 #include "../../include/game/game.h"
+
 #include "../../include/player/player.h"
+
+
+Player player[PLAYER_COUNT];
 
 
 void player_init(Player* player)

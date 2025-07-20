@@ -27,19 +27,19 @@ void gameState_setIntro()
 void gameState_setMainMenu()
 {}
 
-void gameState_setGameplay(Game* game, Player* player, Actor* actor, Scenery* scenery)
+void gameState_setGameplay(Game* game, Player* player, Actor** actor, Scenery** scenery)
 {
-	actor_update(&actor[0], &player[0].control, game->scene.camera.angle_around_barycenter, game->scene.camera.offset_angle, game->timing.frame_time, &game->timing.syncPoint);	
+	actor_update(actor[0], &player[0].control, game->scene.camera.angle_around_barycenter, game->scene.camera.offset_angle, game->timing.frame_time, &game->timing.syncPoint);	
 	
-	actorCollision_collideWithRoom(&actor[0]);
+	actorCollision_collideWithRoom(actor[0]);
 	
-	camera_update(&game->scene.camera, &player[0].control, &game->screen, &actor[0].body.position, game->timing.frame_time);
+	camera_update(&game->scene.camera, &player[0].control, &game->screen, &actor[0]->body.position, game->timing.frame_time);
 
 	scene_draw(game, actor, scenery);
 }
 
 
-void gameState_setPause(Game* game, Player* player, Actor* actor, Scenery* scenery)
+void gameState_setPause(Game* game, Player* player, Actor** actor, Scenery** scenery)
 {	
 	scene_draw(game, actor, scenery);
 }
@@ -49,7 +49,7 @@ void gameState_setGameOver()
 {
 }
 
-void game_setState(Game* game, Player* player, Actor* actor, Scenery* scenery)
+void game_setState(Game* game, Player* player, Actor** actor, Scenery** scenery)
 {
 	playerControl_setGameState(game, player);
 	

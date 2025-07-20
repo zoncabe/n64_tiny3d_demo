@@ -5,13 +5,15 @@
 
 
 typedef struct {
-
+    
     uint8_t id;
     uint8_t actor_id;
     
     ControllerData control;
-
+    
 } Player;
+
+extern Player player[PLAYER_COUNT];
 
 
 void player_init(Player* player);

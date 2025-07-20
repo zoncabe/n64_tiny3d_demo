@@ -14,9 +14,11 @@ typedef struct
 
 }Game;
 
+extern Game game;
+
 
 void game_init(Game *game);
-void scene_draw(Game* game, Actor* actor, Scenery* scenery);
+void scene_draw(Game* game, Actor** actor, Scenery** scenery);
 
 
 #endif

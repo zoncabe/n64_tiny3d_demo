@@ -21,12 +21,14 @@ typedef struct {
 
 } Scenery;
 
+extern Scenery* scenery[SCENERY_COUNT];
+
 
 // function prototypes
 
 void scenery_init(Scenery* scenery);
-void scenery_set(Scenery *scenery);
-void scenery_draw(Scenery *scenery);
+void scenery_set(Scenery* scenery);
+void scenery_draw(Scenery** scenery);
 
 
 #endif

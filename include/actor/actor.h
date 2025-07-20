@@ -152,9 +152,11 @@ typedef struct {
 } Actor;
 
 
+extern Actor* actor[ACTOR_COUNT];
+
 // function prototypes
 
-void actor_draw(Actor *actor);
+void actor_draw(Actor **actor);
 
 void actor_init(Actor *actor);
 

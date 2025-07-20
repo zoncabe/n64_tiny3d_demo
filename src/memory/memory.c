@@ -8,10 +8,8 @@
 #include "../../include/actor/actor_motion.h"
 #include "../../include/scene/scenery.h"
 
-#include "../../include/memory/memory.h"
 
-
-Actor actor_create(uint32_t id, const char *model_path)
+Actor* actor_create(uint32_t id, const char *model_path)
 {
 	Actor *actor = malloc(sizeof(Actor));
     
@@ -30,7 +28,7 @@ Actor actor_create(uint32_t id, const char *model_path)
 	t3d_model_draw_skinned(actor->model, &actor->armature.main);
 	actor->dl = rspq_block_end();
 
-	return *actor;
+	return actor;
 }
 
 void actor_delete(Actor *actor) 
@@ -66,9 +64,7 @@ void actor_delete(Actor *actor)
 	free(actor);
 }
 
-
-
-Scenery scenery_create(uint32_t id, const char *model_path)
+Scenery* scenery_create(uint32_t id, const char *model_path)
 {
     Scenery *scenery = malloc(sizeof(Scenery));
 
@@ -85,14 +81,15 @@ Scenery scenery_create(uint32_t id, const char *model_path)
     t3d_model_draw(scenery->model);
     scenery->dl = rspq_block_end();
 
-    return *scenery;
+    return scenery;
 }
 
 void scenery_delete(Scenery *scenery)
 {	
+    rspq_block_free(scenery->dl);
+
 	free_uncached(scenery->t3d_matrix);
     t3d_model_free(scenery->model);
-    rspq_block_free(scenery->dl);
 
 	free(scenery);
 }

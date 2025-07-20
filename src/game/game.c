@@ -17,6 +17,13 @@
 #include "../../include/game/game_states.h"
 
 
+// global
+
+Game game;
+
+
+// function implementations
+
 void game_init(Game *game)
 {
 	screen_init(&game->screen);
@@ -37,7 +44,7 @@ void game_init(Game *game)
 }
 
 
-void scene_draw(Game* game, Actor* actor, Scenery* scenery)
+void scene_draw(Game* game, Actor** actor, Scenery** scenery)
 {
 	screen_clear(&game->screen);
 	
@@ -51,7 +58,7 @@ void scene_draw(Game* game, Actor* actor, Scenery* scenery)
 
 	t3d_matrix_pop(1);
 
-	ui_printDebugData(&game->ui, actor, game->timing);
+	ui_printDebugData(&game->ui, actor[0], game->timing);
 
 	rdpq_detach_show();
 
