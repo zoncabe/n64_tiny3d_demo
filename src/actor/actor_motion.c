@@ -85,7 +85,27 @@ void actorMotion_setIdle(Actor *actor)
 
 void actorMotion_setlocomotion(Actor *actor)
 {
-    actorMotion_setHorizontalAcceleration (actor, actor->horizontal_target_speed, actor->settings.walk_acceleration_rate);
+    switch (actor->state) {
+
+        case WALKING: {
+
+            actorMotion_setHorizontalAcceleration (actor, actor->horizontal_target_speed, actor->settings.walk_acceleration_rate);
+
+            break;
+        }
+        case RUNNING: {
+
+            actorMotion_setHorizontalAcceleration (actor, actor->horizontal_target_speed, actor->settings.run_acceleration_rate);
+
+            break;
+        }
+        case SPRINTING: {
+            
+            actorMotion_setHorizontalAcceleration (actor, actor->horizontal_target_speed * 1.333333f, actor->settings.sprint_acceleration_rate);
+
+            break;
+        }
+    }
 }
 
 void actorMotion_setWalking(Actor *actor)
@@ -197,14 +217,17 @@ void actor_setMotion(Actor *actor, float frame_time)
             break;
         }
         case WALKING: {
+            //actorMotion_setlocomotion(actor);
             actorMotion_setWalking(actor);
             break;
         }
         case RUNNING: {
+            //actorMotion_setlocomotion(actor);
             actorMotion_setRunning(actor);
             break;
         }
         case SPRINTING: {
+            //actorMotion_setlocomotion(actor);
             actorMotion_setSprinting(actor);
             break;
         }

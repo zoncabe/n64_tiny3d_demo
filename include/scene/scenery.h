@@ -28,7 +28,6 @@ extern Scenery* scenery[SCENERY_COUNT];
 
 void scenery_init(Scenery* scenery);
 void scenery_set(Scenery* scenery);
-void scenery_draw(Scenery** scenery);
 
 
 #endif

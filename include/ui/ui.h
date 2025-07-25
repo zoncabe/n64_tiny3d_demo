@@ -12,10 +12,10 @@ typedef struct {
 
 } UI;
 
+extern UI ui;
 
-
-void ui_init(UI* ui);
-void ui_printDebugData(UI* ui, Actor* actor, TimeData time);
+void ui_init();
+void ui_printDebugData(Actor* actor, TimeData time);
 
 
 #endif 

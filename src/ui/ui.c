@@ -7,15 +7,21 @@
 #include "../../include/actor/actor.h"
 #include "../../include/ui/ui.h"
 #include "../../include/actor/actor_states.h"
+#include "../../include/graphics/lighting.h"
+#include "../../include/camera/camera.h"
+#include "../../include/graphics/viewport.h"
+#include "../../include/scene/scenery.h"
+#include "../../include/game/game.h"
 
+UI ui;
 
-void ui_init(UI* ui)
+void ui_init()
 {
-    ui->font = rdpq_font_load("rom:/DroidSans.font64");
-    rdpq_text_register_font(DROID_SANS, ui->font);
+    ui.font = rdpq_font_load("rom:/DroidSans.font64");
+    rdpq_text_register_font(DROID_SANS, ui.font);
 }
 
-void ui_printActorState(UI* ui, Actor* actor)
+void ui_printActorState(Actor* actor)
 {
     switch(actor->state) {
         
@@ -49,7 +55,7 @@ void ui_printActorState(UI* ui, Actor* actor)
     }
 }
 
-void ui_printActorAnimation(UI* ui, Actor* actor)
+void ui_printActorAnimation(Actor* actor)
 {
     switch(actor->animation.current) {
         
@@ -83,7 +89,7 @@ void ui_printActorAnimation(UI* ui, Actor* actor)
     }
 }
 
-void ui_printActorPreviousAnimation(UI* ui, Actor* actor)
+void ui_printActorPreviousAnimation(Actor* actor)
 {
     switch(actor->animation.previous) {
         
@@ -117,7 +123,7 @@ void ui_printActorPreviousAnimation(UI* ui, Actor* actor)
     }
 }
 
-void ui_printDebugData(UI* ui, Actor* actor, TimeData time)
+void ui_printDebugData(Actor* actor, TimeData time)
 {
     rdpq_sync_pipe();
     //ui_printActorState(ui, actor);
@@ -130,6 +136,6 @@ void ui_printDebugData(UI* ui, Actor* actor, TimeData time)
 	//rdpq_text_printf(NULL, DROID_SANS, 10, 45, "running debug 1 %f", actor->debug_data.value_0);
 	//rdpq_text_printf(NULL, DROID_SANS, 10, 55, "running anim time %f", actor->animation.set.running.time);
 	//rdpq_text_printf(NULL, DROID_SANS, 10, 65, "sprinting anim time %f", actor->animation.set.sprinting.time);
-	rdpq_text_printf(NULL, DROID_SANS, 250, 15, "FPS %f", time.frame_rate);
-	rdpq_text_printf(NULL, DROID_SANS, 224, 25, "frame time %f", time.frame_time);  
+	//rdpq_text_printf(NULL, DROID_SANS, 10, 25, "camera target speed x %f", game.scene.camera.orbitational_target_velocity.x);  
+	rdpq_text_printf(NULL, DROID_SANS, 250, 15, "FPS %f", time.rate);
 }

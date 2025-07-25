@@ -82,8 +82,7 @@ typedef struct {
 
 
 void camera_init(Camera* camera);
-void camera_getOrbitalPosition(Camera *camera, Vector3* barycenter, float frame_time);
-void camera_set(Camera *camera, Screen* screen);
+void camera_updateOrbitalPosition(Camera *camera, Vector3* barycenter, float frame_time);
 
 
 #endif

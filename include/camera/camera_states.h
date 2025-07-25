@@ -2,8 +2,6 @@
 #define CAMERA_STATES_H
 
 
-#include "../../include/camera/camera.h"
-
 // function prototypes
 
 void set_orbital(Camera *camera);

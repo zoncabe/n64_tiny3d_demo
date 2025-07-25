@@ -3,9 +3,10 @@
 #include <t3d/t3dmath.h>
 
 #include "../../include/physics/physics.h"
-#include "../../include/screen/screen.h"
-#include "../../include/camera/lighting.h"
+#include "../../include/control/control.h"
+#include "../../include/graphics/lighting.h"
 #include "../../include/camera/camera.h"
+#include "../../include/graphics/viewport.h"
 #include "../../include/camera/camera_states.h"
 
 

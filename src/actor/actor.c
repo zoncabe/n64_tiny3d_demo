@@ -4,13 +4,9 @@
 #include "../../include/control/control.h"
 #include "../../include/actor/actor.h"
 #include "../../include/actor/actor_motion.h"
-#include "../../include/actor/actor_control.h"
 #include "../../include/actor/actor_animation.h"
-
-
-// global
-
-Actor* actor[ACTOR_COUNT];
+#include "../../include/player/player.h"
+#include "../../include/control/player_control.h"
 
 
 // function implemenations
@@ -28,7 +24,7 @@ void actor_init(Actor *actor)
 		},
 
 		.settings = {
-			.idle_acceleration_rate = 9,
+			.idle_acceleration_rate = 8,
 			.walk_acceleration_rate = 3,
 			.run_acceleration_rate = 5,
 			.sprint_acceleration_rate = 8,
@@ -64,26 +60,5 @@ void actor_init(Actor *actor)
 			.jump_timer = 0,
 
 		}
-	};
-}
-
-void actor_update(Actor *actor, ControllerData *control, float camera_angle_around, float camera_offset, float frame_time, rspq_syncpoint_t *syncpoint)
-{
-	actor_setControlData(actor, control, camera_angle_around, camera_offset);
-	actor_setAnimation(actor, frame_time, syncpoint);
-	actor_setMotion(actor, frame_time);
-}
-
-void actor_draw(Actor** actor)
-{	
-	for (uint8_t i = 0; i < ACTOR_COUNT; i++) {
-				
-		t3d_matrix_set(actor[i]->t3d_matrix, true);
-		t3d_mat4fp_from_srt_euler(actor[i]->t3d_matrix,
-			(float[3]){actor[i]->scale.x, actor[i]->scale.y, actor[i]->scale.z},
-			(float[3]){rad(actor[i]->body.rotation.x), rad(actor[i]->body.rotation.y), rad(actor[i]->body.rotation.z)},
-			(float[3]){actor[i]->body.position.x, actor[i]->body.position.y, actor[i]->body.position.z}
-		);
-		rspq_block_run(actor[i]->dl);
 	};
 }

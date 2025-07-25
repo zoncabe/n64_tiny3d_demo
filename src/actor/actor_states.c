@@ -25,6 +25,7 @@ void actor_setState(Actor *actor, uint8_t state)
             actor->locomotion_state = WALKING;
             break;
         }
+
         case RUNNING: {
             if (actor->state == RUNNING) return;
             actor->previous_state = actor->state;
@@ -32,6 +33,7 @@ void actor_setState(Actor *actor, uint8_t state)
             actor->locomotion_state = RUNNING;
             break;
         }
+
         case SPRINTING: {
             if (actor->state == SPRINTING) return;
             actor->previous_state = actor->state;
@@ -55,6 +57,7 @@ void actor_setState(Actor *actor, uint8_t state)
             //actor->grounding_height = -FLT_MAX;
             break;
         }
+        
         case FALLING: {
             if (actor->state == FALLING ) return;
             actor->previous_state = actor->state;

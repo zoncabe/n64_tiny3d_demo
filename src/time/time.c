@@ -3,20 +3,24 @@
 #include "../../include/time/time.h"
 
 
+TimeData timer;
+
+
 // functions implementations
 
 /* sets time data values to zero */
-void time_init(TimeData *time)
+void time_init()
 {
-    time->frame_time = 0.0f;
-    time->frame_rate = 0.0f;
-  	time->syncPoint = 0.0f;
+    timer.counter = 1.0f;
+    timer.delta = 0.0f;
+    timer.rate = 0.0f;
+  	timer.syncPoint = 0.0f;
 }
 
 
 /* sets timing data */
-void time_setData(TimeData* time)
+void time_update()
 {
-    time->frame_time = display_get_delta_time();
-    time->frame_rate = display_get_fps();
+    timer.delta = display_get_delta_time();
+    timer.rate = display_get_fps();
 }

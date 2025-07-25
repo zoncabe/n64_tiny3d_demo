@@ -24,6 +24,7 @@ src =   $(wildcard *.c) \
 		$(wildcard src/scene/*.c) \
 		$(wildcard src/ui/*.c) \
 		$(wildcard src/memory/*.c) \
+		$(wildcard src/graphics/*.c) \
 
 assets_png = $(wildcard assets/*.png)
 assets_gltf = $(wildcard assets/*.glb)

@@ -10,15 +10,16 @@
 
 // function prototypes
 
-void gameState_setIntro(Game* game);
-void gameState_setMainMenu();
+void gameState_setIntro();
+void gameState_updateMainMenu();
 
-void gameState_setGameplay(Game* game, Player* player, Actor** actor, Scenery** scenery);
-void gameState_setPause(Game* game, Player* player, Actor** actor, Scenery** scenery);
+void gameState_updateGameplay();
+void gameState_updatePause();
 
 void gameState_setGameOver();
 
-void game_setState(Game* game, Player* player, Actor** actor, Scenery** scenery);
+void gameState_set(u_int8_t new_state);
+void gameState_update();
 
 
 #endif

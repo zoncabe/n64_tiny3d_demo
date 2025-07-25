@@ -2,10 +2,10 @@
 
 #include "../../include/control/control.h"
 #include "../../include/physics/physics.h"
-#include "../../include/screen/screen.h"
-#include "../../include/camera/lighting.h"
+#include "../../include/graphics/lighting.h"
 #include "../../include/camera/camera.h"
-#include "../../include/camera/camera_control.h"
+#include "../../include/graphics/viewport.h"
+#include "../../include/control/camera_control.h"
 #include "../../include/camera/camera_states.h"
 
 
@@ -38,8 +38,8 @@ void cameraControl_orbit_withStick(Camera *camera, ControllerData *data)
     }
     
     else if (stick_x != 0 || stick_y != 0) {
-        camera->orbitational_target_velocity.x = stick_y;
-        camera->orbitational_target_velocity.y = stick_x;
+        camera->orbitational_target_velocity.y = stick_y;
+        camera->orbitational_target_velocity.x = stick_x;
     }
 }
 
@@ -55,11 +55,11 @@ void cameraControl_orbit_withCButtons(Camera *camera, ControllerData *data)
         input_y = input(data->held.c_up) - input(data->held.c_down);
     }
 
-    if (input_x == 0) camera->orbitational_target_velocity.y = 0; 
-    else camera->orbitational_target_velocity.y = input_x * camera->settings.orbitational_max_velocity.y;
+    if (input_y == 0) camera->orbitational_target_velocity.y = 0; 
+    else camera->orbitational_target_velocity.y = input_y * camera->settings.orbitational_max_velocity.y;
 
-	if (input_y == 0) camera->orbitational_target_velocity.x = 0; 
-    else camera->orbitational_target_velocity.x = input_y * camera->settings.orbitational_max_velocity.x;
+	if (input_x == 0) camera->orbitational_target_velocity.x = 0; 
+    else camera->orbitational_target_velocity.x = input_x * camera->settings.orbitational_max_velocity.x;
 
 }
 
@@ -76,12 +76,4 @@ void cameraControl_setOrbitalMovement(Camera *camera, ControllerData *data)
     cameraControl_orbit_withCButtons(camera, data);
     //cameraControl_orbit_withStick(camera, data);
     cameraControl_aim(camera, data);
-}
-
-
-void camera_update(Camera *camera, ControllerData* control, Screen* screen, Vector3* barycenter, float frame_time)
-{
-    cameraControl_setOrbitalMovement(camera, control);
-    camera_getOrbitalPosition(camera, barycenter, frame_time);
-    camera_set(camera, screen);
 }

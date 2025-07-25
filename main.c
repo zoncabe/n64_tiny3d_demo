@@ -6,29 +6,29 @@
 #include <t3d/t3danim.h>
 //#include <t3d/t3ddebug.h>
 
-
 #include "include/time/time.h"
 #include "include/physics/physics.h"
 
 #include "include/control/control.h"
 
-#include "include/screen/screen.h"
-#include "include/camera/lighting.h"
+#include "include/graphics/lighting.h"
 #include "include/camera/camera.h"
+#include "include/graphics/viewport.h"
 
 #include "include/actor/actor.h"
 #include "include/actor/actor_animation.h"
 
-#include "include/scene/scene.h"
 #include "include/scene/scenery.h"
 
 #include "include/ui/ui.h"
 
 #include "include/player/player.h"
+#include "include/control/player_control.h"
 
 #include "include/game/game.h"
-#include "include/game/game_control.h"
 #include "include/game/game_states.h"
+
+#include "include/graphics/render.h"
 
 #include "include/memory/memory.h"
 
@@ -40,40 +40,36 @@ int main()
 	//debug_init_isviewer();
 	//debug_init_usblog();
 	
-	asset_init_compression(2);
-	dfs_init(DFS_DEFAULT_LOCATION);
-	
-	game_init(&game);
+	game_init();
 
-	actor[0] = actor_create(0, "rom:/male_steroids.t3dm");
-	
-	actor[0]->body.position.y = -200;
-	actor[0]->body.position.x = -200;
+	player[0].actor = actor_create(0, "rom:/male_steroids.t3dm");
+	player[0].actor->body.position.y = -200;
+	player[0].actor->body.position.x = -200;
 
 	scenery[0] = scenery_create(0, "rom:/room.t3dm");
 	scenery[1] = scenery_create(1, "rom:/n64logo.t3dm");
-	
 	scenery[0]->position.z = -10;
 	scenery[1]->position.z = -10;
+
 
 	// ======== Main Loop ======== //
 
 	for(;;)
 	{
+		time_update();
+		timer.delta *= 2.0f; 
 		
-		time_setData(&game.timing);
-
-		//game.timing.frame_time *= 2.0f;      // i use this as a workaround for my crappy pc not running ares fullspeed :')
+		player_setControllerData();
 		
-		player_setControllerData(&player[0]);
+		gameState_update();
 
-		game_setState(&game, player, actor, scenery);
-
+		render();
 	}
+
 
 	// ======== Clean Up ======== //
 
-	actor_delete(actor[0]);
+	actor_delete(player[0].actor);
 
 	scenery_delete(scenery[0]);
 	scenery_delete(scenery[1]);

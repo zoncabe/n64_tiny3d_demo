@@ -1,6 +1,6 @@
+#include <libdragon.h>
 
 #include "../../include/control/control.h"
-
 
 
 void controllerData_getInputs(ControllerData* data, uint8_t port)

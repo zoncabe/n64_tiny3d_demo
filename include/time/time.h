@@ -6,18 +6,21 @@
 
 typedef struct
 {
-    float frame_time;
-    float frame_rate;
+    float counter;
+    float delta;
+    float rate;
 
   	rspq_syncpoint_t syncPoint;
 
 } TimeData;
 
+extern TimeData timer;
+
 
 // functions prototypes
 
-void time_init(TimeData *time);
-void time_setData(TimeData *time);
+void time_init();
+void time_update();
 
 
 #endif

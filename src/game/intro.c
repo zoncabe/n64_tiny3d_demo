@@ -36,8 +36,10 @@ void n64brew_logo(void)
 
     float mt0 = get_ticks_ms();
     float angle = T3D_DEG_TO_RAD(-90.0f);
-    float fade_white = 0.0f;
+    float fade_white = 1.0f;
     int anim_part = 0;
+
+    
     while (1)
     {
         float tt = get_ticks_ms() - mt0;
@@ -106,7 +108,21 @@ void n64brew_logo(void)
                 rdpq_set_prim_color(RGBA32(255,255,255,255*fade_white));
             rdpq_mode_combiner(RDPQ_COMBINER_FLAT);
             rdpq_mode_blender(RDPQ_BLENDER_MULTIPLY);
-            rdpq_fill_rectangle(0, 0, 640, 480);
+            rdpq_fill_rectangle(0, 0, 320, 240);
+        }
+        
+        /*
+        */
+        if (anim_part < 2 && fade_white > 0.0f) {
+
+            fade_white = 1.0f - (tt / 300.0f);
+            if (fade_white < 0.0f) fade_white = 0.0f;  
+            
+            rdpq_set_prim_color(RGBA32(0,0,0,255*fade_white));
+            rdpq_mode_combiner(RDPQ_COMBINER_FLAT);
+            rdpq_mode_blender(RDPQ_BLENDER_MULTIPLY);
+            rdpq_fill_rectangle(0, 0, 320, 240);
+
         }
 
         rdpq_detach_show();

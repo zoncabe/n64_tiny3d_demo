@@ -9,8 +9,6 @@ void cameraControl_orbit_withCButtons(Camera *camera, ControllerData *data);
 void cameraControl_aim(Camera *camera, ControllerData *data);
 
 void cameraControl_setOrbitalMovement(Camera *camera, ControllerData *data);
-void camera_update(Camera *camera, ControllerData* control, Screen* screen, Vector3* barycenter, float frame_time);
-
 
 
 #endif

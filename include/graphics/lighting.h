@@ -7,11 +7,13 @@ typedef struct{
 	uint8_t ambient_color[4];
 	uint8_t directional_color[4];
 	T3DVec3 direction;
+	T3DVec3 size;
 	
 } LightData;
 
+extern LightData light;
 
-LightData light_create();
+void light_init(LightData* light);
 void light_set(LightData *light);
 
 

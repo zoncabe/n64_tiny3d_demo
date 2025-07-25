@@ -1,8 +1,7 @@
 #include <t3d/t3d.h>
 
 #include "../../include/physics/physics.h"
-#include "../../include/screen/screen.h"
-#include "../../include/camera/lighting.h"
+#include "../../include/graphics/lighting.h"
 #include "../../include/camera/camera.h"
 
 
@@ -20,14 +19,14 @@ void camera_init(Camera* camera)
 		camera->near_clipping = 100;
 		camera->far_clipping = 5000;
 		
-        camera->settings.orbitational_acceleration_rate = 15;
-        camera->settings.orbitational_max_velocity = (Vector2){120, 100};
-        camera->settings.zoom_acceleration_rate = 60;
-        camera->settings.zoom_deceleration_rate = 20;
-        camera->settings.zoom_max_speed = 300;
+        camera->settings.orbitational_acceleration_rate = 10;
+        camera->settings.orbitational_max_velocity = (Vector2){150, 100};
+        camera->settings.zoom_acceleration_rate = 30;
+        camera->settings.zoom_deceleration_rate = 10;
+        camera->settings.zoom_max_speed = 150;
         camera->settings.distance_from_baricenter = 200;
-        camera->settings.field_of_view = 57;
-	    camera->settings.field_of_view_aim = 45;
+        camera->settings.field_of_view = 59;
+	    camera->settings.field_of_view_aim = 50;
         camera->settings.offset_acceleration_rate = 25;
         camera->settings.offset_deceleration_rate = 45;
         camera->settings.offset_max_speed = 160;
@@ -36,7 +35,7 @@ void camera_init(Camera* camera)
         camera->settings.max_pitch = 70;
 }
 
-void camera_getOrbitalPosition(Camera *camera, Vector3* barycenter, float frame_time)
+void camera_updateOrbitalPosition(Camera *camera, Vector3* barycenter, float frame_time)
 {
 	camera->orbitational_velocity.x += camera->orbitational_acceleration.x * frame_time;
     camera->orbitational_velocity.y += camera->orbitational_acceleration.y * frame_time;
@@ -50,8 +49,8 @@ void camera_getOrbitalPosition(Camera *camera, Vector3* barycenter, float frame_
 		camera->offset_speed = 0;
 	}
 
-    camera->pitch += camera->orbitational_velocity.x * frame_time;
-	camera->angle_around_barycenter += camera->orbitational_velocity.y * frame_time;
+    camera->pitch += camera->orbitational_velocity.y * frame_time;
+	camera->angle_around_barycenter += camera->orbitational_velocity.x * frame_time;
 	
 	camera->field_of_view += camera->zoom_direction * camera->zoom_speed * frame_time;
 	camera->offset_angle += camera->offset_direction * camera->offset_speed * frame_time;
@@ -90,22 +89,4 @@ void camera_getOrbitalPosition(Camera *camera, Vector3* barycenter, float frame_
 	camera->target.x = barycenter->x - camera-> horizontal_target_distance * sinf(rad(camera->angle_around_barycenter + 180));
 	camera->target.y = barycenter->y - camera-> horizontal_target_distance * cosf(rad(camera->angle_around_barycenter + 180));
 	camera->target.z = barycenter->z + camera->offset_height + camera->vertical_target_distance;
-}
-
-
-void camera_set(Camera *camera, Screen* screen)
-{
-    t3d_viewport_set_projection(
-        &screen->t3d_viewport, 
-        T3D_DEG_TO_RAD(camera->field_of_view), 
-        camera->near_clipping,
-		camera->far_clipping
-    );
-
-    t3d_viewport_look_at(
-        &screen->t3d_viewport, 
-        &(T3DVec3){{camera->position.x, camera->position.y, camera->position.z}}, 
-        &(T3DVec3){{camera->target.x, camera->target.y, camera->target.z}}, 
-        &(T3DVec3){{0, 0, 1}}
-    );
 }
