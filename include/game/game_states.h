@@ -18,8 +18,8 @@ void gameState_updatePause();
 
 void gameState_setGameOver();
 
-void gameState_set(u_int8_t new_state);
-void gameState_update();
+void game_setState(u_int8_t new_state);
+void game_updateState();
 
 
 #endif

@@ -5,6 +5,9 @@
 typedef struct
 {
     uint8_t state;
+    uint8_t previous_state;
+    
+    float transition_timer;
 
 }Game;
 

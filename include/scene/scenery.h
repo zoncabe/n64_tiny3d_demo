@@ -2,7 +2,7 @@
 #define SCENERY_H
 
 
-#define SCENERY_COUNT 2
+#define SCENERY_COUNT 4
 
 
 // structures
@@ -22,12 +22,14 @@ typedef struct {
 } Scenery;
 
 extern Scenery* scenery[SCENERY_COUNT];
-
+extern float flag_transform;
+    
 
 // function prototypes
 
 void scenery_init(Scenery* scenery);
 void scenery_set(Scenery* scenery);
 
+void animate_flag(T3DModel* model, float transformOffset);
 
 #endif

@@ -1,7 +1,6 @@
 #ifndef ACTOR_H
 #define ACTOR_H
 
-#define ACTOR_COUNT 1
 
 // structures
 
@@ -39,6 +38,8 @@ typedef struct {
 	float jump_force_multiplier;
 	float jump_minimum_speed;
 	float jump_timer_max;
+
+	float fall_max_speed;
 
 }ActorSettings;
 

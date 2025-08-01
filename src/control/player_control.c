@@ -13,11 +13,12 @@
 #include "../../include/control/control.h"
 #include "../../include/actor/actor.h"
 #include "../../include/graphics/lighting.h"
-#include "../../include/camera/camera.h"
-#include "../../include/graphics/viewport.h"
+#include "../../include/viewport/camera.h"
+#include "../../include/viewport/viewport.h"
 #include "../../include/time/time.h"
 #include "../../include/scene/scenery.h"
 #include "../../include/ui/ui.h"
+#include "../../include/ui/menu.h"
 #include "../../include/player/player.h"
 #include "../../include/control/player_control.h"
 #include "../../include/game/game.h"
@@ -100,43 +101,68 @@ void player_setActorControl(Player* player)
     playerControl_moveWithStick(player, viewport.camera.angle_around_barycenter, viewport.camera.offset_angle);
 }
 
-
-void playerControl_skipIntro(Player* player)
+void playerControl_setPauseState(Player* player)
 {
-    if (player->control.pressed.start) {
+    if (player->control.pressed.start) game_setState(PAUSE);
+}
 
-        if (game.state == INTRO) gameState_set(GAMEPLAY);
+void player_controlPauseState(Player* player)
+{
+    if (player->control.pressed.start || player->control.pressed.b || (player->control.pressed.a && menu.index == 0)){
+        
+        game_setState(GAMEPLAY);
+        menu.index = 0;
     }
-}
 
-void playerControl_handleMainMenu(Player* player)
-{
-}
-
-void playerControl_setPause(Player* player)
-{
-    if (player->control.pressed.start) {
-
-        if (game.state == PAUSE) gameState_set(GAMEPLAY);
-        else if (game.state == GAMEPLAY) gameState_set(PAUSE);
+    if (player->control.pressed.a && menu.index == 2){
+    
+        game_setState(MAIN_MENU);
+        menu.index = 0;
     }
+
+    if (player->control.pressed.d_up) --menu.index;
+    if (player->control.pressed.d_down) ++menu.index;
+    if (menu.index < 0) menu.index = 2;
+    if (menu.index > 2) menu.index = 0;
 }
 
-void playerControl_handlePauseMenu(Player* player)
+void player_controlMainMenu(Player* player)
 {
+    if ((player->control.pressed.a && menu.index == 0)) game_setState(GAMEPLAY);
+    if (player->control.pressed.d_up) --menu.index;
+    if (player->control.pressed.d_down) ++menu.index;
+    if (menu.index < 0) menu.index = 2;
+    if (menu.index > 2) menu.index = 0;
 }
 
 void playerControl_handleGameOverMenu(Player* player)
 {
 }
 
-void playerControl_setGameState(Player* player)
+void player_controlGameState(Player* player)
 {
-    //playerControl_skipIntro(&player[i]);
-    //playerControl_handleMainMenu(&player[i]);
-    playerControl_setPause(player);
-    //playerControl_handlePauseMenu(&player[i]);
-    //playerControl_handleGameOverMenu(&player[i]);
+    switch(game.state){
+
+		case INTRO:{
+			break;
+		}
+		case MAIN_MENU:{
+            player_controlMainMenu(player);
+			break;
+		}
+		case GAMEPLAY:{
+            playerControl_setPauseState(player);
+            player_setActorControl(player);
+			break;
+		}
+		case PAUSE:{
+            player_controlPauseState(player);
+			break;
+		}
+		case GAME_OVER:{
+			break;
+		}
+	}
 }
 
 
@@ -147,6 +173,6 @@ void player_setControllerData()
     for (int i = 0; i < PLAYER_COUNT; i++) {
         
         controllerData_getInputs(&player[i].control, i);
-        playerControl_setGameState(&player[i]);
+        player_controlGameState(&player[i]);
     } 
 }

@@ -17,7 +17,7 @@ src =   $(wildcard *.c) \
 		$(wildcard src/physics/actor_collision/*.c) \
 		$(wildcard src/physics/collision/shapes/*.c) \
 		$(wildcard src/control/*.c) \
-		$(wildcard src/camera/*.c) \
+		$(wildcard src/viewport/*.c) \
 		$(wildcard src/actor/*.c) \
 		$(wildcard src/game/*.c) \
 		$(wildcard src/player/*.c) \

@@ -10,14 +10,14 @@ LightData light;
 
 void light_init(LightData* light) {
 
-    light->ambient_color[0] = 80;
-    light->ambient_color[1] = 80;
-    light->ambient_color[2] = 100;
+    light->ambient_color[0] = 60;
+    light->ambient_color[1] = 60;
+    light->ambient_color[2] = 60;
     light->ambient_color[3] = 0xFF;
 
-    light->directional_color[0] = 0xEE;
-    light->directional_color[1] = 0xAA;
-    light->directional_color[2] = 0xAA;
+    light->directional_color[0] = 255;
+    light->directional_color[1] = 255;
+    light->directional_color[2] = 255;
     light->directional_color[3] = 0xFF;
 
     light->direction = (T3DVec3){{1.0f, -1.0f, 1.0f}};

@@ -194,7 +194,9 @@ void actorMotion_setFalling(Actor *actor)
     actorMotion_setHorizontalAcceleration (actor, actor->horizontal_speed, actor->settings.aerial_control_rate);
     actor->body.acceleration.z = ACTOR_GRAVITY;
 
-    if (actor->body.position.z <= actor->grounding_height) {
+    if (actor->body.velocity.z > actor->settings.fall_max_speed) actor->body.velocity.z = actor->settings.fall_max_speed;
+
+    if (actor->body.position.z <= actor->grounding_height + 10) {
 
         actor->grounded = 1;
         actor->body.acceleration.z = 0;

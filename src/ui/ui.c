@@ -6,12 +6,14 @@
 #include "../../include/control/control.h"
 #include "../../include/actor/actor.h"
 #include "../../include/ui/ui.h"
+#include "../../include/ui/menu.h"
 #include "../../include/actor/actor_states.h"
 #include "../../include/graphics/lighting.h"
-#include "../../include/camera/camera.h"
-#include "../../include/graphics/viewport.h"
+#include "../../include/viewport/camera.h"
+#include "../../include/viewport/viewport.h"
 #include "../../include/scene/scenery.h"
 #include "../../include/game/game.h"
+#include "../../include/player/player.h"
 
 UI ui;
 
@@ -125,17 +127,16 @@ void ui_printActorPreviousAnimation(Actor* actor)
 
 void ui_printDebugData(Actor* actor, TimeData time)
 {
-    rdpq_sync_pipe();
     //ui_printActorState(ui, actor);
     //ui_printActorAnimation(ui, actor);
     //ui_printActorPreviousAnimation(ui, actor);
 
-	//rdpq_text_printf(NULL, DROID_SANS, 10, 15, "target yaw %f", actor->target_yaw);
-	//rdpq_text_printf(NULL, DROID_SANS, 10, 25, "footing blending ratio %f", actor->animation.footing_blending_ratio);
+    //rdpq_text_printf(NULL, DROID_SANS, 10, 15, "menu index %i", menu.index);
+	//if (player->control.pressed.d_down) rdpq_text_printf(NULL, DROID_SANS, 20, 25, "ddown");
 	//rdpq_text_printf(NULL, DROID_SANS, 10, 35, "rolling timer %f", actor->input.roll_timer);
 	//rdpq_text_printf(NULL, DROID_SANS, 10, 45, "running debug 1 %f", actor->debug_data.value_0);
 	//rdpq_text_printf(NULL, DROID_SANS, 10, 55, "running anim time %f", actor->animation.set.running.time);
 	//rdpq_text_printf(NULL, DROID_SANS, 10, 65, "sprinting anim time %f", actor->animation.set.sprinting.time);
 	//rdpq_text_printf(NULL, DROID_SANS, 10, 25, "camera target speed x %f", game.scene.camera.orbitational_target_velocity.x);  
-	rdpq_text_printf(NULL, DROID_SANS, 250, 15, "FPS %f", time.rate);
+	//rdpq_text_printf(NULL, DROID_SANS, 250, 15, "FPS %f", time.rate);
 }

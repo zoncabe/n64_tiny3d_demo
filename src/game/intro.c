@@ -130,6 +130,7 @@ void n64brew_logo(void)
 
     wait_ms(1000);
     rspq_wait();
+    sprite_free(logo);
     t3d_model_free(brew);
 }
 
@@ -167,6 +168,7 @@ void libdragon_logo(void)
     }
 
     reset();
+    
     while (1) {
         //mixer_try_play();
         
@@ -203,11 +205,11 @@ void libdragon_logo(void)
         }
 
         #if 0
+        #endif
         // Debug: re-run logo animation on button press
         joypad_poll();
         joypad_buttons_t btn = joypad_get_buttons_pressed(JOYPAD_PORT_1);
         if (btn.a) reset();
-        #endif
 
         surface_t *fb = display_get();
         rdpq_attach_clear(fb, NULL);

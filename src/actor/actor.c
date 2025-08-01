@@ -44,6 +44,8 @@ void actor_init(Actor *actor)
 			.jump_minimum_speed = JUMP_MINIMUM_SPEED,
 
 			.jump_timer_max = JUMP_ANIM_AIR,
+
+			.fall_max_speed = 1000,
 		},
 
 		.animation = {

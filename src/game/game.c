@@ -6,11 +6,12 @@
 #include "../../include/control/control.h"
 #include "../../include/actor/actor.h"
 #include "../../include/graphics/lighting.h"
-#include "../../include/camera/camera.h"
-#include "../../include/graphics/viewport.h"
+#include "../../include/viewport/camera.h"
+#include "../../include/viewport/viewport.h"
 #include "../../include/time/time.h"
 #include "../../include/scene/scenery.h"
 #include "../../include/ui/ui.h"
+#include "../../include/ui/menu.h"
 #include "../../include/player/player.h"
 #include "../../include/game/game.h"
 #include "../../include/game/game_states.h"
@@ -39,6 +40,11 @@ void game_init()
 	time_init();
 	
 	ui_init();
+
+	menu_mainInit();
+	menu_pauseInit();
 	
-	gameState_set(GAMEPLAY);
+	game.state = MAIN_MENU;
+
+	game.transition_timer = 1.0f;
 }	

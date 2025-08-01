@@ -4,8 +4,8 @@
 #include "../../include/control/control.h"
 #include "../../include/actor/actor.h"
 #include "../../include/graphics/lighting.h"
-#include "../../include/camera/camera.h"
-#include "../../include/graphics/viewport.h"
+#include "../../include/viewport/camera.h"
+#include "../../include/viewport/viewport.h"
 #include "../../include/time/time.h"
 #include "../../include/scene/scenery.h"
 #include "../../include/ui/ui.h"
@@ -19,10 +19,10 @@
 
 void gameState_setIntro()
 {
-	n64brew_logo();
+	//n64brew_logo();
 	libdragon_logo();
 
-	gameState_set(GAMEPLAY);
+	game_setState(MAIN_MENU);
 }
 
 void gameState_updateMainMenu()
@@ -31,8 +31,10 @@ void gameState_updateMainMenu()
 
 void gameState_updateGameplay()
 {
+	flag_transform += timer.delta * 0.75;
+	animate_flag(scenery[1]->model, flag_transform);
 	player_updateActor();
-	viewport_update();
+	viewport_updateGameplayCamera();
 }
 
 
@@ -45,7 +47,7 @@ void gameState_setGameOver()
 {
 }
 
-void gameState_set(u_int8_t new_state)
+void game_setState(u_int8_t new_state)
 {
 	switch(new_state)
 	{
@@ -56,16 +58,19 @@ void gameState_set(u_int8_t new_state)
 		}
 		case MAIN_MENU:{
             if (game.state == MAIN_MENU) return;
+			game.previous_state = game.state;
             game.state = MAIN_MENU;
 			break;
 		}
 		case GAMEPLAY:{
             if (game.state == GAMEPLAY) return;
+			game.previous_state = game.state;
             game.state = GAMEPLAY;
 			break;
 		}
 		case PAUSE:{
             if (game.state == PAUSE) return;
+			game.previous_state = game.state;
             game.state = PAUSE;
 			break;
 		}
@@ -77,7 +82,7 @@ void gameState_set(u_int8_t new_state)
 	}
 }
 
-void gameState_update()
+void game_updateState()
 {	
 	switch(game.state)
 	{

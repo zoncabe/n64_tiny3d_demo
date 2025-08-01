@@ -15,7 +15,7 @@
 
 // animation lenghts in seconds on the prototype asset
 
-#define ACTION_IDLE_MAX_BLENDING_RATIO 0.85f
+#define ACTION_IDLE_MAX_BLENDING_RATIO 0.65f
 
 #define WALKING_ANIM_LENGTH 1.033333f
 #define WALKING_ANIM_LENGTH_HALF 0.516666f

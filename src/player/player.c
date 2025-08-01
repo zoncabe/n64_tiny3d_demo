@@ -6,8 +6,8 @@
 #include "../../include/actor/actor_motion.h"
 #include "../../include/actor/actor_animation.h"
 #include "../../include/graphics/lighting.h"
-#include "../../include/camera/camera.h"
-#include "../../include/graphics/viewport.h"
+#include "../../include/viewport/camera.h"
+#include "../../include/viewport/viewport.h"
 #include "../../include/time/time.h"
 #include "../../include/scene/scenery.h"
 #include "../../include/ui/ui.h"
@@ -28,7 +28,6 @@ void player_updateActor()
 {
     for (uint8_t i = 0; i < PLAYER_COUNT; i++) {
 
-        player_setActorControl(&player[i]);
         actor_setMotion(player[i].actor, timer.delta);
         actor_setAnimation(player[i].actor, timer.delta, &timer.syncPoint);
     }
