@@ -13,7 +13,8 @@
 #include "../../include/game/game.h"
 #include "../../include/control/camera_control.h"
 #include "../../include/game/game_states.h"
-#include "../../include/graphics/render.h"
+#include "../../include/graphics/vertex_shaders.h"
+#include "../../include/render/render.h"
 #include "../../include/game/intro.h"
 
 
@@ -33,7 +34,7 @@ void gameState_updateGameplay()
 {
 	flag_transform += timer.delta * 0.75;
 	animate_flag(scenery[1]->model, flag_transform);
-	player_updateActor();
+	player_update();
 	viewport_updateGameplayCamera();
 }
 

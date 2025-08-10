@@ -22,14 +22,17 @@ typedef struct {
 } Scenery;
 
 extern Scenery* scenery[SCENERY_COUNT];
-extern float flag_transform;
     
 
 // function prototypes
 
 void scenery_init(Scenery* scenery);
-void scenery_set(Scenery* scenery);
 
-void animate_flag(T3DModel* model, float transformOffset);
+void scenery_set(Scenery* scenery,
+				 float scale_x, float scale_y, float scale_z,
+				 float pos_x, float pos_y, float pos_z,
+				 float rot_x, float rot_y, float rot_z);
+
+void scenery_draw(Scenery* scenery);
 
 #endif

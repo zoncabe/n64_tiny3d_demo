@@ -1,5 +1,5 @@
-#ifndef GAMEJAM2024_LOGO_H
-#define GAMEJAM2024_LOGO_H
+#ifndef INTRO_H
+#define INTRO_H
 
     /***************************************************************
               You have no reason to be incuding this file

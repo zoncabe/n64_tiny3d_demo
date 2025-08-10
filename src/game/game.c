@@ -15,7 +15,8 @@
 #include "../../include/player/player.h"
 #include "../../include/game/game.h"
 #include "../../include/game/game_states.h"
-#include "../../include/graphics/render.h"
+#include "../../include/render/render.h"
+#include "../../include/memory/memory.h"
 
 
 // global
@@ -48,3 +49,19 @@ void game_init()
 
 	game.transition_timer = 1.0f;
 }	
+
+void game_close()
+{
+
+	actor_delete(&player[0]->actor);
+	actor_delete(&player[1]->actor);
+
+	scenery_delete(scenery[0]);
+	scenery_delete(scenery[1]);
+	scenery_delete(scenery[2]);
+	scenery_delete(scenery[3]);
+
+	menu_pauseClean();
+
+	t3d_destroy();
+}

@@ -15,6 +15,7 @@ extern Game game;
 
 
 void game_init();
+void game_close();
 
 
 #endif

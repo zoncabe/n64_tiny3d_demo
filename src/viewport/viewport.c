@@ -54,7 +54,7 @@ void viewport_setGameplayCamera()
 
 void viewport_updateGameplayCamera()
 {
-    cameraControl_setOrbitalMovement(&viewport.camera, &player[0].control);
-    camera_updateOrbitalPosition(&viewport.camera, &player[0].actor->body.position, timer.delta);
+    cameraControl_setOrbitalMovement(&viewport.camera, &player[0]->control);
+    camera_updateOrbitalPosition(&viewport.camera, &player[0]->body.position, timer.delta);
     viewport_setGameplayCamera();
 }

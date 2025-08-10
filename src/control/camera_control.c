@@ -27,9 +27,9 @@ void cameraControl_orbit_withStick(Camera *camera, ControllerData *data)
     float stick_x = 0;
     float stick_y = 0;
 
-    if (fabs(data->input.stick_x) >= deadzone || fabs(data->input.stick_y) >= deadzone) {
-        stick_x = data->input.stick_x;
-        stick_y = data->input.stick_y;
+    if (fabs(data->input.cstick_x) >= deadzone || fabs(data->input.cstick_y) >= deadzone) {
+        stick_x = data->input.cstick_x;
+        stick_y = - data->input.cstick_y;
     }
 
     if (stick_x == 0 && stick_y == 0) {
@@ -49,7 +49,12 @@ void cameraControl_orbit_withCButtons(Camera *camera, ControllerData *data)
     float input_x = 0;
     float input_y = 0;
 
-    if ((data->held.c_right) || (data->held.c_left) || (data->held.c_up) || (data->held.c_down)){
+    if (data->pressed.c_right || data->pressed.c_left || data->pressed.c_up || data->pressed.c_down){
+        
+        input_x = input(data->pressed.c_right) - input(data->pressed.c_left);
+        input_y = input(data->pressed.c_up) - input(data->pressed.c_down);
+    }
+    else if (data->held.c_right || data->held.c_left || data->held.c_up || data->held.c_down){
         
         input_x = input(data->held.c_right) - input(data->held.c_left);
         input_y = input(data->held.c_up) - input(data->held.c_down);
@@ -73,7 +78,7 @@ void cameraControl_aim(Camera *camera, ControllerData *data)
 
 void cameraControl_setOrbitalMovement(Camera *camera, ControllerData *data)
 {
-    cameraControl_orbit_withCButtons(camera, data);
-    //cameraControl_orbit_withStick(camera, data);
+    //cameraControl_orbit_withCButtons(camera, data);
+    cameraControl_orbit_withStick(camera, data);
     cameraControl_aim(camera, data);
 }

@@ -7,7 +7,8 @@
 #include "../../include/actor/actor.h"
 #include "../../include/ui/ui.h"
 #include "../../include/ui/menu.h"
-#include "../../include/actor/actor_states.h"
+#include "../../include/player/player.h"
+#include "../../include/player/player_states.h"
 #include "../../include/graphics/lighting.h"
 #include "../../include/viewport/camera.h"
 #include "../../include/viewport/viewport.h"
@@ -19,10 +20,10 @@ UI ui;
 
 void ui_init()
 {
-    ui.font = rdpq_font_load("rom:/DroidSans.font64");
+    ui.font = rdpq_font_load("rom:/fonts/DroidSans.font64");
     rdpq_text_register_font(DROID_SANS, ui.font);
 }
-
+/*
 void ui_printActorState(Actor* actor)
 {
     switch(actor->state) {
@@ -57,13 +58,13 @@ void ui_printActorState(Actor* actor)
     }
 }
 
-void ui_printActorAnimation(Actor* actor)
+void ui_printActorAnimation()
 {
-    switch(actor->animation.current) {
+    switch(player->armature.animation.current) {
         
-        case STAND_IDLE: {
-           rdpq_text_printf(NULL, DROID_SANS, 10, 30, "animation: idle");
-            break;
+    case STAND_IDLE: {
+        rdpq_text_printf(NULL, DROID_SANS, 10, 30, "animation: idle");
+        break;
         }
         case WALKING: {
             rdpq_text_printf(NULL, DROID_SANS, 10, 30, "animation: walking");
@@ -93,10 +94,10 @@ void ui_printActorAnimation(Actor* actor)
 
 void ui_printActorPreviousAnimation(Actor* actor)
 {
-    switch(actor->animation.previous) {
+    switch(actor->armature.animation.previous) {
         
         case STAND_IDLE: {
-           rdpq_text_printf(NULL, DROID_SANS, 10, 40, "previous: idle");
+            rdpq_text_printf(NULL, DROID_SANS, 10, 40, "previous: idle");
             break;
         }
         case WALKING: {
@@ -124,6 +125,7 @@ void ui_printActorPreviousAnimation(Actor* actor)
         }   
     }
 }
+*/
 
 void ui_printDebugData(Actor* actor, TimeData time)
 {
@@ -135,8 +137,8 @@ void ui_printDebugData(Actor* actor, TimeData time)
 	//if (player->control.pressed.d_down) rdpq_text_printf(NULL, DROID_SANS, 20, 25, "ddown");
 	//rdpq_text_printf(NULL, DROID_SANS, 10, 35, "rolling timer %f", actor->input.roll_timer);
 	//rdpq_text_printf(NULL, DROID_SANS, 10, 45, "running debug 1 %f", actor->debug_data.value_0);
-	//rdpq_text_printf(NULL, DROID_SANS, 10, 55, "running anim time %f", actor->animation.set.running.time);
-	//rdpq_text_printf(NULL, DROID_SANS, 10, 65, "sprinting anim time %f", actor->animation.set.sprinting.time);
+	//rdpq_text_printf(NULL, DROID_SANS, 10, 55, "running anim time %f", actor->armature.animation.set.running.time);
+	//rdpq_text_printf(NULL, DROID_SANS, 10, 65, "sprinting anim time %f", actor->armature.animation.set.sprinting.time);
 	//rdpq_text_printf(NULL, DROID_SANS, 10, 25, "camera target speed x %f", game.scene.camera.orbitational_target_velocity.x);  
 	//rdpq_text_printf(NULL, DROID_SANS, 250, 15, "FPS %f", time.rate);
 }
