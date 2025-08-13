@@ -1,7 +1,7 @@
 
 ### Nintendo 64 game demo
 
-This project is being made using the open source SDK [Libdragon](https://github.com/DragonMinded/libdragon). It uses the 3D ucode & library [Tiny3D](https://github.com/HailToDodongo/tiny3d).
+This project is being made using the open source SDK [Libdragon](https://github.com/DragonMinded/libdragon) and the 3D ucode & library [Tiny3D](https://github.com/HailToDodongo/tiny3d).
 
 ### Compilation
 
