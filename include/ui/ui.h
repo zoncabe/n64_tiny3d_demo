@@ -15,7 +15,7 @@ typedef struct {
 extern UI ui;
 
 void ui_init();
-void ui_printDebugData(Actor* actor, TimeData time);
+void ui_printDebugData();
 
 
 #endif 

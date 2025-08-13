@@ -32,11 +32,7 @@ typedef struct {
 	float stick_magnitude;
 	float stick_x;
 	float stick_y;
-	float roll_timer;
 
-	Vector3 jump_initial_velocity;
-	float jump_timer;
-	float jump_force;
 	bool jump_hold;
 
 } PlayerMotionInput;
@@ -44,16 +40,19 @@ typedef struct {
 typedef struct {
 
 	float target_yaw;
+
 	Vector3 target_velocity;
 	float horizontal_target_speed;
-
 	float horizontal_speed;
+	
+	float roll_timer;
+	
+	Vector3 jump_initial_velocity;
+	float jump_force;
+	float jump_timer;
+
 	bool grounded;
 	float grounding_height;
-		
-	Vector3 jump_initial_velocity;
-	float jump_timer;
-	float jump_force;
 
 } PlayerMotionData;
 
@@ -195,8 +194,7 @@ typedef struct {
 
 extern Player* player[PLAYER_COUNT];
 
-
-void player_init(uint32_t id, Player* player, const char* model_path);
+void player_init(uint32_t id, Player* player, const char* model_path, PlayerMotionSettings* motion_settings, PlayerAnimationSettings* animation_settings);
 
 void player_update();
 

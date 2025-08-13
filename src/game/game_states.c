@@ -20,9 +20,6 @@
 
 void gameState_setIntro()
 {
-	//n64brew_logo();
-	libdragon_logo();
-
 	game_setState(MAIN_MENU);
 }
 

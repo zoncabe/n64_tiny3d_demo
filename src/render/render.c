@@ -231,6 +231,8 @@ void render()
 			render_mainMenu();
 			if (game.transition_timer > 0.0f) render_transition();
 
+			ui_printDebugData();
+
 			break;
 		}
 		case GAMEPLAY:{
@@ -245,6 +247,8 @@ void render()
 			if (game.transition_timer > 0.0f && game.previous_state == PAUSE) render_pauseMenu();
 			else if (game.transition_timer > 0.0f) render_transition();
 
+			ui_printDebugData();
+
 			break;
 		}
 		case PAUSE:{
@@ -257,6 +261,8 @@ void render()
     		rdpq_sync_pipe();
 
 			render_pauseMenu();
+
+			ui_printDebugData();
 
 			break;
 		}

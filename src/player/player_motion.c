@@ -128,21 +128,21 @@ void playerMotion_setSprinting(Player* player)
 
 void playerMotion_setRolling(Player* player)
 {
-    if (player->motion_input.roll_timer < player->motion_settings.roll_change_grip_time){
+    if (player->motion_data.roll_timer < player->motion_settings.roll_change_grip_time){
 
         playerMotion_setHorizontalInertiaAcceleration (player, (player->motion_data.horizontal_speed), player->motion_settings.run_acceleration_rate);
-        player->motion_input.roll_timer += timer.delta;
+        player->motion_data.roll_timer += timer.delta;
     }
 
-    else if (player->motion_input.roll_timer < player->motion_settings.roll_timer_max){ 
+    else if (player->motion_data.roll_timer < player->motion_settings.roll_timer_max){ 
         
         playerMotion_setHorizontalAcceleration (player, player->motion_data.horizontal_speed, player->motion_settings.roll_acceleration_grip_rate);
-        player->motion_input.roll_timer += timer.delta;
+        player->motion_data.roll_timer += timer.delta;
     }
     
     else {
         player_setState(player, player->state.locomotion);
-        player->motion_input.roll_timer = 0;
+        player->motion_data.roll_timer = 0;
     }
 }
 
@@ -150,33 +150,33 @@ void playerMotion_setJump(Player* player)
 {
     playerMotion_setHorizontalAcceleration (player, player->motion_data.horizontal_speed, player->motion_settings.aerial_control_rate);
     
-    if (player->motion_input.jump_timer < player->motion_settings.jump_timer_max){
+    if (player->motion_data.jump_timer < player->motion_settings.jump_timer_max){
         
-        player->motion_input.jump_timer += timer.delta;
+        player->motion_data.jump_timer += timer.delta;
         
         if(player->motion_input.jump_hold){
             
-            player->motion_input.jump_force += timer.delta;
+            player->motion_data.jump_force += timer.delta;
             vector3_scale(&player->body.velocity, 0.96f);
         } 
     }
     
-    else if (player->motion_input.jump_force > 0){
+    else if (player->motion_data.jump_force > 0){
         
-        player->motion_input.jump_timer += timer.delta;
+        player->motion_data.jump_timer += timer.delta;
 
-        player->body.velocity = player->motion_input.jump_initial_velocity;
+        player->body.velocity = player->motion_data.jump_initial_velocity;
         vector3_scale(&player->body.velocity, 0.8f);
 
-        player->body.velocity.z = player->motion_input.jump_force * player->motion_settings.jump_force_multiplier;
+        player->body.velocity.z = player->motion_data.jump_force * player->motion_settings.jump_force_multiplier;
         if (player->body.velocity.z < JUMP_MINIMUM_SPEED) player->body.velocity.z = JUMP_MINIMUM_SPEED;
 
-        player->motion_input.jump_force = 0;
+        player->motion_data.jump_force = 0;
     }
     
     else if (player->body.velocity.z > 0){
 
-        player->motion_input.jump_timer += timer.delta;
+        player->motion_data.jump_timer += timer.delta;
                 
         player->body.acceleration.z = PLAYER_GRAVITY;
     }
@@ -184,7 +184,7 @@ void playerMotion_setJump(Player* player)
     else {
         
         player->body.acceleration.z = PLAYER_GRAVITY;
-        player->motion_input.jump_timer = 0;
+        player->motion_data.jump_timer = 0;
         
         player_setState(player, FALLING);
         return;

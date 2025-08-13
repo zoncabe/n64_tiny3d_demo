@@ -52,10 +52,6 @@ void game_init()
 
 void game_close()
 {
-
-	actor_delete(&player[0]->actor);
-	actor_delete(&player[1]->actor);
-
 	scenery_delete(scenery[0]);
 	scenery_delete(scenery[1]);
 	scenery_delete(scenery[2]);

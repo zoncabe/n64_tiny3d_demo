@@ -2,7 +2,7 @@
 #define MALE_MUSCLED_H
 
 
-// actor settings
+// motion settings
 
 #define MALE_MUSCLED_IDLE_ACCELERATION_RATE 8.0f
 #define MALE_MUSCLED_WALK_ACCELERATION_RATE 3.0f
@@ -16,6 +16,9 @@
 #define MALE_MUSCLED_WALK_TARGET_SPEED 185.0f
 #define MALE_MUSCLED_RUN_TARGET_SPEED 390.0f
 #define MALE_MUSCLED_SPRINT_TARGET_SPEED 520.0f
+
+#define MALE_MUSCLED_JUMP_FORCE_MULTIPLIER 3000
+#define MALE_MUSCLED_JUMP_MINIMUM_SPEED 400
 
 
 // convertion ratio between locomotion animation lenghts
@@ -57,12 +60,12 @@
 #define MALE_MUSCLED_JUMP_MAX_BLENDING_RATIO 0.7f
 #define MALE_MUSCLED_JUMP_FOOTING_SPEED 0.5f
 
-#define MALE_MUSCLED_JUMP_FORCE_MULTIPLIER 3000
-#define MALE_MUSCLED_JUMP_MINIMUM_SPEED 400
-
 #define MALE_MUSCLED_LAND_ANIM_LENGTH 0.9f
 #define MALE_MUSCLED_LAND_ANIM_GROUND 0.266666f
 #define MALE_MUSCLED_LAND_ANIM_STAND 0.833333f
 
+
+extern PlayerMotionSettings male_muscled_motion_settings;
+extern PlayerAnimationSettings male_muscled_animation_settings;
 
 #endif

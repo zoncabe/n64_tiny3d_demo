@@ -20,7 +20,7 @@
 Player* player[PLAYER_COUNT];
 
 
-void player_init(uint32_t id, Player* player, const char* model_path)
+void player_init(uint32_t id, Player* player, const char* model_path, PlayerMotionSettings* motion_settings, PlayerAnimationSettings* animation_settings)
 {
 
     *player = (Player){
@@ -40,30 +40,11 @@ void player_init(uint32_t id, Player* player, const char* model_path)
 			.rotation = {0.0f, 0.0f, 0.0f},
 		},
 
-		.motion_settings = {
-			.idle_acceleration_rate = 8,
-			.walk_acceleration_rate = 3,
-			.run_acceleration_rate = 5,
-			.sprint_acceleration_rate = 8,
-			.roll_acceleration_grip_rate = 2,
-
-			.jump_acceleration_rate = 50,
-			.aerial_control_rate = 0.5f,
-
-			.walk_target_speed = 185,
-			.run_target_speed = 390,
-			.sprint_target_speed = 520,
-
-			.roll_change_grip_time = RUN_TO_ROLLING_ANIM_GRIP,
-			.roll_timer_max = RUN_TO_ROLLING_ANIM_LENGHT,
-
-			.jump_force_multiplier = JUMP_FORCE_MULTIPLIER,  
-			.jump_minimum_speed = JUMP_MINIMUM_SPEED,
-
-			.jump_timer_max = JUMP_ANIM_AIR,
-		},
+		.motion_settings = *motion_settings,
 
 		.armature.animation = {
+			
+			.settings = *animation_settings,
 			.current = 0,
 			.previous = 0,
 			.speed = 0.0f,
@@ -72,7 +53,7 @@ void player_init(uint32_t id, Player* player, const char* model_path)
 		},
 
 
-		.motion_input = {
+		.motion_data = {
 
 			.jump_timer = 0,
 

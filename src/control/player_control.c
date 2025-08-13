@@ -30,7 +30,7 @@ void playerControl_setJump(Player* player)
     if (player->control.pressed.a && player->state.current != ROLLING && player->state.current != JUMPING && player->state.current != FALLING){
         
         player->motion_input.jump_hold = true;
-        player->motion_input.jump_initial_velocity = player->body.velocity;
+        player->motion_data.jump_initial_velocity = player->body.velocity;
         player_setState(player, JUMPING);
     }
     

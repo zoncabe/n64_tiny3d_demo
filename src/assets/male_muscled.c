@@ -3,14 +3,15 @@
 #include "../../include/physics/physics.h"
 #include "../../include/control/control.h"
 #include "../../include/actor/actor.h"
-#include "../../include/actor/actor_states.h"
+#include "../../include/player/player.h"
+#include "../../include/player/player_states.h"
 #include "../../include/player/player_animation.h"
 
 #include "../../include/assets/male_muscled.h"
 
 
 
-ActorSettings male_muscled_actor_settings = {
+PlayerMotionSettings male_muscled_motion_settings = {
     
     .idle_acceleration_rate = MALE_MUSCLED_IDLE_ACCELERATION_RATE,
     .walk_acceleration_rate = MALE_MUSCLED_WALK_ACCELERATION_RATE,
@@ -25,16 +26,16 @@ ActorSettings male_muscled_actor_settings = {
     .run_target_speed = MALE_MUSCLED_RUN_TARGET_SPEED,
     .sprint_target_speed = MALE_MUSCLED_SPRINT_TARGET_SPEED,
 
-    .roll_change_grip_time = RUN_TO_ROLLING_ANIM_GRIP,
-    .roll_timer_max = RUN_TO_ROLLING_ANIM_LENGHT,
+    .roll_change_grip_time = MALE_MUSCLED_RUN_TO_ROLLING_ANIM_GRIP,
+    .roll_timer_max = MALE_MUSCLED_RUN_TO_ROLLING_ANIM_LENGHT,
 
     .jump_force_multiplier = MALE_MUSCLED_JUMP_FORCE_MULTIPLIER,  
     .jump_minimum_speed = MALE_MUSCLED_JUMP_MINIMUM_SPEED,
 
-    .jump_timer_max = JUMP_ANIM_AIR,
+    .jump_timer_max = MALE_MUSCLED_JUMP_ANIM_AIR,
 };
 
-AnimationSettings male_muscled_animation_settings = {
+PlayerAnimationSettings male_muscled_animation_settings = {
 
     .run_to_walk_ratio = MALE_MUSCLED_RUN_TO_WALK_RATIO,
     .walk_to_run_ratio = MALE_MUSCLED_WALK_TO_RUN_RATIO,

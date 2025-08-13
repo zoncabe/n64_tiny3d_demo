@@ -9,13 +9,14 @@
 #include "../../include/player/player_animation.h"
 #include "../../include/player/player_motion.h"
 #include "../../include/scene/scenery.h"
+#include "../../include/memory/memory.h"
 
 
-Player* player_create(uint32_t id, const char *model_path)
+Player* player_create(uint32_t id, const char *model_path, PlayerMotionSettings* motion_settings, PlayerAnimationSettings* animation_settings)
 {
 	Player *player = malloc(sizeof(Player));
 	
-	player_init(id, player, model_path);
+	player_init(id, player, model_path, motion_settings, animation_settings);
 
 	return player;
 }

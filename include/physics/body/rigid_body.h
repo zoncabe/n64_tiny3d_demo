@@ -26,6 +26,7 @@ typedef struct RigidBody {
 
 } RigidBody;
 
+void rigidBody_init(RigidBody* body);
 
 
 #endif

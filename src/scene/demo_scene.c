@@ -21,15 +21,16 @@
 #include "../../include/game/game.h"
 #include "../../include/game/game_states.h"
 #include "../../include/render/render.h"
+#include "../../include/assets/male_muscled.h"
 #include "../../include/memory/memory.h"
 
 void init_demoScene()
 {	
-    player[0] = player_create(0, "rom:/models/male_muscled.t3dm");
+    player[0] = player_create(0, "rom:/models/male_muscled.t3dm", &male_muscled_motion_settings, &male_muscled_animation_settings);
 	player[0]->body.position =(Vector3){-195.0f, -200.0f, 0.0f};
 	player[0]->body.rotation.z = 200;
 	
-	player[1] = player_create(1, "rom:/models/gorilla.t3dm");
+	player[1] = player_create(1, "rom:/models/gorilla.t3dm", &male_muscled_motion_settings, &male_muscled_animation_settings);
 	player[1]->body.position =(Vector3){195.0f, 200.0f, 0.0f};
 	player[1]->body.rotation.z = 1;
 

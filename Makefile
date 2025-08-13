@@ -13,6 +13,7 @@ src =   $(wildcard *.c) \
 		$(wildcard src/screen/*.c) \
 		$(wildcard src/time/*.c) \
 		$(wildcard src/physics/math/*.c) \
+		$(wildcard src/physics/body/*.c) \
 		$(wildcard src/physics/collision/*.c) \
 		$(wildcard src/physics/collision/shapes/*.c) \
 		$(wildcard src/viewport/*.c) \
@@ -24,8 +25,7 @@ src =   $(wildcard *.c) \
 		$(wildcard src/graphics/*.c) \
 		$(wildcard src/memory/*.c) \
 		$(wildcard src/render/*.c) \
-
-# $(wildcard src/assets/*.c) \
+		$(wildcard src/assets/*.c) \
 # $(wildcard src/physics/player_collision/*.c) \
 
 assets_png = $(wildcard assets/textures/*.png)
