@@ -9,7 +9,7 @@
 #include "../../include/physics/physics.h"
 #include "../../include/control/control.h"
 #include "../../include/graphics/lighting.h"
-#include "../../include/viewport/camera.h"
+#include "../../include/camera/camera.h"
 #include "../../include/viewport/viewport.h"
 #include "../../include/actor/actor.h"
 #include "../../include/player/player.h"
@@ -29,23 +29,13 @@ void init_demoScene()
     player[0] = player_create(0, "rom:/models/male_muscled.t3dm", &male_muscled_motion_settings, &male_muscled_animation_settings);
 	player[0]->body.position =(Vector3){-195.0f, -200.0f, 0.0f};
 	player[0]->body.rotation.z = 200;
-	
-	player[1] = player_create(1, "rom:/models/gorilla.t3dm", &male_muscled_motion_settings, &male_muscled_animation_settings);
-	player[1]->body.position =(Vector3){195.0f, 200.0f, 0.0f};
-	player[1]->body.rotation.z = 1;
 
 	scenery[0] = scenery_create(0, "rom:/models/room.t3dm");
-	scenery[1] = scenery_create(1, "rom:/models/brew_flag.t3dm");
-	scenery[2] = scenery_create(2, "rom:/models/pole.t3dm");
-	scenery[3] = scenery_create(3, "rom:/models/n64logo.t3dm");
+	scenery[1] = scenery_create(1, "rom:/models/axis.t3dm");
 
-	scenery[0]->position.z = -3;
-	scenery[3]->position.z = -3;
-
+	scenery[0]->position.z = -2;
+	scenery_update(scenery[0]);
+	scenery[1]->position.z = -2;
 	scenery[1]->scale =(Vector3){2.0f, 2.0f, 2.0f};
-	scenery[2]->scale =(Vector3){1.5f, 1.5f, 1.7f};
-	scenery[3]->scale =(Vector3){0.7f, 0.7f, 0.7f};
-
-	scenery[1]->position =(Vector3){   12.0f,  2000.0f,  600.0f};
-	scenery[2]->position =(Vector3){  195.0f,  2000.0f,    0.0f};
+	scenery_update(scenery[1]);
 }

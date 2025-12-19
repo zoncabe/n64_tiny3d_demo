@@ -4,23 +4,28 @@
 #include "../../include/control/control.h"
 #include "../../include/actor/actor.h"
 #include "../../include/graphics/lighting.h"
-#include "../../include/viewport/camera.h"
+#include "../../include/camera/camera.h"
 #include "../../include/viewport/viewport.h"
 #include "../../include/time/time.h"
 #include "../../include/scene/scenery.h"
+#include "../../include/cutscene/intro.h"
 #include "../../include/ui/ui.h"
 #include "../../include/player/player.h"
+#include "../../include/player/player_states.h"
 #include "../../include/game/game.h"
 #include "../../include/control/camera_control.h"
 #include "../../include/game/game_states.h"
 #include "../../include/graphics/vertex_shaders.h"
 #include "../../include/render/render.h"
-#include "../../include/game/intro.h"
 
 
-void gameState_setIntro()
+void gameState_updateIntro()
 {
-	game_setState(MAIN_MENU);
+	timer.intro_counter += timer.delta;
+	if (timer.intro_counter >= 14.0f) {
+		game_setState(MAIN_MENU);
+		timer.intro_counter = 0.0f;
+	}
 }
 
 void gameState_updateMainMenu()
@@ -29,19 +34,19 @@ void gameState_updateMainMenu()
 
 void gameState_updateGameplay()
 {
-	flag_transform += timer.delta * 0.75;
-	animate_flag(scenery[1]->model, flag_transform);
 	player_update();
-	viewport_updateGameplayCamera();
+	viewport_setGameplayCamera();
 }
 
 
 void gameState_updatePause()
-{	
+{
+	if (timer.transition_counter < 1.0f) timer.transition_counter += 20 * timer.delta;
+	if (timer.transition_counter > 1.0f) timer.transition_counter = 1.0f;
 }
 
 
-void gameState_setGameOver()
+void gameStateupddatetGameOver()
 {
 }
 
@@ -85,7 +90,7 @@ void game_updateState()
 	switch(game.state)
 	{
 		case INTRO:{
-			gameState_setIntro();
+			gameState_updateIntro();
 			break;
 		}
 		case MAIN_MENU:{
@@ -101,7 +106,7 @@ void game_updateState()
 			break;
 		}
 		case GAME_OVER:{
-			gameState_setGameOver();
+			gameStateupddatetGameOver();
 			break;
 		}
 	}

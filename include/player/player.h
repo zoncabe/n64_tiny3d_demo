@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#define PLAYER_COUNT 2
+#define PLAYER_COUNT 1
 
 
 typedef struct {
@@ -188,6 +188,8 @@ typedef struct {
     ControllerData control;
 
 	PlayerStateData state;
+
+	int leftFootStep, rightFootStep;
     
 } Player;
 

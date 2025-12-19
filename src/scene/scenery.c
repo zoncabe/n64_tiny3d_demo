@@ -26,26 +26,23 @@ void scenery_set(Scenery* scenery,
                  float pos_x, float pos_y, float pos_z,
                  float rot_x, float rot_y, float rot_z)
 {
-    scenery->scale.x = scale_x;
-    scenery->scale.y = scale_y;
-    scenery->scale.z = scale_z;
+    t3d_mat4fp_from_srt_euler(scenery->t3d_matrix,
+        (float[3]){scale_x, scale_y, scale_z},
+        (float[3]){rad(rot_x), rad(rot_y), rad(rot_z)},
+        (float[3]){pos_x, pos_y, pos_z}
+    );
+}
 
-    scenery->position.x = pos_x;
-    scenery->position.y = pos_y;
-    scenery->position.z = pos_z;
-
-    scenery->rotation.x = rot_x;
-    scenery->rotation.y = rot_y;
-    scenery->rotation.z = rot_z;
+void scenery_update(Scenery* scenery)
+{
+    t3d_mat4fp_from_srt_euler(scenery->t3d_matrix,
+        (float[3]){scenery->scale.x, scenery->scale.y, scenery->scale.z},
+        (float[3]){rad(scenery->rotation.x), rad(scenery->rotation.y), rad(scenery->rotation.z)},
+        (float[3]){scenery->position.x, scenery->position.y, scenery->position.z}
+    );
 }
 
 void scenery_draw(Scenery* scenery)
 {
-	t3d_mat4fp_from_srt_euler(scenery->t3d_matrix,
-		(float[3]){scenery->scale.x, scenery->scale.y, scenery->scale.z},
-		(float[3]){rad(scenery->rotation.x), rad(scenery->rotation.y), rad(scenery->rotation.z)},
-		(float[3]){scenery->position.x, scenery->position.y, scenery->position.z}
-	);
-	t3d_matrix_set(scenery->t3d_matrix, true);
 	rspq_block_run(scenery->dl);
 }

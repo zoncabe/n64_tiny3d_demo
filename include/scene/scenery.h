@@ -2,7 +2,7 @@
 #define SCENERY_H
 
 
-#define SCENERY_COUNT 4
+#define SCENERY_COUNT 2
 
 
 // structures
@@ -32,6 +32,8 @@ void scenery_set(Scenery* scenery,
 				 float scale_x, float scale_y, float scale_z,
 				 float pos_x, float pos_y, float pos_z,
 				 float rot_x, float rot_y, float rot_z);
+
+void scenery_update(Scenery* scenery);
 
 void scenery_draw(Scenery* scenery);
 

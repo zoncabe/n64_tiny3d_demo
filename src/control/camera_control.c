@@ -3,10 +3,10 @@
 #include "../../include/control/control.h"
 #include "../../include/physics/physics.h"
 #include "../../include/graphics/lighting.h"
-#include "../../include/viewport/camera.h"
+#include "../../include/camera/camera.h"
 #include "../../include/viewport/viewport.h"
 #include "../../include/control/camera_control.h"
-#include "../../include/viewport/camera_states.h"
+#include "../../include/camera/camera_states.h"
 
 
 /* input
@@ -21,15 +21,15 @@ int input(int input){
 /* camera_move_stick
 changes the camera variables depending on controller input*/
 
-void cameraControl_orbit_withStick(Camera *camera, ControllerData *data)
+void cameraControl_orbitWithStick(Camera *camera, ControllerData *controller)
 {
     int deadzone = 8;
     float stick_x = 0;
     float stick_y = 0;
 
-    if (fabs(data->input.cstick_x) >= deadzone || fabs(data->input.cstick_y) >= deadzone) {
-        stick_x = data->input.cstick_x;
-        stick_y = - data->input.cstick_y;
+    if (fabs(controller->input.cstick_x) >= deadzone || fabs(controller->input.cstick_y) >= deadzone) {
+        stick_x = controller->input.cstick_x;
+        stick_y = - controller->input.cstick_y;
     }
 
     if (stick_x == 0 && stick_y == 0) {
@@ -43,21 +43,22 @@ void cameraControl_orbit_withStick(Camera *camera, ControllerData *data)
     }
 }
 
-
-void cameraControl_orbit_withCButtons(Camera *camera, ControllerData *data)
+// rendered obsolete by libdragon's gamecube controller support
+// leaving the function because the algorithm is reusable
+void cameraControl_orbit_withCButtons(Camera *camera, ControllerData *controller)
 {
     float input_x = 0;
     float input_y = 0;
 
-    if (data->pressed.c_right || data->pressed.c_left || data->pressed.c_up || data->pressed.c_down){
+    if (controller->pressed.c_right || controller->pressed.c_left || controller->pressed.c_up || controller->pressed.c_down){
         
-        input_x = input(data->pressed.c_right) - input(data->pressed.c_left);
-        input_y = input(data->pressed.c_up) - input(data->pressed.c_down);
+        input_x = input(controller->pressed.c_right) - input(controller->pressed.c_left);
+        input_y = input(controller->pressed.c_up) - input(controller->pressed.c_down);
     }
-    else if (data->held.c_right || data->held.c_left || data->held.c_up || data->held.c_down){
+    else if (controller->held.c_right || controller->held.c_left || controller->held.c_up || controller->held.c_down){
         
-        input_x = input(data->held.c_right) - input(data->held.c_left);
-        input_y = input(data->held.c_up) - input(data->held.c_down);
+        input_x = input(controller->held.c_right) - input(controller->held.c_left);
+        input_y = input(controller->held.c_up) - input(controller->held.c_down);
     }
 
     if (input_y == 0) camera->orbitational_target_velocity.y = 0; 
@@ -69,16 +70,15 @@ void cameraControl_orbit_withCButtons(Camera *camera, ControllerData *data)
 }
 
 
-void cameraControl_aim(Camera *camera, ControllerData *data)
+void cameraControl_aim(Camera *camera, ControllerData *controller)
 {
-    if (data->held.z) camera_setState (camera, AIMING);
+    if (controller->held.z) camera_setState (camera, AIMING);
     else camera_setState (camera, ORBITAL);
 }
 
 
-void cameraControl_setOrbitalMovement(Camera *camera, ControllerData *data)
+void cameraControl_setOrbitalInput(Camera *camera, ControllerData *controller)
 {
-    //cameraControl_orbit_withCButtons(camera, data);
-    cameraControl_orbit_withStick(camera, data);
-    cameraControl_aim(camera, data);
+    cameraControl_orbitWithStick(camera, controller);
+    cameraControl_aim(camera, controller);
 }

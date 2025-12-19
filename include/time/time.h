@@ -10,7 +10,8 @@ typedef struct
     float delta;
     float rate;
 
-  	rspq_syncpoint_t syncPoint;
+    float intro_counter;
+    float transition_counter;
 
 } TimeData;
 

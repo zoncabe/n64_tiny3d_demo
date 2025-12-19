@@ -12,7 +12,8 @@ Then run make from the main folder and pray!
 ### Assets
 
 All actors designed by yours truly, animated using [Mixamo](https://www.mixamo.com).<br/>
-The test room uses the [Prototype retro textures pack](https://opengameart.org/content/prototype-textures-32x32px) by [Emerald Eel](https://opengameart.org/users/emerald-eel-entertainment). Licenced under CC0 / Public Domain.
+[Emerald Eel's Prototype retro textures pack](https://opengameart.org/content/prototype-textures-32x32px) . Licenced under CC0 / Public Domain.<br/>
+[Yoyodaman234's footstep pack](https://freesound.org/people/Yoyodaman234/packs/10356/). Licenced under CC0 / Public Domain.
 
 #### use this code as you will
 hit the [N64brew Discord](https://discord.gg/r86zSRwDDY) for more<br/>

@@ -7,6 +7,9 @@
 #include "../../include/player/player.h"
 #include "../../include/player/player_states.h"
 #include "../../include/player/player_animation.h"
+#include "../../include/graphics/lighting.h"
+#include "../../include/camera/camera.h"
+#include "../../include/viewport/viewport.h"
 
 
 // custom T3D function for my engine
@@ -105,8 +108,7 @@ void playerAnimationSet_attach(T3DSkeleton *main, T3DSkeleton *blend, T3DSkeleto
 
 void playerAnimation_init(Player* player)
 {
-	//player->armature.main =  t3d_skeleton_create_buffered(modelPlayer, display_get_num_buffers()); 
-	player->armature.main = t3d_skeleton_create(player->actor.render_data.model);
+	player->armature.main = t3d_skeleton_create_buffered(player->actor.render_data.model, FB_COUNT);
 	player->armature.blend = t3d_skeleton_clone(&player->armature.main, false);
 	player->armature.blend2 = t3d_skeleton_clone(&player->armature.main, false);
 
@@ -123,10 +125,10 @@ void playerAnimation_setLocomotionBlendingRatio(Player* player)
 	else if (player->motion_data.horizontal_speed <= player->motion_settings.walk_target_speed)
 		player->armature.animation.locomotion_blending_ratio = (player->motion_data.horizontal_speed / player->motion_settings.walk_target_speed);
 
-	else if (player->motion_data.horizontal_speed > player->motion_settings.walk_target_speed && player->motion_data.horizontal_speed <= player->motion_settings.run_target_speed) 
+	else if (player->motion_data.horizontal_speed <= player->motion_settings.run_target_speed) 
 		player->armature.animation.locomotion_blending_ratio = 1.0f - ((player->motion_data.horizontal_speed - player->motion_settings.walk_target_speed) / (player->motion_settings.run_target_speed - player->motion_settings.walk_target_speed));
 
-	else if (player->motion_data.horizontal_speed > player->motion_settings.run_target_speed) 
+	else
 		player->armature.animation.locomotion_blending_ratio = ((player->motion_data.horizontal_speed - player->motion_settings.run_target_speed) / (player->motion_settings.sprint_target_speed - player->motion_settings.run_target_speed));
 
 	if (player->armature.animation.locomotion_blending_ratio > 1.0f) player->armature.animation.locomotion_blending_ratio = 1.0f;
@@ -557,7 +559,7 @@ void playerAnimation_setFalling(Player* player)
 	}
 }
 
-void player_setAnimation(Player* player, rspq_syncpoint_t *syncpoint)
+void player_setAnimation(Player* player)
 {
 	switch (player->state.current)
 	{
@@ -604,7 +606,6 @@ void player_setAnimation(Player* player, rspq_syncpoint_t *syncpoint)
 		}
 	}
 
-	if (syncpoint) rspq_syncpoint_wait(*syncpoint);
 	t3d_skeleton_update(&player->armature.main);
 }
 

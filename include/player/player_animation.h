@@ -11,7 +11,7 @@ void playerAnimationSet_init(T3DModel *model, PlayerAnimationSet *set);
 void playerAnimationSet_attach(T3DSkeleton *main, T3DSkeleton *blend, T3DSkeleton *blend2, PlayerAnimationSet *set);
 void playerAnimation_init(Player* player);
 
-void player_setAnimation(Player* player, rspq_syncpoint_t *syncpoint);
+void player_setAnimation(Player* player);
 
 
 #endif

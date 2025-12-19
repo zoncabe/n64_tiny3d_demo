@@ -11,8 +11,10 @@
 
 #include "include/control/control.h"
 
+#include "include/sound/sound.h"
+
 #include "include/graphics/lighting.h"
-#include "include/viewport/camera.h"
+#include "include/camera/camera.h"
 #include "include/viewport/viewport.h"
 
 #include "include/actor/actor.h"
@@ -24,6 +26,7 @@
 #include "include/scene/scenery.h"
 #include "include/scene/scene.h"
 
+#include "include/graphics/font.h"
 #include "include/ui/ui.h"
 #include "include/ui/menu.h"
 
@@ -39,8 +42,8 @@ int main()
 {
 	// ======== Init ======== //
 
-	//debug_init_isviewer();
-	//debug_init_usblog();
+	debug_init_isviewer();
+	debug_init_usblog();
 	
 	game_init();
     
@@ -51,11 +54,13 @@ int main()
 	for(;;)
 	{
 		time_update();
-		timer.delta *= 2.0f; 
+		//timer.delta *= 1.8f; 
 		
 		player_setControllerData();
 		
 		game_updateState();
+
+		sound_play();
 
 		render();
 	}

@@ -10,7 +10,7 @@
 #include "../../include/player/player_motion.h"
 #include "../../include/player/player_animation.h"
 #include "../../include/graphics/lighting.h"
-#include "../../include/viewport/camera.h"
+#include "../../include/camera/camera.h"
 #include "../../include/viewport/viewport.h"
 #include "../../include/scene/scenery.h"
 #include "../../include/ui/ui.h"
@@ -58,20 +58,7 @@ void player_init(uint32_t id, Player* player, const char* model_path, PlayerMoti
 			.jump_timer = 0,
 
 		}
-	};
-	
-	player->actor.render_data.model = t3d_model_load(model_path);
-	player->actor.render_data.t3d_matrix = malloc_uncached(sizeof(T3DMat4FP));
-
-    t3d_matrix_set(player->actor.render_data.t3d_matrix, true);
-    t3d_mat4fp_identity(player->actor.render_data.t3d_matrix);
-	
-	playerAnimation_init(player);
-
-	rspq_block_begin();
-	t3d_model_draw_skinned(player->actor.render_data.model, &player->armature.main);
-	player->actor.render_data.dl = rspq_block_end();
-	
+	};	
 }
 	
 
@@ -80,6 +67,6 @@ void player_update()
     for (uint8_t i = 0; i < PLAYER_COUNT; i++) {
 
         player_setMotion(player[i]);
-        player_setAnimation(player[i], &timer.syncPoint);
+        player_setAnimation(player[i]);
     }
 }

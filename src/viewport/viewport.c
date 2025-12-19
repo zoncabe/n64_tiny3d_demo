@@ -7,7 +7,8 @@
 #include "../../include/control/control.h"
 #include "../../include/actor/actor.h"
 #include "../../include/graphics/lighting.h"
-#include "../../include/viewport/camera.h"
+#include "../../include/camera/camera.h"
+#include "../../include/camera/camera_motion.h"
 #include "../../include/control/camera_control.h"
 #include "../../include/viewport/viewport.h"
 #include "../../include/player/player.h"
@@ -18,11 +19,12 @@ Viewport viewport;
 
 void viewport_init()
 {
-	display_init(RESOLUTION_320x240, DEPTH_16_BPP, 3, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS);
-	viewport.t3d_viewport = t3d_viewport_create();
+	display_init(RESOLUTION_320x240, DEPTH_16_BPP, FB_COUNT, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS);
+	viewport.t3d_viewport = t3d_viewport_create_buffered(FB_COUNT);
 	t3d_init((T3DInitParams){});
     camera_init(&viewport.camera);
     light_init(&light);
+    viewport.fb_index = 0;
 }
 
 void viewport_clear()
@@ -31,11 +33,11 @@ void viewport_clear()
 	t3d_frame_start();
 	t3d_viewport_attach(&viewport.t3d_viewport);
 
-	t3d_screen_clear_color(RGBA32(154, 181, 198, 0xFF));
+	t3d_screen_clear_color(RGBA32(0, 0, 0, 0xFF));
 	t3d_screen_clear_depth();
 }
 
-void viewport_setGameplayCamera()
+void viewport_setCamera()
 {
     t3d_viewport_set_projection(
         &viewport.t3d_viewport, 
@@ -52,9 +54,9 @@ void viewport_setGameplayCamera()
     );
 }
 
-void viewport_updateGameplayCamera()
+void viewport_setGameplayCamera()
 {
-    cameraControl_setOrbitalMovement(&viewport.camera, &player[0]->control);
-    camera_updateOrbitalPosition(&viewport.camera, &player[0]->body.position, timer.delta);
-    viewport_setGameplayCamera();
+    cameraControl_setOrbitalInput(&viewport.camera, &player[0]->control);
+    camera_setOrbitalMotion(&viewport.camera, &player[0]->body.position);
+    viewport_setCamera();
 }

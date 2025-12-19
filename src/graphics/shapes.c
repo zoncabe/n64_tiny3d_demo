@@ -18,8 +18,10 @@ void shapes_drawGradientBox(
     float R1, float G1, float B1, float A1,
     float R2, float G2, float B2, float A2,
     float R3, float G3, float B3, float A3, 
-    float pos_x, float pos_y, float size_x, float size_y)
+    float pos_x, float pos_y, 
+    float size_x, float size_y)
 {
+    rdpq_set_mode_standard();
     rdpq_mode_combiner(RDPQ_COMBINER_SHADE);
     rdpq_mode_blender(RDPQ_BLENDER_MULTIPLY);
     rdpq_mode_dithering(DITHER_NOISE_NOISE);
