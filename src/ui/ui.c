@@ -31,11 +31,7 @@ void ui_init()
 
 void ui_drawDebugData()
 {
-    rdpq_text_printf(NULL, 1, 270, 20, "%d FPS", (int)(timer.rate));
-
-    rdpq_text_printf(NULL, 1, 20, 20, "random %d", player[0]->leftFootStep);
-	rdpq_text_printf(NULL, 1, 20, 30, "random %d", player[0]->rightFootStep);
-    //rdpq_text_printf(NULL, DROID_SANS, 20, 30, "menu index %f", player[0]->armature.animation.settings.action_idle_max_blending_ratio);
+    //rdpq_text_printf(NULL, DROID_SANS, 270, 20, "%d FPS", (int)(timer.rate));
 }
 
 void ui_drawMainMenu()

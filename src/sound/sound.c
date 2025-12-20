@@ -9,7 +9,16 @@
 #include "../../include/player/player_states.h"
 #include "../../include/player/player_animation.h"
 
-wav64_t sfx_footstepConcrete_01, sfx_footstepConcrete_02, sfx_footstepConcrete_03, sfx_footstepConcrete_04;
+#define NUM_CHANNELS 16
+#define FOOTSTEP_TRACK_COUNT 3
+#define FOOTSTEPS_MAX_VOLUME 0.6f
+#define FOOTSTEPS_MIN_VOLUME 0.3f
+
+wav64_t sfx_footstepConcrete_01,
+sfx_footstepConcrete_02,
+sfx_footstepConcrete_03;
+
+wav64_t reporte_universal;
 
 int leftFootStep, rightFootStep;
 
@@ -17,117 +26,102 @@ int leftFootStep, rightFootStep;
 void sound_init()
 {
 	audio_init(48000, 4);
-	mixer_init(3);
+	mixer_init(NUM_CHANNELS);
 	wav64_init_compression(3);
 
 	wav64_open(&sfx_footstepConcrete_01, "rom:/audio/concrete-footstep-1.wav64");
 	wav64_open(&sfx_footstepConcrete_02, "rom:/audio/concrete-footstep-2.wav64");
 	wav64_open(&sfx_footstepConcrete_03, "rom:/audio/concrete-footstep-3.wav64");
-	wav64_open(&sfx_footstepConcrete_04, "rom:/audio/concrete-footstep-4.wav64");
+	wav64_open(&reporte_universal, "rom:/audio/reporte_universal.wav64");
 }
+
+
+void sound_playFootstepTrack(int track, int channel)
+{
+	switch (track)
+	{
+		case 1: wav64_play(&sfx_footstepConcrete_01, channel); break;
+		case 2: wav64_play(&sfx_footstepConcrete_02, channel); break;
+		case 3: wav64_play(&sfx_footstepConcrete_03, channel); break;
+	}
+}
+
+void sound_setFoostepVolume()
+{
+	float speed_sound_multiplier = player[0]->motion_data.horizontal_speed / player[0]->motion_settings.sprint_target_speed;
+	mixer_ch_set_vol(SFX_CHANNEL_1, FOOTSTEPS_MAX_VOLUME * speed_sound_multiplier, FOOTSTEPS_MAX_VOLUME * speed_sound_multiplier);
+}
+
 
 void sound_setFoosteps(Player* player)
 {
+	sound_setFoostepVolume();
 	if (player->armature.animation.current == WALKING) {
 
-		if (player->armature.animation.set.walking.time < t3d_anim_get_length(&player->armature.animation.set.walking) * 0.5f) {
+		if ((!leftFootStep) 
+			&& player->armature.animation.set.walking.time >= t3d_anim_get_length(&player->armature.animation.set.walking) * 0.25f 
+			&& player->armature.animation.set.walking.time < t3d_anim_get_length(&player->armature.animation.set.walking) * 0.75f) {
 
+			leftFootStep = (int)(rand() % FOOTSTEP_TRACK_COUNT) + 1;
+			sound_playFootstepTrack(leftFootStep, SFX_CHANNEL_1);
 			if (rightFootStep) rightFootStep = 0;
-			if (!leftFootStep) leftFootStep = (int)(rand() % 4) + 1;
-			
-			switch (leftFootStep)
-			{
-				case 1: wav64_play(&sfx_footstepConcrete_01, SFX_CHANNEL_1); break;
-				case 2: wav64_play(&sfx_footstepConcrete_02, SFX_CHANNEL_1); break;
-				case 3: wav64_play(&sfx_footstepConcrete_03, SFX_CHANNEL_1); break;
-				case 4: wav64_play(&sfx_footstepConcrete_04, SFX_CHANNEL_1); break;
-			}
 		}
 		
 			
-		if (player->armature.animation.set.walking.time >= t3d_anim_get_length(&player->armature.animation.set.walking) * 0.5f) {
+		if ((!rightFootStep) && player->armature.animation.set.walking.time >= t3d_anim_get_length(&player->armature.animation.set.walking) * 0.75f) {
 
+			rightFootStep = (int)(rand() % FOOTSTEP_TRACK_COUNT) + 1;
+			sound_playFootstepTrack(rightFootStep, SFX_CHANNEL_1);
 			if (leftFootStep) leftFootStep = 0;
-			if (!rightFootStep) rightFootStep = (int)(rand() % 4) + 1;
-			
-			switch (rightFootStep)
-			{
-				case 1: wav64_play(&sfx_footstepConcrete_01, SFX_CHANNEL_2); break;
-				case 2: wav64_play(&sfx_footstepConcrete_02, SFX_CHANNEL_2); break;
-				case 3: wav64_play(&sfx_footstepConcrete_03, SFX_CHANNEL_2); break;
-				case 4: wav64_play(&sfx_footstepConcrete_04, SFX_CHANNEL_2); break;
-			}
 		}
 	}
 
-	if (player->armature.animation.current == RUNNING) {
+	 else if (player->armature.animation.current == RUNNING) {
 
-		if (player->armature.animation.set.running.time < t3d_anim_get_length(&player->armature.animation.set.running) * 0.5f) {
+		if ((!leftFootStep) 
+			&& player->armature.animation.set.running.time >= t3d_anim_get_length(&player->armature.animation.set.running) * 0.25f
+			&& player->armature.animation.set.running.time < t3d_anim_get_length(&player->armature.animation.set.running) * 0.75f) {
 
+			leftFootStep = (int)(rand() % FOOTSTEP_TRACK_COUNT) + 1;
+			sound_playFootstepTrack(leftFootStep, SFX_CHANNEL_1);
 			if (rightFootStep) rightFootStep = 0;
-			if (!leftFootStep) leftFootStep = (int)(rand() % 4) + 1;
-			
-			switch (leftFootStep)
-			{
-				case 1: wav64_play(&sfx_footstepConcrete_01, SFX_CHANNEL_1); break;
-				case 2: wav64_play(&sfx_footstepConcrete_02, SFX_CHANNEL_1); break;
-				case 3: wav64_play(&sfx_footstepConcrete_03, SFX_CHANNEL_1); break;
-				case 4: wav64_play(&sfx_footstepConcrete_04, SFX_CHANNEL_1); break;
-			}
 		}
 
-		if (player->armature.animation.set.running.time >= t3d_anim_get_length(&player->armature.animation.set.running) * 0.5f) {
+		if ((!rightFootStep) && player->armature.animation.set.running.time >= t3d_anim_get_length(&player->armature.animation.set.running) * 0.75f) {
 
+			rightFootStep = (int)(rand() % FOOTSTEP_TRACK_COUNT) + 1;
+			sound_playFootstepTrack(rightFootStep, SFX_CHANNEL_1);
 			if (leftFootStep) leftFootStep = 0;
-			if (!rightFootStep) rightFootStep = (int)(rand() % 4) + 1;
-			
-			switch (rightFootStep)
-			{
-				case 1: wav64_play(&sfx_footstepConcrete_01, SFX_CHANNEL_2); break;
-				case 2: wav64_play(&sfx_footstepConcrete_02, SFX_CHANNEL_2); break;
-				case 3: wav64_play(&sfx_footstepConcrete_03, SFX_CHANNEL_2); break;
-				case 4: wav64_play(&sfx_footstepConcrete_04, SFX_CHANNEL_2); break;
-			}
 		}
 	}
 
-	if (player->armature.animation.current == SPRINTING) {
+	else if (player->armature.animation.current == SPRINTING) {
 
-		if (player->armature.animation.set.sprinting.time < t3d_anim_get_length(&player->armature.animation.set.sprinting) * 0.5f) {
+		if ((!leftFootStep) 
+			&& player->armature.animation.set.sprinting.time >= t3d_anim_get_length(&player->armature.animation.set.sprinting) * 0.25f
+			&& player->armature.animation.set.sprinting.time < t3d_anim_get_length(&player->armature.animation.set.sprinting) * 0.75f) {
 
+			leftFootStep = (int)(rand() % FOOTSTEP_TRACK_COUNT) + 1;
+			sound_playFootstepTrack(leftFootStep, SFX_CHANNEL_1);
 			if (rightFootStep) rightFootStep = 0;
-			if (!leftFootStep) leftFootStep = (rand() % 4) + 1;
-			
-			switch (leftFootStep)
-			{
-				case 1: wav64_play(&sfx_footstepConcrete_01, SFX_CHANNEL_1); break;
-				case 2: wav64_play(&sfx_footstepConcrete_02, SFX_CHANNEL_1); break;
-				case 3: wav64_play(&sfx_footstepConcrete_03, SFX_CHANNEL_1); break;
-				case 4: wav64_play(&sfx_footstepConcrete_04, SFX_CHANNEL_1); break;
-			}
 		}
 
-		if (player->armature.animation.set.sprinting.time >= t3d_anim_get_length(&player->armature.animation.set.sprinting) * 0.5f) {
+		if ((!rightFootStep) && player->armature.animation.set.sprinting.time >= t3d_anim_get_length(&player->armature.animation.set.sprinting) * 0.75f) {
 
+			rightFootStep = (int)(rand() % FOOTSTEP_TRACK_COUNT) + 1;
+			sound_playFootstepTrack(rightFootStep, SFX_CHANNEL_1);
 			if (leftFootStep) leftFootStep = 0;
-			if (!rightFootStep) rightFootStep = (rand() % 4) + 1;
-			
-			switch (rightFootStep)
-			{
-				case 1: wav64_play(&sfx_footstepConcrete_01, SFX_CHANNEL_2); break;
-				case 2: wav64_play(&sfx_footstepConcrete_02, SFX_CHANNEL_2); break;
-				case 3: wav64_play(&sfx_footstepConcrete_03, SFX_CHANNEL_2); break;
-				case 4: wav64_play(&sfx_footstepConcrete_04, SFX_CHANNEL_2); break;
-			}
 		}
 	}
-	player->leftFootStep = leftFootStep;
-	player->rightFootStep = rightFootStep;
 
+}
+
+void sound_setMixer()
+{
+	sound_setFoosteps(player[0]);
 }
 
 void sound_play()
 {
-	sound_setFoosteps(player[0]);
 	mixer_try_play();
 }

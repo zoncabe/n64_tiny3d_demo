@@ -6,6 +6,7 @@ typedef struct
 {
     uint8_t state;
     uint8_t previous_state;
+    bool playing_intro; 
 
 }Game;
 

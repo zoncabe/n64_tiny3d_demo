@@ -52,7 +52,7 @@ void game_init()
 
 	menu_init();
 	
-	game.state = MAIN_MENU;
+	game.state = INTRO;
 }
 
 void game_close()

@@ -21,19 +21,19 @@ void intro_draw()
     rdpq_sync_pipe();
     sprite_setMode();
     
-    if (timer.intro_counter < 3.0f){
+    if (timer.intro_counter > 4.0f && timer.intro_counter < 7.0f){
         sprite_draw(intro_sprites.n64logo, 0, 0, 0.0f, 1.0f, 1.0f);
     }
     
-    else if (timer.intro_counter < 6.0f) {
+    else if (timer.intro_counter >= 7.0f && timer.intro_counter < 9.0f) {
         sprite_draw(intro_sprites.libdragonlogo, 0, 0, 0.0f, 1.0f, 1.0f);
     }
     
-    else if (timer.intro_counter < 9.0f) { 
+    else if (timer.intro_counter >= 9.0f && timer.intro_counter < 11.0f) { 
         sprite_draw(intro_sprites.tiny3dlogo, 0, 0, 0.0f, 1.0f, 1.0f);
     }
 
-    else {
+    else if (timer.intro_counter >= 11.0f){
         sprite_draw(intro_sprites.zoncabe, 0, 0, 0.0f, 1.0f, 1.0f);
     }
 }

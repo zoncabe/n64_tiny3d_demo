@@ -1,5 +1,6 @@
 #include <t3d/t3danim.h>
 
+#include "../../include/sound/sound.h"
 #include "../../include/physics/physics.h"
 #include "../../include/control/control.h"
 #include "../../include/actor/actor.h"
@@ -20,9 +21,13 @@
 
 
 void gameState_updateIntro()
-{
+{	
+	if (timer.intro_counter == 0) {
+		wav64_play(&reporte_universal, MUSIC_CHANNEL_1);
+		game.playing_intro = true;
+	}
 	timer.intro_counter += timer.delta;
-	if (timer.intro_counter >= 14.0f) {
+	if (timer.intro_counter >= 14.3f) {
 		game_setState(MAIN_MENU);
 		timer.intro_counter = 0.0f;
 	}
@@ -34,6 +39,7 @@ void gameState_updateMainMenu()
 
 void gameState_updateGameplay()
 {
+	if(game.playing_intro) mixer_ch_stop(MUSIC_CHANNEL_1);
 	player_update();
 	viewport_setGameplayCamera();
 }

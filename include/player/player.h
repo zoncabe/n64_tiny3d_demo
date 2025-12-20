@@ -188,8 +188,6 @@ typedef struct {
     ControllerData control;
 
 	PlayerStateData state;
-
-	int leftFootStep, rightFootStep;
     
 } Player;
 
