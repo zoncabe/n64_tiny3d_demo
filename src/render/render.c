@@ -40,7 +40,8 @@ void render_end()
 
 void render_gameplayScene(Player** player, Scenery** scenery)
 {
-	light_set(&light);
+	//directionalLight_set(&directional_light);
+	pointLight_set(point_light);
 
 	for (uint8_t i = 0; i < SCENERY_COUNT; i++) {
 	

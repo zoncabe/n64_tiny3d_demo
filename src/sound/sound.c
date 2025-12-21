@@ -32,7 +32,6 @@ void sound_init()
 	wav64_open(&sfx_footstepConcrete_01, "rom:/audio/concrete-footstep-1.wav64");
 	wav64_open(&sfx_footstepConcrete_02, "rom:/audio/concrete-footstep-2.wav64");
 	wav64_open(&sfx_footstepConcrete_03, "rom:/audio/concrete-footstep-3.wav64");
-	wav64_open(&reporte_universal, "rom:/audio/reporte_universal.wav64");
 }
 
 

@@ -55,19 +55,19 @@ int main()
 	{
 
 		time_update();
-		//timer.delta *= 1.8f; 
+		timer.delta *= 1.8f;
+
+		//sound_setMixer();
+		
+		//sound_play();	
 		
 		player_setControllerData();
 		
-		sound_play();	
-		
 		game_updateState();
-
-		sound_setMixer();
 
 		render();
 
-		sound_play();
+		//sound_play();
 	}
 	
 	// ======== Clean Up ======== //

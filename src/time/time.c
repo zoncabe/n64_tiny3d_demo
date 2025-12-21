@@ -24,5 +24,6 @@ void time_init()
 void time_update()
 {
     timer.delta = display_get_delta_time();
+    timer.counter += timer.delta;
     timer.rate = display_get_fps();
 }

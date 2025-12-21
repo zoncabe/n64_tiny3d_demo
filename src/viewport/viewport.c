@@ -19,11 +19,10 @@ Viewport viewport;
 
 void viewport_init()
 {
-	display_init(RESOLUTION_320x240, DEPTH_16_BPP, FB_COUNT, GAMMA_NONE, FILTERS_RESAMPLE_ANTIALIAS);
+	display_init(RESOLUTION_320x240, DEPTH_16_BPP, FB_COUNT, GAMMA_NONE, FILTERS_DISABLED);
 	viewport.t3d_viewport = t3d_viewport_create_buffered(FB_COUNT);
 	t3d_init((T3DInitParams){});
     camera_init(&viewport.camera);
-    light_init(&light);
     viewport.fb_index = 0;
 }
 
@@ -45,6 +44,16 @@ void viewport_setCamera()
         viewport.camera.near_clipping,
 		viewport.camera.far_clipping
     );
+        
+    /*
+    t3d_viewport_set_ortho(
+        &viewport.t3d_viewport,
+        -640, 640,
+        -480, 480,
+        viewport.camera.near_clipping,
+        viewport.camera.far_clipping
+    );
+    */
 
     t3d_viewport_look_at(
         &viewport.t3d_viewport, 
@@ -54,7 +63,7 @@ void viewport_setCamera()
     );
 }
 
-void viewport_setGameplayCamera()
+void viewport_setOrbitalCamera()
 {
     cameraControl_setOrbitalInput(&viewport.camera, &player[0]->control);
     camera_setOrbitalMotion(&viewport.camera, &player[0]->body.position);

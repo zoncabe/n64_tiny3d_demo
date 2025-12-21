@@ -2,7 +2,7 @@
 #define SCENERY_H
 
 
-#define SCENERY_COUNT 2
+#define SCENERY_COUNT 11
 
 
 // structures

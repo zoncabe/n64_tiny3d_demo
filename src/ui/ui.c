@@ -31,7 +31,7 @@ void ui_init()
 
 void ui_drawDebugData()
 {
-    //rdpq_text_printf(NULL, DROID_SANS, 270, 20, "%d FPS", (int)(timer.rate));
+    rdpq_text_printf(NULL, DROID_SANS, 270, 20, "%d FPS", (int)(timer.rate));
 }
 
 void ui_drawMainMenu()
