@@ -1,12 +1,12 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
+#define DIRECTIONAL_LIGHT_COUNT 0
 #define POINT_LIGHT_COUNT 4
 
 typedef struct{
 
-	uint8_t ambient_color[4];
-	uint8_t color[4];
+	color_t color;
 	T3DVec3 direction;
 	T3DVec3 size;
 	
@@ -15,19 +15,26 @@ typedef struct{
 typedef struct {
 
 	T3DVec3 position;
-	uint8_t color[4];
+	color_t color;
 	float  strength;
 
 } PointLight;
 
-extern DirectionalLight directional_light;
-extern PointLight point_light[POINT_LIGHT_COUNT];
+typedef struct{
 
-extern color_t lamp_color;
+	color_t ambient_color;
+	DirectionalLight directional[DIRECTIONAL_LIGHT_COUNT];
+	PointLight point[POINT_LIGHT_COUNT];
 
-void directionalLight_init(DirectionalLight* light);
-void directionalLight_set(DirectionalLight *light);
-void pointLight_init(PointLight* light, Vector3 position, color_t color, float strength);
-void pointLight_set(PointLight* light);
+} Lights;
+
+extern Lights lights;
+
+void light_initDirectional(DirectionalLight* light, T3DVec3 direction, color_t color);
+void light_initPoint(PointLight* light, T3DVec3 position, color_t color, float strength);
+void light_initAmbient(color_t color);
+void light_setDirectional(Lights* lights);
+void light_setPoint(Lights* lights);
+void light_set(Lights* lights);
 
 #endif

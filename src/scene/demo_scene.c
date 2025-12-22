@@ -24,16 +24,22 @@
 #include "../../include/assets/male_muscled.h"
 #include "../../include/memory/memory.h"
 
+
+color_t lamp_color = {250, 250, 230, 0xFF};
+color_t ambient_color = {20, 20, 20, 0xFF};
+
 void init_demoScene()
 {	
 	// Initialize lighting
 
-	//directionalLight_init(&directional_light);
+	light_initAmbient(ambient_color);
+
+	//light_initDirectional(&lights.directional[0], (T3DVec3){{1.0f, -1.0f, -1.0f}}, (color_t){200, 200, 220, 0xFF});
 	
-	pointLight_init(&point_light[0], (Vector3){1795.0f, 0.0f, 200.0f}, lamp_color, 1000.0f);
-	pointLight_init(&point_light[1], (Vector3){-1795.0f, 0.0f, 200.0f}, lamp_color, 1000.0f);
-	pointLight_init(&point_light[2], (Vector3){0.0f, 1795.0f, 200.0f}, lamp_color, 1000.0f);
-	pointLight_init(&point_light[3], (Vector3){0.0f, -1795.0f, 200.0f}, lamp_color, 1000.0f);
+	light_initPoint(&lights.point[0], (T3DVec3){{1895.0f, 0.0f, 460.0f}}, lamp_color, 1.0f);
+	light_initPoint(&lights.point[1], (T3DVec3){{-1895.0f, 0.0f, 460.0f}}, lamp_color, 1.0f);
+	light_initPoint(&lights.point[2], (T3DVec3){{0.0f, 1895.0f, 460.0f}}, lamp_color, 1.0f);
+	light_initPoint(&lights.point[3], (T3DVec3){{0.0f, -1895.0f, 460.0f}}, lamp_color, 1.0f);
 
 	// Initialize player and scenery
     player[0] = player_create(0, "rom:/models/male_muscled.t3dm", &male_muscled_motion_settings, &male_muscled_animation_settings);
@@ -64,26 +70,30 @@ void init_demoScene()
 	scenery_update(scenery[2]);
 
 	scenery[3]->position = (Vector3){1895.0f, 0.0f, -2.0f};
+	scenery[3]->scale.z = 0.75f;
 	scenery_update(scenery[3]);
-	scenery[4]->position = (Vector3){1895.0f, 0.0f, 600.0f};
+	scenery[4]->position = (Vector3){1895.0f, 0.0f, 460.0f};
 	scenery[4]->rotation.x =270.0f;
 	scenery_update(scenery[4]);
 
 	scenery[5]->position = (Vector3){-1895.0f, 0.0f, -2.0f};
+	scenery[5]->scale.z = 0.75f;
 	scenery_update(scenery[5]);
-	scenery[6]->position = (Vector3){-1895.0f, 0.0f, 600.0f};
+	scenery[6]->position = (Vector3){-1895.0f, 0.0f, 460.0f};
 	scenery[6]->rotation.x =270.0f;
 	scenery_update(scenery[6]);
 
 	scenery[7]->position = (Vector3){0.0f, 1895.0f, -2.0f};
+	scenery[7]->scale.z = 0.75f;
 	scenery_update(scenery[7]);
-	scenery[8]->position = (Vector3){0.0f, 1895.0f, 600.0f};
+	scenery[8]->position = (Vector3){0.0f, 1895.0f, 460.0f};
 	scenery[8]->rotation.x =270.0f;
 	scenery_update(scenery[8]);	
 
 	scenery[9]->position = (Vector3){0.0f, -1895.0f, -2.0f};
+	scenery[9]->scale.z = 0.75f;
 	scenery_update(scenery[9]);
-	scenery[10]->position = (Vector3){0.0f, -1895.0f, 600.0f};
+	scenery[10]->position = (Vector3){0.0f, -1895.0f, 460.0f};
 	scenery[10]->rotation.x =270.0f;
 	scenery_update(scenery[10]);
 
