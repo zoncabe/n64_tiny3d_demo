@@ -6,7 +6,7 @@
 #include "../../include/physics/physics.h"
 #include "../../include/control/control.h"
 #include "../../include/actor/actor.h"
-#include "../../include/graphics/lighting.h"
+#include "../../include/light/lighting.h"
 #include "../../include/camera/camera.h"
 #include "../../include/camera/camera_motion.h"
 #include "../../include/control/camera_control.h"

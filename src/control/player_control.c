@@ -10,7 +10,7 @@
 #include "../../include/player/player_animation.h"
 #include "../../include/physics/physics.h"
 #include "../../include/control/control.h"
-#include "../../include/graphics/lighting.h"
+#include "../../include/light/lighting.h"
 #include "../../include/camera/camera.h"
 #include "../../include/viewport/viewport.h"
 #include "../../include/time/time.h"

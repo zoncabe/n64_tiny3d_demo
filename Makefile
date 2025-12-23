@@ -26,6 +26,7 @@ src =   $(wildcard *.c) \
 		$(wildcard src/ui/*.c) \
 		$(wildcard src/graphics/*.c) \
 		$(wildcard src/memory/*.c) \
+		$(wildcard src/light/*.c) \
 		$(wildcard src/render/*.c) \
 		$(wildcard src/assets/*.c) \
 		$(wildcard src/sound/*.c) \

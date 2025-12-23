@@ -2,7 +2,7 @@
 
 #include "../../include/physics/physics.h"
 #include "../../include/time/time.h"
-#include "../../include/graphics/lighting.h"
+#include "../../include/light/lighting.h"
 #include "../../include/camera/camera.h"
 
 

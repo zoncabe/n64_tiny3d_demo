@@ -9,7 +9,7 @@
 #include "../../include/control/player_control.h"
 #include "../../include/player/player_motion.h"
 #include "../../include/player/player_animation.h"
-#include "../../include/graphics/lighting.h"
+#include "../../include/light/lighting.h"
 #include "../../include/camera/camera.h"
 #include "../../include/viewport/viewport.h"
 

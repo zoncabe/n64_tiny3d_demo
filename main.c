@@ -13,7 +13,7 @@
 
 #include "include/sound/sound.h"
 
-#include "include/graphics/lighting.h"
+#include "include/light/lighting.h"
 #include "include/camera/camera.h"
 #include "include/viewport/viewport.h"
 
@@ -42,8 +42,8 @@ int main()
 {
 	// ======== Init ======== //
 
-	debug_init_isviewer();
-	debug_init_usblog();
+	//debug_init_isviewer();
+	//debug_init_usblog();
 	
 	game_init();
     
@@ -55,11 +55,11 @@ int main()
 	{
 
 		time_update();
-		timer.delta *= 1.8f;
+		//timer.delta *= 3;
 
-		//sound_setMixer();
+		sound_setMixer();
 		
-		//sound_play();	
+		sound_play();	
 		
 		player_setControllerData();
 		
@@ -67,7 +67,7 @@ int main()
 
 		render();
 
-		//sound_play();
+		sound_play();
 	}
 	
 	// ======== Clean Up ======== //

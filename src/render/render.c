@@ -12,7 +12,7 @@
 
 #include "../../include/physics/physics.h"
 #include "../../include/scene/scenery.h"
-#include "../../include/graphics/lighting.h"
+#include "../../include/light/lighting.h"
 #include "../../include/camera/camera.h"
 #include "../../include/viewport/viewport.h"
 
@@ -39,10 +39,8 @@ void render_end()
 }
 
 void render_gameplayScene(Player** player, Scenery** scenery)
-{
-	//directionalLight_set(&directional_light);
-	
-	light_set(&lights);
+{	
+	light_set(&light);
 
 	for (uint8_t i = 0; i < SCENERY_COUNT; i++) {
 	
