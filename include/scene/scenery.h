@@ -2,14 +2,12 @@
 #define SCENERY_H
 
 
-#define SCENERY_COUNT 15
+#define SCENERY_COUNT 2
 
 
 // structures
 
 typedef struct {
-
-  	uint32_t id;
 
 	rspq_block_t *dl;
 	T3DModel *model;

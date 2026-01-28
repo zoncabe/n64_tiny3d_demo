@@ -40,9 +40,9 @@ void game_init()
 	
 	joypad_init();
 	
-	viewport_init();
-	
 	time_init();
+	
+	viewport_init();
 	
 	ui_init();
 

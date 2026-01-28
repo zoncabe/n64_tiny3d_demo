@@ -7,7 +7,6 @@
 
 #include "../../include/player/player.h"
 #include "../../include/control/player_control.h"
-#include "../../include/player/player_motion.h"
 #include "../../include/player/player_animation.h"
 
 #include "../../include/physics/physics.h"
@@ -27,6 +26,8 @@
 #include "../../include/ui/menu.h"
 #include "../../include/cutscene/intro.h"
 
+#include "../../include/sound/sound.h"
+
 
 void render_start()
 {
@@ -41,17 +42,17 @@ void render_end()
 void render_gameplayScene(Player** player, Scenery** scenery)
 {	
 	light_set(&light);
-
-	for (uint8_t i = 0; i < SCENERY_COUNT; i++) {
 	
-		scenery_draw(scenery[i]);
-	};
-
     for (uint8_t i = 0; i < PLAYER_COUNT; i++) {
 		
 		t3d_skeleton_use(&player[i]->armature.main);
 		actor_draw(&player[i]->actor, &player[i]->body);
 	}
+
+	for (uint8_t i = 0; i < SCENERY_COUNT; i++) {
+		
+		scenery_draw(scenery[i]);
+	};
 }
 
 void render()

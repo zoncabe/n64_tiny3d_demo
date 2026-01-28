@@ -1,6 +1,9 @@
 #ifndef MALE_MUSCLED_H
 #define MALE_MUSCLED_H
 
+#define male_muscled_model "rom:/models/male_muscled.t3dm"
+#define gorilla_model "rom:/models/gorilla.t3dm"
+#define girl_model "rom:/models/girl.t3dm"
 
 // motion settings
 
@@ -65,7 +68,8 @@
 #define MALE_MUSCLED_LAND_ANIM_STAND 0.833333f
 
 
-extern PlayerMotionSettings male_muscled_motion_settings;
+extern ActorMotionSettings male_muscled_motion_settings;
+
 extern PlayerAnimationSettings male_muscled_animation_settings;
 
 #endif

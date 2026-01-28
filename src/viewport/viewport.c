@@ -36,7 +36,7 @@ void viewport_clear()
 	t3d_screen_clear_depth();
 }
 
-void viewport_setCamera()
+void viewport_setPerspectiveCamera()
 {
     t3d_viewport_set_projection(
         &viewport.t3d_viewport, 
@@ -44,8 +44,17 @@ void viewport_setCamera()
         viewport.camera.near_clipping,
 		viewport.camera.far_clipping
     );
-        
-    /*
+
+    t3d_viewport_look_at(
+        &viewport.t3d_viewport, 
+        &(T3DVec3){{viewport.camera.position.x, viewport.camera.position.y, viewport.camera.position.z}}, 
+        &(T3DVec3){{viewport.camera.target.x, viewport.camera.target.y, viewport.camera.target.z}}, 
+        &(T3DVec3){{0, 0, 1}}
+    );
+}
+
+void viewport_setIsometricCamera()
+{
     t3d_viewport_set_ortho(
         &viewport.t3d_viewport,
         -640, 640,
@@ -53,7 +62,6 @@ void viewport_setCamera()
         viewport.camera.near_clipping,
         viewport.camera.far_clipping
     );
-    */
 
     t3d_viewport_look_at(
         &viewport.t3d_viewport, 
@@ -67,5 +75,6 @@ void viewport_setOrbitalCamera()
 {
     cameraControl_setOrbitalInput(&viewport.camera, &player[0]->control);
     camera_setOrbitalMotion(&viewport.camera, &player[0]->body.position);
-    viewport_setCamera();
+    viewport_setPerspectiveCamera();
+    //viewport_setIsometricCamera();
 }

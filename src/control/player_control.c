@@ -3,10 +3,9 @@
 #include "../../include/physics/physics.h"
 #include "../../include/control/control.h"
 #include "../../include/actor/actor.h"
+#include "../../include/actor/actor_states.h"
 #include "../../include/player/player.h"
-#include "../../include/player/player_states.h"
 #include "../../include/control/player_control.h"
-#include "../../include/player/player_motion.h"
 #include "../../include/player/player_animation.h"
 #include "../../include/physics/physics.h"
 #include "../../include/control/control.h"
@@ -23,32 +22,34 @@
 #include "../../include/render/render.h"
 
 
-// function implementations
-
 void playerControl_setJump(Player* player)
 {    
     if (player->control.pressed.a && player->state.current != ROLLING && player->state.current != JUMPING && player->state.current != FALLING){
         
         player->motion_input.jump_hold = true;
+        
         player->motion_data.jump_initial_velocity = player->body.velocity;
-        player_setState(player, JUMPING);
+
+        actor_setState(&player->state, JUMPING);
     }
     
     else if (player->control.held.a) return;
     
-    else player->motion_input.jump_hold = false;
+    else {
+        player->motion_input.jump_hold = false;
+    }
 }
 
 void playerControl_setRoll(Player* player)
 {
     if (player->control.pressed.b 
         && player->state.current != ROLLING
-        && player->state.current != STAND_IDLE
+        && player->state.current != STANDING_IDLE
         && player->state.current != WALKING
         && player->state.current != JUMPING
         && player->state.current != FALLING){
 
-        player_setState(player, ROLLING);
+        actor_setState(&player->state, ROLLING);
     }
 }
 
@@ -62,26 +63,32 @@ void playerControl_moveWithStick(Player* player, float camera_angle_around, floa
         Vector2 stick = {player->control.input.stick_x, player->control.input.stick_y};
         
         stick_magnitude = vector2_magnitude(&stick);
-        player->motion_data.target_yaw = deg(atan2(player->control.input.stick_x, -player->control.input.stick_y) - rad(camera_angle_around - (0.5 * camera_offset_angle)));
+        
+        float target_yaw = deg(atan2(player->control.input.stick_x, -player->control.input.stick_y) - rad(camera_angle_around - (0.5 * camera_offset_angle)));
+        float target_speed = stick_magnitude * 5;
 
-        player->motion_data.horizontal_target_speed = stick_magnitude * 5;
+        player->motion_data.target_yaw = target_yaw;
+        player->motion_data.target_yaw = target_yaw;
+
+        player->motion_data.horizontal_target_speed = target_speed;
+        player->motion_data.horizontal_target_speed = target_speed;
     }
 
     
     if (stick_magnitude == 0 && player->state.current != ROLLING && player->state.current != JUMPING && player->state.current != FALLING){
-        player_setState(player, STAND_IDLE);
+        actor_setState(&player->state, STANDING_IDLE);
     }
 
     else if (stick_magnitude > 0 && stick_magnitude <= 65 && player->state.current != ROLLING && player->state.current != JUMPING && player->state.current != FALLING){
-        player_setState(player, WALKING);
+        actor_setState(&player->state, WALKING);
     }
 
     else if (player->control.held.r && stick_magnitude > 65 && player->state.current != ROLLING && player->state.current != JUMPING && player->state.current != FALLING){
-        player_setState(player, SPRINTING);
+        actor_setState(&player->state, SPRINTING);
     }
 
     else if (stick_magnitude > 65 && player->state.current != ROLLING && player->state.current != JUMPING && player->state.current != FALLING){
-        player_setState(player, RUNNING);
+        actor_setState(&player->state, RUNNING);
     }
 }
 

@@ -86,8 +86,7 @@ color_t color_lerp(color_t* a, color_t* b, float t)
     if (h.h < 0.0f) h.h += 1.0f;
     if (h.h > 1.0f) h.h -= 1.0f;
 
-    return hsv_to_rgb
-(h);
+    return hsv_to_rgb(h);
 }
 
 color_t color_lerpRGB(color_t *a, color_t *b, float t)
@@ -103,5 +102,31 @@ color_t color_lerpRGB(color_t *a, color_t *b, float t)
     };
 }
 
+/*
+color_t ambient_color = {10, 10, 10, 0xFF};
 
+color_t red = {255, 0, 0, 0xFF}, green = {0, 255, 0, 0xFF}, blue = {0, 0, 255, 0xFF};
 
+float interpolator[4] = {0.0f, 0.75f, 1.5f, 2.25f};
+
+color_t lamp[4];
+
+void set_RGB_colors(color_t *color, float *interpolator)
+{
+
+    *interpolator += timer.delta;
+    if (*interpolator >= 3.0f) *interpolator -= 3.0f;
+
+    if (*interpolator < 1.0f) *color = color_lerp(&red, &blue, *interpolator);
+    else if (*interpolator < 2.0f) *color = color_lerp(&blue, &green, *interpolator - 1.0f);
+    else *color = color_lerp(&green, &red, *interpolator - 2.0f);
+}
+
+void change_lamp_colors()
+{
+	for (int i = 0; i < 4; i++) {
+		set_RGB_colors(&lamp[i], &interpolator[i]);
+		light_updatePoint(&light.point[i], light.point[i].position, lamp[i], light.point[i].size);
+	}
+}
+*/

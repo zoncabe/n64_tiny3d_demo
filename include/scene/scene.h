@@ -2,6 +2,6 @@
 #define SCENE_H
 
 
-void init_demoScene();
+void demoScene_init();
 
 #endif

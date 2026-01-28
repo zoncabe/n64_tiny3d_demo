@@ -17,7 +17,6 @@ extern Viewport viewport;
 
 void viewport_init();
 void viewport_clear();
-void viewport_setCamera();
 void viewport_setOrbitalCamera();
 
 #endif

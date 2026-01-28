@@ -1,8 +1,8 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
-#define DIRECTIONAL_LIGHT_COUNT 0
-#define POINT_LIGHT_COUNT 6
+#define DIRECTIONAL_LIGHT_COUNT 1
+#define POINT_LIGHT_COUNT 0
 
 typedef struct{
 
@@ -37,7 +37,5 @@ void light_updatePoint(PointLight* light, T3DVec3 position, color_t color, float
 void light_setDirectional(DirectionalLight* light);
 void light_setPoint(PointLight* light);
 void light_set(Light* light);
-
-void change_lamp_colors();
 
 #endif

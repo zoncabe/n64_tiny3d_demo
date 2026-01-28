@@ -12,7 +12,6 @@
 #include "../../include/cutscene/intro.h"
 #include "../../include/ui/ui.h"
 #include "../../include/player/player.h"
-#include "../../include/player/player_states.h"
 #include "../../include/game/game.h"
 #include "../../include/control/camera_control.h"
 #include "../../include/game/game_states.h"
@@ -48,8 +47,8 @@ void gameState_updateGameplay()
 		mixer_ch_stop(4);
 		game.playing_intro = false;
 	}
-	animate_flag(scenery[2]->model, timer.counter * 1.2f);
-	change_lamp_colors();
+	//animate_flag(scenery[2]->model, timer.counter * 1.2f);
+	//change_lamp_colors();
 	player_update();
 	playerCollision_collideWithRoom(player[0]);
 	viewport_setOrbitalCamera();

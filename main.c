@@ -4,7 +4,6 @@
 #include <t3d/t3dmodel.h>
 #include <t3d/t3dskeleton.h>
 #include <t3d/t3danim.h>
-//#include <t3d/t3ddebug.h>
 
 #include "include/time/time.h"
 #include "include/physics/physics.h"
@@ -40,38 +39,31 @@
 
 int main()
 {
-	// ======== Init ======== //
-
-	//debug_init_isviewer();
-	//debug_init_usblog();
+	debug_init_isviewer();
+	debug_init_usblog();
 	
 	game_init();
     
-	init_demoScene();
-
-	// ======== Main Loop ======== //
+	demoScene_init();
 
 	for(;;)
 	{
 
 		time_update();
-		//timer.delta *= 3;
+		timer.delta *= 2;
 
-		sound_setMixer();
-		
-		sound_play();	
-		
 		player_setControllerData();
 		
 		game_updateState();
+		
+		//sound_setMixer();
+		//sound_play();
 
 		render();
 
-		sound_play();
+		//sound_play();
 	}
-	
-	// ======== Clean Up ======== //
-	
+
 	game_close();
 
 	return 0;

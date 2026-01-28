@@ -4,10 +4,10 @@
 #include "../../include/physics/physics.h"
 #include "../../include/control/control.h"
 #include "../../include/actor/actor.h"
+#include "../../include/actor/actor_motion.h"
+#include "../../include/actor/actor_states.h"
 #include "../../include/player/player.h"
-#include "../../include/player/player_states.h"
 #include "../../include/control/player_control.h"
-#include "../../include/player/player_motion.h"
 #include "../../include/player/player_animation.h"
 #include "../../include/light/lighting.h"
 #include "../../include/camera/camera.h"
@@ -20,18 +20,16 @@
 Player* player[PLAYER_COUNT];
 
 
-void player_init(uint32_t id, Player* player, const char* model_path, PlayerMotionSettings* motion_settings, PlayerAnimationSettings* animation_settings)
+void player_init(Player* player, const char* model_path, ActorMotionSettings* motion_settings, PlayerAnimationSettings* animation_settings)
 {
 
     *player = (Player){
-		
-		.id = id,
 
-		.state.current = STAND_IDLE,
+		.state.current = STANDING_IDLE,
 
 		.actor = {
 
-			.render_data.model_scale = {1.0f, 1.0f, 1.0f}
+			.model_scale = {1.0f, 1.0f, 1.0f}
 		},
 
 		.body = {
@@ -66,7 +64,8 @@ void player_update()
 {
     for (uint8_t i = 0; i < PLAYER_COUNT; i++) {
 
-        player_setMotion(player[i]);
+        //player_setMotion(player[i]);
+		actor_setMotion(&player[i]->body, &player[i]->motion_data, &player[i]->motion_input, &player[i]->motion_settings, &player[i]->state);
         player_setAnimation(player[i]);
     }
 }

@@ -8,7 +8,6 @@
 #include "../../include/ui/ui.h"
 #include "../../include/ui/menu.h"
 #include "../../include/player/player.h"
-#include "../../include/player/player_states.h"
 #include "../../include/light/lighting.h"
 #include "../../include/graphics/font.h"
 #include "../../include/camera/camera.h"

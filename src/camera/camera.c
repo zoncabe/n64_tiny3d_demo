@@ -1,8 +1,6 @@
 #include <t3d/t3d.h>
 
 #include "../../include/physics/physics.h"
-#include "../../include/time/time.h"
-#include "../../include/light/lighting.h"
 #include "../../include/camera/camera.h"
 
 

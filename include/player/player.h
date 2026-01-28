@@ -1,60 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#define PLAYER_COUNT 1
+#define PLAYER_COUNT 2
 
-
-typedef struct {
-
-	float idle_acceleration_rate;
-	float walk_acceleration_rate;
-	float run_acceleration_rate;
-	float sprint_acceleration_rate;
-	float roll_acceleration_grip_rate;
-	
-	float walk_target_speed;
-	float run_target_speed;
-	float sprint_target_speed;
-	
-	float roll_change_grip_time;
-	float roll_timer_max;
-	
-	float aerial_control_rate;
-	float jump_acceleration_rate;
-	float jump_force_multiplier;
-	float jump_minimum_speed;
-	float jump_timer_max;
-
-} PlayerMotionSettings;
-
-typedef struct {
-
-	float stick_magnitude;
-	float stick_x;
-	float stick_y;
-
-	bool jump_hold;
-
-} PlayerMotionInput;
-
-typedef struct {
-
-	float target_yaw;
-
-	Vector3 target_velocity;
-	float horizontal_target_speed;
-	float horizontal_speed;
-	
-	float roll_timer;
-	
-	Vector3 jump_initial_velocity;
-	float jump_force;
-	float jump_timer;
-
-	bool grounded;
-	float grounding_height;
-
-} PlayerMotionData;
 
 typedef struct {
 
@@ -163,38 +111,36 @@ typedef struct{
 typedef struct {
 
 	uint8_t current;
-	uint8_t previous;
-	uint8_t locomotion;
+		uint8_t previous;
+		uint8_t locomotion;
 
 } PlayerStateData;
 
 
 typedef struct {
-    
-    uint8_t id;
 
+    ControllerData control;
+    
 	RigidBody body;
 
     Actor actor;
 
     PlayerArmature armature;
 
-    PlayerMotionSettings motion_settings;
+	ActorMotionSettings motion_settings;
     
-    PlayerMotionInput motion_input;
+	ActorMotionInput motion_input;
 
-    PlayerMotionData motion_data;
+	ActorMotionData motion_data;
     
-    ControllerData control;
-
-	PlayerStateData state;
-    
+	ActorStateData state;
+	
 } Player;
 
 
 extern Player* player[PLAYER_COUNT];
 
-void player_init(uint32_t id, Player* player, const char* model_path, PlayerMotionSettings* motion_settings, PlayerAnimationSettings* animation_settings);
+void player_init(Player* player, const char* model_path, ActorMotionSettings* motion_settings, PlayerAnimationSettings* animation_settings);
 
 void player_update();
 

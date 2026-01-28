@@ -4,8 +4,9 @@
 #include "../../include/physics/physics.h"
 #include "../../include/control/control.h"
 #include "../../include/actor/actor.h"
+#include "../../include/actor/actor_states.h"
+#include "../../include/actor/actor_animation.h"
 #include "../../include/player/player.h"
-#include "../../include/player/player_states.h"
 #include "../../include/player/player_animation.h"
 #include "../../include/light/lighting.h"
 #include "../../include/camera/camera.h"
@@ -31,8 +32,6 @@ void t3d_skeleton_blend_3(const T3DSkeleton *skelRes, const T3DSkeleton *skelA, 
 		t3d_vec3_lerp(&boneRes->scale, &boneRes->scale, &boneC->scale, factorC);
 	}
 }
-
-// function implementations
 
 void playerAnimationSet_init(T3DModel *model, PlayerAnimationSet *set)
 {
@@ -108,11 +107,11 @@ void playerAnimationSet_attach(T3DSkeleton *main, T3DSkeleton *blend, T3DSkeleto
 
 void playerAnimation_init(Player* player)
 {
-	player->armature.main = t3d_skeleton_create_buffered(player->actor.render_data.model, FB_COUNT);
+	player->armature.main = t3d_skeleton_create_buffered(player->actor.model, FB_COUNT);
 	player->armature.blend = t3d_skeleton_clone(&player->armature.main, false);
 	player->armature.blend2 = t3d_skeleton_clone(&player->armature.main, false);
 
-	playerAnimationSet_init(player->actor.render_data.model, &player->armature.animation.set);
+	playerAnimationSet_init(player->actor.model, &player->armature.animation.set);
 
 	playerAnimationSet_attach(&player->armature.main, &player->armature.blend, &player->armature.blend2, &player->armature.animation.set);
 }
@@ -320,10 +319,10 @@ void playerAnimation_setStandingLocomotion(Player* player)
 {
 	if (player->motion_data.horizontal_speed == 0){
 
-		if (player->armature.animation.current != STAND_IDLE){
+		if (player->armature.animation.current != STANDING_IDLE){
 
 			player->armature.animation.previous = player->armature.animation.current;
-			player->armature.animation.current = STAND_IDLE;
+			player->armature.animation.current = STANDING_IDLE;
 		}
 		playerAnimation_setStandingIdle(player);
 		playerAnimation_setLanding(player);
@@ -563,7 +562,7 @@ void player_setAnimation(Player* player)
 {
 	switch (player->state.current)
 	{
-		case STAND_IDLE:
+		case STANDING_IDLE:
 		{
 			playerAnimation_setStandingLocomotion(player);
 			break;
