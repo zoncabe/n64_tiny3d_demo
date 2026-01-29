@@ -31,94 +31,56 @@ ActorMotionSettings male_muscled_motion_settings = {
     .jump_minimum_speed = MALE_MUSCLED_JUMP_MINIMUM_SPEED,
 
     .jump_timer_max = MALE_MUSCLED_JUMP_ANIM_AIR,
-};
+};    
+    
 
-PlayerAnimationSettings male_muscled_animation_settings = {
+ActorAnimationSettings male_muscled_animation_settings = {
 
-    .run_to_walk_ratio = MALE_MUSCLED_RUN_TO_WALK_RATIO,
-    .walk_to_run_ratio = MALE_MUSCLED_WALK_TO_RUN_RATIO,
+    .standing_locomotion = {
 
-    .sprint_to_run_ratio = MALE_MUSCLED_SPRINT_TO_RUN_RATIO,
-    .run_to_sprint_ratio = MALE_MUSCLED_RUN_TO_SPRINT_RATIO,
+        .action_idle_max_blending_ratio = MALE_MUSCLED_ACTION_IDLE_MAX_BLENDING_RATIO,
 
-    .sprint_to_walk_ratio = MALE_MUSCLED_SPRINT_TO_WALK_RATIO,
-    .walk_to_sprint_ratio = MALE_MUSCLED_WALK_TO_SPRINT_RATIO,
+        .run_to_walk_ratio = MALE_MUSCLED_RUN_TO_WALK_RATIO,
+        .walk_to_run_ratio = MALE_MUSCLED_WALK_TO_RUN_RATIO,
 
-    .action_idle_max_blending_ratio = MALE_MUSCLED_ACTION_IDLE_MAX_BLENDING_RATIO,
+        .sprint_to_run_ratio = MALE_MUSCLED_SPRINT_TO_RUN_RATIO,
+        .run_to_sprint_ratio = MALE_MUSCLED_RUN_TO_SPRINT_RATIO,
 
-    .walking_anim_length = MALE_MUSCLED_WALKING_ANIM_LENGTH,
-    .walking_anim_length_half = MALE_MUSCLED_WALKING_ANIM_LENGTH_HALF,
+        .sprint_to_walk_ratio = MALE_MUSCLED_SPRINT_TO_WALK_RATIO,
+        .walk_to_sprint_ratio = MALE_MUSCLED_WALK_TO_SPRINT_RATIO,
 
-    .running_anim_length_half = MALE_MUSCLED_RUNNING_ANIM_LENGTH_HALF,
-    .running_anim_length = MALE_MUSCLED_RUNNING_ANIM_LENGTH,
+        .walking_anim_length = MALE_MUSCLED_WALKING_ANIM_LENGTH,
+        .walking_anim_length_half = MALE_MUSCLED_WALKING_ANIM_LENGTH_HALF,
 
-    .sprinting_anim_length = MALE_MUSCLED_SPRINTING_ANIM_LENGTH,
-    .sprinting_anim_length_half = MALE_MUSCLED_SPRINTING_ANIM_LENGTH_HALF,
+        .running_anim_length = MALE_MUSCLED_RUNNING_ANIM_LENGTH,
+        .running_anim_length_half = MALE_MUSCLED_RUNNING_ANIM_LENGTH_HALF,
 
-    .jump_anim_length = MALE_MUSCLED_JUMP_ANIM_LENGTH,
-    .jump_anim_crouch = MALE_MUSCLED_JUMP_ANIM_CROUCH,
-    .jump_anim_air = MALE_MUSCLED_JUMP_ANIM_AIR,
-    .jump_max_blending_ratio = MALE_MUSCLED_JUMP_MAX_BLENDING_RATIO,
-    .jump_footing_speed = MALE_MUSCLED_JUMP_FOOTING_SPEED,
+        .sprinting_anim_length = MALE_MUSCLED_SPRINTING_ANIM_LENGTH,
+        .sprinting_anim_length_half = MALE_MUSCLED_SPRINTING_ANIM_LENGTH_HALF,
+    },
 
-    .land_anim_length = MALE_MUSCLED_LAND_ANIM_LENGTH,
-    .land_anim_ground = MALE_MUSCLED_LAND_ANIM_GROUND,
-    .land_anim_stand = MALE_MUSCLED_LAND_ANIM_STAND,
+    .jump = {
 
-    .run_to_rolling_anim_ground = MALE_MUSCLED_RUN_TO_ROLLING_ANIM_GROUND,
-    .run_to_rolling_anim_grip = MALE_MUSCLED_RUN_TO_ROLLING_ANIM_GRIP,
-    .run_to_rolling_anim_stand = MALE_MUSCLED_RUN_TO_ROLLING_ANIM_STAND,
-    .run_to_rolling_anim_lenght = MALE_MUSCLED_RUN_TO_ROLLING_ANIM_LENGHT,
+        .jump_max_blending_ratio = MALE_MUSCLED_JUMP_MAX_BLENDING_RATIO,
 
-    .stand_to_rolling_anim_grip = MALE_MUSCLED_STAND_TO_ROLLING_ANIM_GRIP,
-    .stand_to_rolling_anim_lenght = MALE_MUSCLED_STAND_TO_ROLLING_ANIM_LENGHT,
-};
+        .jump_anim_length = MALE_MUSCLED_JUMP_ANIM_LENGTH,
+        .jump_anim_crouch = MALE_MUSCLED_JUMP_ANIM_CROUCH,
+        .jump_anim_air = MALE_MUSCLED_JUMP_ANIM_AIR,
+        .jump_footing_speed = MALE_MUSCLED_JUMP_FOOTING_SPEED,
 
+        .land_anim_length = MALE_MUSCLED_LAND_ANIM_LENGTH,
+        .land_anim_ground = MALE_MUSCLED_LAND_ANIM_GROUND,
+        .land_anim_stand = MALE_MUSCLED_LAND_ANIM_STAND,
+    },
 
-ActorAnimationLocomotionSettings male_muscled_animation_locomotion_settings = {
+    .roll = {
 
-    .action_idle_max_blending_ratio = MALE_MUSCLED_ACTION_IDLE_MAX_BLENDING_RATIO,
+        .run_to_rolling_anim_ground = MALE_MUSCLED_RUN_TO_ROLLING_ANIM_GROUND,
+        .run_to_rolling_anim_grip = MALE_MUSCLED_RUN_TO_ROLLING_ANIM_GRIP,
+        .run_to_rolling_anim_stand = MALE_MUSCLED_RUN_TO_ROLLING_ANIM_STAND,
+        .run_to_rolling_anim_lenght = MALE_MUSCLED_RUN_TO_ROLLING_ANIM_LENGHT,
 
-    .run_to_walk_ratio = MALE_MUSCLED_RUN_TO_WALK_RATIO,
-    .walk_to_run_ratio = MALE_MUSCLED_WALK_TO_RUN_RATIO,
-
-    .sprint_to_run_ratio = MALE_MUSCLED_SPRINT_TO_RUN_RATIO,
-    .run_to_sprint_ratio = MALE_MUSCLED_RUN_TO_SPRINT_RATIO,
-
-    .sprint_to_walk_ratio = MALE_MUSCLED_SPRINT_TO_WALK_RATIO,
-    .walk_to_sprint_ratio = MALE_MUSCLED_WALK_TO_SPRINT_RATIO,
-
-    .walking_anim_length = MALE_MUSCLED_WALKING_ANIM_LENGTH,
-    .walking_anim_length_half = MALE_MUSCLED_WALKING_ANIM_LENGTH_HALF,
-
-    .running_anim_length = MALE_MUSCLED_RUNNING_ANIM_LENGTH,
-    .running_anim_length_half = MALE_MUSCLED_RUNNING_ANIM_LENGTH_HALF,
-
-    .sprinting_anim_length = MALE_MUSCLED_SPRINTING_ANIM_LENGTH,
-    .sprinting_anim_length_half = MALE_MUSCLED_SPRINTING_ANIM_LENGTH_HALF,
-};
-
-ActorAnimationJumpSettings male_muscled_animation_jump_settings = {
-
-    .jump_max_blending_ratio = MALE_MUSCLED_JUMP_MAX_BLENDING_RATIO,
-
-    .jump_anim_length = MALE_MUSCLED_JUMP_ANIM_LENGTH,
-    .jump_anim_crouch = MALE_MUSCLED_JUMP_ANIM_CROUCH,
-    .jump_anim_air = MALE_MUSCLED_JUMP_ANIM_AIR,
-    .jump_footing_speed = MALE_MUSCLED_JUMP_FOOTING_SPEED,
-
-    .land_anim_length = MALE_MUSCLED_LAND_ANIM_LENGTH,
-    .land_anim_ground = MALE_MUSCLED_LAND_ANIM_GROUND,
-    .land_anim_stand = MALE_MUSCLED_LAND_ANIM_STAND,
-};
-
-ActorAnimationRollSettings male_muscled_animation_roll_settings = {
-
-    .run_to_rolling_anim_ground = MALE_MUSCLED_RUN_TO_ROLLING_ANIM_GROUND,
-    .run_to_rolling_anim_grip = MALE_MUSCLED_RUN_TO_ROLLING_ANIM_GRIP,
-    .run_to_rolling_anim_stand = MALE_MUSCLED_RUN_TO_ROLLING_ANIM_STAND,
-    .run_to_rolling_anim_lenght = MALE_MUSCLED_RUN_TO_ROLLING_ANIM_LENGHT,
-
-    .stand_to_rolling_anim_grip = MALE_MUSCLED_STAND_TO_ROLLING_ANIM_GRIP,
-    .stand_to_rolling_anim_lenght = MALE_MUSCLED_STAND_TO_ROLLING_ANIM_LENGHT,
+        .stand_to_rolling_anim_grip = MALE_MUSCLED_STAND_TO_ROLLING_ANIM_GRIP,
+        .stand_to_rolling_anim_lenght = MALE_MUSCLED_STAND_TO_ROLLING_ANIM_LENGHT,
+    },
 };

@@ -74,7 +74,7 @@ void viewport_setIsometricCamera()
 void viewport_setOrbitalCamera()
 {
     cameraControl_setOrbitalInput(&viewport.camera, &player[0]->control);
-    camera_setOrbitalMotion(&viewport.camera, &player[0]->body.position);
+    camera_setOrbitalMotion(&viewport.camera, &player[0]->actor.body.position);
     viewport_setPerspectiveCamera();
     //viewport_setIsometricCamera();
 }

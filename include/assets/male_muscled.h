@@ -70,6 +70,6 @@
 
 extern ActorMotionSettings male_muscled_motion_settings;
 
-extern PlayerAnimationSettings male_muscled_animation_settings;
+extern ActorAnimationSettings male_muscled_animation_settings;
 
 #endif

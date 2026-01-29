@@ -209,39 +209,39 @@ void actorMotion_setFalling(RigidBody* body, ActorMotionData* motion_data, Actor
 }
 
 
-void actor_setMotion(RigidBody* body, ActorMotionData* motion_data, ActorMotionInput* motion_input, ActorMotionSettings* motion_settings, ActorStateData* state)
+void actor_setMotion(Actor* actor)
 {
-   switch (state->current) {
+   switch (actor->state.current) {
     
         case STANDING_IDLE: {
-            actorMotion_setIdle(body, motion_data, motion_settings);
+            actorMotion_setIdle(&actor->body, &actor->motion.data, &actor->motion.settings);
             break;
         }
         case WALKING: {
-            actorMotion_setWalking(body, motion_data, motion_settings);
+            actorMotion_setWalking(&actor->body, &actor->motion.data, &actor->motion.settings);
             break;
         }
         case RUNNING: {
-            actorMotion_setRunning(body, motion_data, motion_settings);
+            actorMotion_setRunning(&actor->body, &actor->motion.data, &actor->motion.settings);
             break;
         }
         case SPRINTING: {
-            actorMotion_setSprinting(body, motion_data, motion_settings);
+            actorMotion_setSprinting(&actor->body, &actor->motion.data, &actor->motion.settings);
             break;
         }
         case ROLLING: {
-            actorMotion_setRolling(body, motion_data, motion_settings, state);
+            actorMotion_setRolling(&actor->body, &actor->motion.data, &actor->motion.settings, &actor->state);
             break;
         }
         case JUMPING: {
-            actorMotion_setJump(body, motion_data, motion_input, motion_settings, state);
+            actorMotion_setJump(&actor->body, &actor->motion.data, &actor->motion.input, &actor->motion.settings, &actor->state);
             break;
         }
         case FALLING: {
-            actorMotion_setFalling(body, motion_data, motion_settings, state);
+            actorMotion_setFalling(&actor->body, &actor->motion.data, &actor->motion.settings, &actor->state);
             break;
         }
     }
 
-	actorMotion_integrate(body, motion_data, motion_settings, state);
+	actorMotion_integrate(&actor->body, &actor->motion.data, &actor->motion.settings, &actor->state);
 }

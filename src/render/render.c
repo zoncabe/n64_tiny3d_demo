@@ -45,8 +45,8 @@ void render_gameplayScene(Player** player, Scenery** scenery)
 	
     for (uint8_t i = 0; i < PLAYER_COUNT; i++) {
 		
-		t3d_skeleton_use(&player[i]->armature.main);
-		actor_draw(&player[i]->actor, &player[i]->body);
+		t3d_skeleton_use(&player[i]->actor.armature.main);
+		actor_draw(&player[i]->actor, &player[i]->actor.body);
 	}
 
 	for (uint8_t i = 0; i < SCENERY_COUNT; i++) {

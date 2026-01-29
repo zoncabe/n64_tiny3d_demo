@@ -14,11 +14,11 @@
 #include "../../include/memory/memory.h"
 
 
-Player* player_create(const char *model_path, ActorMotionSettings* motion_settings, PlayerAnimationSettings* animation_settings)
+Player* player_create(const char *model_path, ActorMotionSettings* motion_settings, ActorAnimationSettings* animation_settings)
 {
 	Player *player = malloc(sizeof(Player));
 	
-	player_init(player, model_path, motion_settings, animation_settings);
+	player_init(player, motion_settings, animation_settings);
 	player->actor.model = t3d_model_load(model_path);
 	player->actor.t3d_matrix = malloc_uncached(sizeof(T3DMat4FP) * FB_COUNT);
 
@@ -28,7 +28,7 @@ Player* player_create(const char *model_path, ActorMotionSettings* motion_settin
 	playerAnimation_init(player);
 
 	rspq_block_begin();
-	t3d_model_draw_skinned(player->actor.model, &player->armature.main);
+	t3d_model_draw_skinned(player->actor.model, &player->actor.armature.main);
 	player->actor.dl = rspq_block_end();
 
 	return player;

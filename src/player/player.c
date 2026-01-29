@@ -20,43 +20,11 @@
 Player* player[PLAYER_COUNT];
 
 
-void player_init(Player* player, const char* model_path, ActorMotionSettings* motion_settings, PlayerAnimationSettings* animation_settings)
+void player_init(Player* player, ActorMotionSettings* motion_settings, ActorAnimationSettings* animation_settings)
 {
 
-    *player = (Player){
-
-		.state.current = STANDING_IDLE,
-
-		.actor = {
-
-			.model_scale = {1.0f, 1.0f, 1.0f}
-		},
-
-		.body = {
-			.position = {0.0f, 0.0f, 0.0f},
-			.velocity = {0.0f, 0.0f, 0.0f},
-			.rotation = {0.0f, 0.0f, 0.0f},
-		},
-
-		.motion_settings = *motion_settings,
-
-		.armature.animation = {
-			
-			.settings = *animation_settings,
-			.current = 0,
-			.previous = 0,
-			.speed = 0.0f,
-			.action_blending_ratio = 0.0f,
-			.footing_blending_ratio = 0.5f,
-		},
-
-
-		.motion_data = {
-
-			.jump_timer = 0,
-
-		}
-	};	
+    *player = (Player){};
+	actor_init(&player->actor, motion_settings, animation_settings);	
 }
 	
 
@@ -64,8 +32,7 @@ void player_update()
 {
     for (uint8_t i = 0; i < PLAYER_COUNT; i++) {
 
-        //player_setMotion(player[i]);
-		actor_setMotion(&player[i]->body, &player[i]->motion_data, &player[i]->motion_input, &player[i]->motion_settings, &player[i]->state);
+		actor_setMotion(&player[i]->actor);
         player_setAnimation(player[i]);
     }
 }

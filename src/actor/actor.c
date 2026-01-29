@@ -4,6 +4,7 @@
 #include "../../include/physics/physics.h"
 #include "../../include/control/control.h"
 #include "../../include/actor/actor.h"
+#include "../../include/actor/actor_states.h"
 #include "../../include/player/player.h"
 #include "../../include/control/player_control.h"
 #include "../../include/player/player_animation.h"
@@ -14,8 +15,56 @@
 
 // function implemenations
 
-void actor_init(Actor *actor, T3DSkeleton* armature, const char* model_path)
+void actor_init(Actor *actor, ActorMotionSettings* motion_settings, ActorAnimationSettings* animation_settings)
 {
+    *actor = (Actor){
+
+		.motion.settings = *motion_settings,
+		
+		.animation.settings = *animation_settings,
+		
+		.model_scale = {1.0f, 1.0f, 1.0f},
+		
+		.state.current = STANDING_IDLE,
+		
+		.body = {
+		
+			.position = {0.0f, 0.0f, 0.0f},
+			.velocity = {0.0f, 0.0f, 0.0f},
+			.rotation = {0.0f, 0.0f, 0.0f},
+		},
+
+		.motion.data = {
+
+			.target_yaw = 0.0f,
+
+			.horizontal_target_speed = 0.0f,
+			.horizontal_speed = 0.0f,
+
+			.roll_timer = 0.0f,
+
+			.jump_initial_velocity = {0.0f, 0.0f, 0.0f},
+			.jump_force = 0.0f,
+			.jump_timer = 0.0f,
+
+			.grounded = true,
+			.grounding_height = 0.0f,
+		},
+
+		.animation.data = {
+			
+			.current = 0,
+			.previous = 0,
+			
+			.locomotion_blending_ratio = 0.0f,
+			.action_blending_ratio = 0.0f,
+			.jump_blending_ratio = 0.0f,
+			.roll_blending_ratio = 0.0f,
+			.footing_blending_ratio = 0.5f,
+
+			.speed = 0.0f,
+		},
+	};
 }
 
 void actor_draw(Actor* actor, RigidBody* body)

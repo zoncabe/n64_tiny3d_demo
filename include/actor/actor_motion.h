@@ -12,6 +12,6 @@
 // function prototypes
 
 
-void actor_setMotion(RigidBody* body, ActorMotionData* motion_data, ActorMotionInput* motion_input, ActorMotionSettings* motion_settings, ActorStateData* state);
+void actor_setMotion(Actor* actor);
 
 #endif

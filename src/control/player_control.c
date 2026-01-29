@@ -24,32 +24,32 @@
 
 void playerControl_setJump(Player* player)
 {    
-    if (player->control.pressed.a && player->state.current != ROLLING && player->state.current != JUMPING && player->state.current != FALLING){
+    if (player->control.pressed.a && player->actor.state.current != ROLLING && player->actor.state.current != JUMPING && player->actor.state.current != FALLING){
         
-        player->motion_input.jump_hold = true;
+        player->actor.motion.input.jump_hold = true;
         
-        player->motion_data.jump_initial_velocity = player->body.velocity;
+        player->actor.motion.data.jump_initial_velocity = player->actor.body.velocity;
 
-        actor_setState(&player->state, JUMPING);
+        actor_setState(&player->actor.state, JUMPING);
     }
     
     else if (player->control.held.a) return;
     
     else {
-        player->motion_input.jump_hold = false;
+        player->actor.motion.input.jump_hold = false;
     }
 }
 
 void playerControl_setRoll(Player* player)
 {
     if (player->control.pressed.b 
-        && player->state.current != ROLLING
-        && player->state.current != STANDING_IDLE
-        && player->state.current != WALKING
-        && player->state.current != JUMPING
-        && player->state.current != FALLING){
+        && player->actor.state.current != ROLLING
+        && player->actor.state.current != STANDING_IDLE
+        && player->actor.state.current != WALKING
+        && player->actor.state.current != JUMPING
+        && player->actor.state.current != FALLING){
 
-        actor_setState(&player->state, ROLLING);
+        actor_setState(&player->actor.state, ROLLING);
     }
 }
 
@@ -67,28 +67,26 @@ void playerControl_moveWithStick(Player* player, float camera_angle_around, floa
         float target_yaw = deg(atan2(player->control.input.stick_x, -player->control.input.stick_y) - rad(camera_angle_around - (0.5 * camera_offset_angle)));
         float target_speed = stick_magnitude * 5;
 
-        player->motion_data.target_yaw = target_yaw;
-        player->motion_data.target_yaw = target_yaw;
+        player->actor.motion.data.target_yaw = target_yaw;
 
-        player->motion_data.horizontal_target_speed = target_speed;
-        player->motion_data.horizontal_target_speed = target_speed;
+        player->actor.motion.data.horizontal_target_speed = target_speed;
     }
 
     
-    if (stick_magnitude == 0 && player->state.current != ROLLING && player->state.current != JUMPING && player->state.current != FALLING){
-        actor_setState(&player->state, STANDING_IDLE);
+    if (stick_magnitude == 0 && player->actor.state.current != ROLLING && player->actor.state.current != JUMPING && player->actor.state.current != FALLING){
+        actor_setState(&player->actor.state, STANDING_IDLE);
     }
 
-    else if (stick_magnitude > 0 && stick_magnitude <= 65 && player->state.current != ROLLING && player->state.current != JUMPING && player->state.current != FALLING){
-        actor_setState(&player->state, WALKING);
+    else if (stick_magnitude > 0 && stick_magnitude <= 65 && player->actor.state.current != ROLLING && player->actor.state.current != JUMPING && player->actor.state.current != FALLING){
+        actor_setState(&player->actor.state, WALKING);
     }
 
-    else if (player->control.held.r && stick_magnitude > 65 && player->state.current != ROLLING && player->state.current != JUMPING && player->state.current != FALLING){
-        actor_setState(&player->state, SPRINTING);
+    else if (player->control.held.r && stick_magnitude > 65 && player->actor.state.current != ROLLING && player->actor.state.current != JUMPING && player->actor.state.current != FALLING){
+        actor_setState(&player->actor.state, SPRINTING);
     }
 
-    else if (stick_magnitude > 65 && player->state.current != ROLLING && player->state.current != JUMPING && player->state.current != FALLING){
-        actor_setState(&player->state, RUNNING);
+    else if (stick_magnitude > 65 && player->actor.state.current != ROLLING && player->actor.state.current != JUMPING && player->actor.state.current != FALLING){
+        actor_setState(&player->actor.state, RUNNING);
     }
 }
 

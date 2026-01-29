@@ -29,7 +29,6 @@
 
 void demoScene_init()
 {	
-	
 	light_initAmbient((color_t){60, 60, 60, 0xFF});
 	light_initDirectional(&light.directional[0], (T3DVec3){{1.0f, -1.0f, 1.0f}}, (color_t){210, 210, 210, 0xFF});
 	
@@ -37,12 +36,12 @@ void demoScene_init()
 	//light_initPoint(&light.point[1], (T3DVec3){{0.0f, -1300.0f, 655.0f}}, (color_t){255, 255, 255, 0xFF}, 1000.0f);
 
     player[0] = player_create(male_muscled_model, &male_muscled_motion_settings, &male_muscled_animation_settings);
-	player[0]->body.position =(Vector3){-210.0f, -210.0f, 0.0f};
-	player[0]->body.rotation.z = 200;
+	player[0]->actor.body.position =(Vector3){-210.0f, -210.0f, 0.0f};
+	player[0]->actor.body.rotation.z = 200;
 		
 	player[1] = player_create(gorilla_model, &male_muscled_motion_settings, &male_muscled_animation_settings);
-	player[1]->body.position =(Vector3){210.0f, 500.0f, 0.0f};
-	player[1]->body.rotation.z = 20;
+	player[1]->actor.body.position =(Vector3){210.0f, 500.0f, 0.0f};
+	player[1]->actor.body.rotation.z = 20;
 
 	scenery[0] = scenery_create("rom:/models/room.t3dm");
 	scenery[0]->position.z = -2;

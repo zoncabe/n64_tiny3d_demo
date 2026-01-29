@@ -19,11 +19,11 @@
 #include "../../include/render/render.h"
 
 void playerCollision_collideWithRoom(Player* player) {
-    if (player->body.position.x > 2450) player->body.position.x = 2450;
-    if (player->body.position.x < -2450) player->body.position.x = -2450;
-    if (player->body.position.y > 2450) player->body.position.y = 2450;
-    if (player->body.position.y < -2450) player->body.position.y = -2450;
-    if (player->body.position.z < 0) player->body.position.z = 0;
+    if (player->actor.body.position.x > 2450) player->actor.body.position.x = 2450;
+    if (player->actor.body.position.x < -2450) player->actor.body.position.x = -2450;
+    if (player->actor.body.position.y > 2450) player->actor.body.position.y = 2450;
+    if (player->actor.body.position.y < -2450) player->actor.body.position.y = -2450;
+    if (player->actor.body.position.z < 0) player->actor.body.position.z = 0;
 }
 
 
