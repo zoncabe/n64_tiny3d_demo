@@ -109,11 +109,11 @@ typedef struct {
 
 typedef struct {
 
-	T3DAnim run_to_rolling_left;
-	T3DAnim run_to_rolling_right;
+	T3DAnim running_to_roll_left;
+	T3DAnim running_to_roll_right;
 
-	T3DAnim stand_to_rolling_left;
-	T3DAnim stand_to_rolling_right;
+	T3DAnim standing_to_roll_left;
+	T3DAnim standing_to_roll_right;
 	
 } ActorAnimationRollSet;
 

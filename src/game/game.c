@@ -12,6 +12,7 @@
 #include "../../include/scene/scenery.h"
 #include "../../include/ui/ui.h"
 #include "../../include/ui/menu.h"
+#include "../../include/graphics/sprites.h"
 #include "../../include/cutscene/intro.h"
 #include "../../include/player/player.h"
 #include "../../include/game/game.h"
@@ -21,12 +22,7 @@
 #include "../../include/sound/sound.h"
 
 
-// global
-
 Game game;
-
-
-// function implementations
 
 void game_init()
 {

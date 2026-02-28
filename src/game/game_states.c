@@ -9,6 +9,7 @@
 #include "../../include/viewport/viewport.h"
 #include "../../include/time/time.h"
 #include "../../include/scene/scenery.h"
+#include "../../include/graphics/sprites.h"
 #include "../../include/cutscene/intro.h"
 #include "../../include/ui/ui.h"
 #include "../../include/player/player.h"
@@ -17,6 +18,7 @@
 #include "../../include/game/game_states.h"
 #include "../../include/graphics/vertex_shaders.h"
 #include "../../include/render/render.h"
+
 
 void playerCollision_collideWithRoom(Player* player) {
     if (player->actor.body.position.x > 2450) player->actor.body.position.x = 2450;
@@ -27,42 +29,62 @@ void playerCollision_collideWithRoom(Player* player) {
 }
 
 
-
 void gameState_updateIntro()
 {	
-	timer.intro_counter += timer.delta;
-	if (timer.intro_counter >= 14.3f) {
+	game.timer.intro_counter += timer.delta;
+	
+	if (game.timer.intro_counter >= INTRO_SCENE_LENGTH) {
 		game_setState(MAIN_MENU);
-		timer.intro_counter = 0.0f;
+		game.timer.intro_counter = 0.0f;
 	}
 }
 
 void gameState_updateMainMenu()
 {
+	if (game.previous_state == PAUSE && game.timer.gameplay_transition < 1.0f) {
+	
+		game.timer.gameplay_transition += 10 * timer.delta;
+		
+		if (game.timer.gameplay_transition >= 1.0f) {
+		
+			game.timer.gameplay_transition = 1.0f;
+			game.timer.pause_transition = 0.0f;
+		}
+	}
+	
+	else if (game.timer.mainMenu_transition > 0.0f) game.timer.mainMenu_transition -= 10 * timer.delta;
 }
 
 void gameState_updateGameplay()
 {
-	if(game.playing_intro) {
-		mixer_ch_stop(4);
-		game.playing_intro = false;
+	
+	if (game.previous_state == MAIN_MENU && game.timer.mainMenu_transition < 1.0f) {
+	
+		game.timer.mainMenu_transition += 10 * timer.delta;
+		if (game.timer.mainMenu_transition > 1.0f) game.timer.mainMenu_transition = 1.0f;
 	}
-	//animate_flag(scenery[2]->model, timer.counter * 1.2f);
-	//change_lamp_colors();
-	player_update();
-	playerCollision_collideWithRoom(player[0]);
-	viewport_setOrbitalCamera();
+
+	else {
+
+		if (game.timer.gameplay_transition > 0.0f) game.timer.gameplay_transition -= 10 * timer.delta;
+		if (game.timer.pause_transition > 0.0f) game.timer.pause_transition -= 20 * timer.delta;
+		if (game.timer.pause_transition < 0.0f) game.timer.pause_transition = 0.0f;
+		
+		player_update();
+		playerCollision_collideWithRoom(player[0]);
+		viewport_setOrbitalCamera();
+	}
 }
 
 
 void gameState_updatePause()
 {
-	if (timer.transition_counter < 1.0f) timer.transition_counter += 20 * timer.delta;
-	if (timer.transition_counter > 1.0f) timer.transition_counter = 1.0f;
+	if (game.timer.pause_transition < 1.0f) game.timer.pause_transition += 20 * timer.delta;
+	if (game.timer.pause_transition > 1.0f) game.timer.pause_transition = 1.0f;
 }
 
 
-void gameStateupddatetGameOver()
+void gameState_updateGameOver()
 {
 }
 
@@ -122,7 +144,7 @@ void game_updateState()
 			break;
 		}
 		case GAME_OVER:{
-			gameStateupddatetGameOver();
+			gameState_updateGameOver();
 			break;
 		}
 	}

@@ -13,7 +13,7 @@
 
 
 // custom T3D function for my engine
-void t3d_skeleton_blend_3_(const T3DSkeleton *skelRes, const T3DSkeleton *skelA, const T3DSkeleton *skelB, const T3DSkeleton *skelC, float factorB, float factorC)
+void t3d_skeleton_blend_3(const T3DSkeleton *skelRes, const T3DSkeleton *skelA, const T3DSkeleton *skelB, const T3DSkeleton *skelC, float factorB, float factorC)
 {
 	for (int i = 0; i < skelRes->skeletonRef->boneCount; i++)
 	{
@@ -98,20 +98,20 @@ void actorAnimation_initRollSet(Actor* actor)
 	//actor->animation.roll.stand_to_rolling_left = t3d_anim_create(actor->model, "stand-to-roll-left");
 	//actor->animation.roll.stand_to_rolling_right = t3d_anim_create(actor->model, "stand-to-roll-right");
 	
-	actor->animation.roll.run_to_rolling_right = t3d_anim_create(actor->model, "run-to-roll-right");
-	actor->animation.roll.run_to_rolling_left = t3d_anim_create(actor->model, "run-to-roll-left");
+	actor->animation.roll.running_to_roll_right = t3d_anim_create(actor->model, "running-to-roll-right");
+	actor->animation.roll.running_to_roll_left = t3d_anim_create(actor->model, "running-to-roll-left");
 
 	//t3d_anim_set_looping(&actor->animation.roll.stand_to_rolling_left, false);
 	//t3d_anim_set_looping(&actor->animation.roll.stand_to_rolling_right, false);
 
-	t3d_anim_set_looping(&actor->animation.roll.run_to_rolling_left, false);
-	t3d_anim_set_looping(&actor->animation.roll.run_to_rolling_right, false);
+	t3d_anim_set_looping(&actor->animation.roll.running_to_roll_left, false);
+	t3d_anim_set_looping(&actor->animation.roll.running_to_roll_right, false);
 
 	//t3d_anim_attach(&actor->animation.roll.stand_to_rolling_left, &actor->armature.blend);
 	//t3d_anim_attach(&actor->animation.roll.stand_to_rolling_right, &actor->armature.blend2);
 
-	t3d_anim_attach(&actor->animation.roll.run_to_rolling_left, &actor->armature.blend);
-	t3d_anim_attach(&actor->animation.roll.run_to_rolling_right, &actor->armature.blend2);
+	t3d_anim_attach(&actor->animation.roll.running_to_roll_left, &actor->armature.blend);
+	t3d_anim_attach(&actor->animation.roll.running_to_roll_right, &actor->armature.blend2);
 }
 
 void actorAnimation_setLocomotionBlendingRatio(Actor* actor)
@@ -204,7 +204,7 @@ void actorAnimation_setStandingIdle(Actor* actor)
 	t3d_anim_update(&actor->animation.standing_locomotion.breathing_idle, timer.delta);
 	t3d_anim_update(&actor->animation.standing_locomotion.standing_idle_left, timer.delta);
 	t3d_anim_update(&actor->animation.standing_locomotion.standing_idle_right, timer.delta);
-	t3d_skeleton_blend_3_(&actor->armature.main, 
+	t3d_skeleton_blend_3(&actor->armature.main, 
 		&actor->armature.main, 
 		&actor->armature.blend, 
 		&actor->armature.blend2, 
@@ -238,7 +238,7 @@ void actorAnimation_setRunToRoll(Actor* actor)
 
 	if (actor->animation.data.footing_blending_ratio <= 0.5f){
 				
-		t3d_anim_update(&actor->animation.roll.run_to_rolling_right, timer.delta);
+		t3d_anim_update(&actor->animation.roll.running_to_roll_right, timer.delta);
 		t3d_skeleton_blend(&actor->armature.main,
 			&actor->armature.main,
 			&actor->armature.blend2,
@@ -248,7 +248,7 @@ void actorAnimation_setRunToRoll(Actor* actor)
 	
 	if (actor->animation.data.footing_blending_ratio > 0.5f){
 			
-		t3d_anim_update(&actor->animation.roll.run_to_rolling_left, timer.delta);
+		t3d_anim_update(&actor->animation.roll.running_to_roll_left, timer.delta);
 		t3d_skeleton_blend(&actor->armature.main, 
 			&actor->armature.main, 
 			&actor->armature.blend,
@@ -261,7 +261,7 @@ void actorAnimation_setFallingIdle(Actor* actor)
 {
 	t3d_anim_update(&actor->animation.jump.falling_left, timer.delta);
 	t3d_anim_update(&actor->animation.jump.falling_right, timer.delta);
-	t3d_skeleton_blend_3_(&actor->armature.main, 
+	t3d_skeleton_blend_3(&actor->armature.main, 
 		&actor->armature.main, 
 		&actor->armature.blend, 
 		&actor->armature.blend2, 
@@ -277,7 +277,7 @@ void actorAnimation_setJump(Actor* actor)
 		actorAnimation_setJumpBlendingRatio(actor);
 		t3d_anim_update(&actor->animation.jump.jump_left, timer.delta);
 		t3d_anim_update(&actor->animation.jump.jump_right, timer.delta);
-		t3d_skeleton_blend_3_(&actor->armature.main, 
+		t3d_skeleton_blend_3(&actor->armature.main, 
 			&actor->armature.main,
 			&actor->armature.blend, 
 			&actor->armature.blend2, 
@@ -293,7 +293,7 @@ void actorAnimation_setLanding(Actor* actor)
 	actorAnimation_setLandingBlendingRatio(actor);
 	t3d_anim_update(&actor->animation.jump.land_left, timer.delta);
 	t3d_anim_update(&actor->animation.jump.land_right, timer.delta);
-	t3d_skeleton_blend_3_(&actor->armature.main, 
+	t3d_skeleton_blend_3(&actor->armature.main, 
 		&actor->armature.main, 
 		&actor->armature.blend, 
 		&actor->armature.blend2, 

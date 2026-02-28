@@ -2,6 +2,7 @@
 #define MALE_MUSCLED_H
 
 #define male_muscled_model "rom:/models/male_muscled.t3dm"
+#define micey_model "rom:/models/micey.t3dm"
 #define gorilla_model "rom:/models/gorilla.t3dm"
 #define girl_model "rom:/models/girl.t3dm"
 
@@ -38,7 +39,7 @@
 
 // animation lenghts in seconds
 
-#define MALE_MUSCLED_ACTION_IDLE_MAX_BLENDING_RATIO 0.65f
+#define MALE_MUSCLED_ACTION_IDLE_MAX_BLENDING_RATIO 0.85f
 
 #define MALE_MUSCLED_WALKING_ANIM_LENGTH 1.033333f
 #define MALE_MUSCLED_WALKING_ANIM_LENGTH_HALF 0.516666f

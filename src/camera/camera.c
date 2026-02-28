@@ -13,10 +13,10 @@ void camera_init(Camera* camera)
         camera->angle_around_barycenter = 20;
         camera->pitch = 8;
         camera->offset_angle = 30;
-        camera->offset_height = 140;
+        camera->offset_height = 130;
 		camera->field_of_view = 60;
 		camera->near_clipping = 100;
-		camera->far_clipping = 5000;
+		camera->far_clipping = 4000;
 		
         camera->settings.orbitational_acceleration_rate = 10;
         camera->settings.orbitational_max_velocity = (Vector2){100, 80};

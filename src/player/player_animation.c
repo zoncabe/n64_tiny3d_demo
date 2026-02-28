@@ -12,26 +12,6 @@
 #include "../../include/viewport/viewport.h"
 
 
-// custom T3D function for my engine
-void t3d_skeleton_blend_3(const T3DSkeleton *skelRes, const T3DSkeleton *skelA, const T3DSkeleton *skelB, const T3DSkeleton *skelC, float factorB, float factorC)
-{
-	for (int i = 0; i < skelRes->skeletonRef->boneCount; i++)
-	{
-		T3DBone *boneRes = &skelRes->bones[i];
-		T3DBone *boneA = &skelA->bones[i];
-		T3DBone *boneB = &skelB->bones[i];
-		T3DBone *boneC = &skelC->bones[i];
-
-		t3d_quat_nlerp(&boneRes->rotation, &boneA->rotation, &boneB->rotation, factorB);
-		t3d_vec3_lerp(&boneRes->position, &boneA->position, &boneB->position, factorB);
-		t3d_vec3_lerp(&boneRes->scale, &boneA->scale, &boneB->scale, factorB);
-
-		t3d_quat_nlerp(&boneRes->rotation, &boneRes->rotation, &boneC->rotation, factorC);
-		t3d_vec3_lerp(&boneRes->position, &boneRes->position, &boneC->position, factorC);
-		t3d_vec3_lerp(&boneRes->scale, &boneRes->scale, &boneC->scale, factorC);
-	}
-}
-
 void playerAnimation_init(Player* player)
 {
 	actorAnimation_initArmature(&player->actor);
@@ -120,11 +100,11 @@ void playerAnimation_setRolling(Player* player)
 		player->actor.animation.data.previous = player->actor.animation.data.current;
 		player->actor.animation.data.current = ROLLING;
 		
-		t3d_anim_set_playing(&player->actor.animation.roll.run_to_rolling_left, true);
-		t3d_anim_set_time(&player->actor.animation.roll.run_to_rolling_left, 0.0f);
+		t3d_anim_set_playing(&player->actor.animation.roll.running_to_roll_left, true);
+		t3d_anim_set_time(&player->actor.animation.roll.running_to_roll_left, 0.0f);
 
-		t3d_anim_set_playing(&player->actor.animation.roll.run_to_rolling_right, true);
-		t3d_anim_set_time(&player->actor.animation.roll.run_to_rolling_right, 0.0f);
+		t3d_anim_set_playing(&player->actor.animation.roll.running_to_roll_right, true);
+		t3d_anim_set_time(&player->actor.animation.roll.running_to_roll_right, 0.0f);
 		player->actor.animation.data.action_blending_ratio = 0.0f;
 	}
 
@@ -207,6 +187,7 @@ void playerAnimation_setJumping(Player* player)
 		actorAnimation_setFootingBlendingRatio(&player->actor, player->actor.animation.standing_locomotion.walking.time, player->actor.animation.settings.standing_locomotion.walking_anim_length);
 		actorAnimation_setLocomotionBlendingRatio(&player->actor);
 		actorAnimation_setSprintingSpeed(&player->actor);
+		
 		player->actor.animation.standing_locomotion.walking.speed *= player->actor.animation.settings.jump.jump_footing_speed * (1 - player->actor.animation.data.jump_blending_ratio);
 		player->actor.animation.standing_locomotion.running.speed *= player->actor.animation.settings.jump.jump_footing_speed * (1 - player->actor.animation.data.jump_blending_ratio);
 		player->actor.animation.standing_locomotion.sprinting.speed *= player->actor.animation.settings.jump.jump_footing_speed * (1 - player->actor.animation.data.jump_blending_ratio);
@@ -272,9 +253,11 @@ void playerAnimation_setFalling(Player* player)
 		actorAnimation_setFootingBlendingRatio(&player->actor, player->actor.animation.standing_locomotion.walking.time, player->actor.animation.settings.standing_locomotion.walking_anim_length);
 		actorAnimation_setLocomotionBlendingRatio(&player->actor);
 		actorAnimation_setSprintingSpeed(&player->actor);
+		
 		player->actor.animation.standing_locomotion.walking.speed *= player->actor.animation.settings.jump.jump_footing_speed * (1 - player->actor.animation.data.jump_blending_ratio);
 		player->actor.animation.standing_locomotion.running.speed *= player->actor.animation.settings.jump.jump_footing_speed * (1 - player->actor.animation.data.jump_blending_ratio);
 		player->actor.animation.standing_locomotion.sprinting.speed *= player->actor.animation.settings.jump.jump_footing_speed * (1 - player->actor.animation.data.jump_blending_ratio);
+		
 		actorAnimation_setSprinting(&player->actor);
 		if (player->actor.body.position.z < LAND_ANIM_STARTING_HEIGHT) actorAnimation_setLanding(&player->actor);
 		else actorAnimation_setFallingIdle(&player->actor);

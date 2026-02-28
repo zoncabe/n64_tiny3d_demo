@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/libdragon/include",
+                "/opt/libdragon/mips64-elf/include"
+            ],
+            "defines": [],
+            "compilerPath": "/opt/libdragon/bin/mips64-elf-gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}

@@ -22,6 +22,7 @@
 #include "../../include/game/game_states.h"
 
 #include "../../include/graphics/shapes.h"
+#include "../../include/graphics/sprites.h"
 #include "../../include/render/render.h"
 #include "../../include/ui/menu.h"
 #include "../../include/cutscene/intro.h"
@@ -31,7 +32,8 @@
 
 void render_start()
 {
-	viewport_clear();	
+	viewport.fb_index = (viewport.fb_index + 1) % FB_COUNT;	
+	viewport_clear();
 }
 
 void render_end()
@@ -57,7 +59,6 @@ void render_gameplayScene(Player** player, Scenery** scenery)
 
 void render()
 {
-	viewport.fb_index = (viewport.fb_index + 1) % FB_COUNT;
 	
 	render_start();
 
@@ -69,22 +70,47 @@ void render()
 		}
 		case MAIN_MENU:{			
 
-    		rdpq_sync_pipe();
-
-			ui_drawMainMenu();
-
-			ui_drawDebugData();
-
+			if (game.previous_state == PAUSE && game.timer.gameplay_transition < 1.0f) {
+			
+				render_gameplayScene(player, scenery);
+				rdpq_sync_pipe();
+				ui_drawPauseMenu();
+				ui_drawFadingTransition(game.timer.gameplay_transition, 0.0f, 0.0f, 0.0f);
+			}
+			else {
+	
+				rdpq_sync_pipe();
+				
+				ui_drawMainMenu();
+				
+				if (game.timer.mainMenu_transition > 0.0f) 
+				ui_drawFadingTransition(game.timer.mainMenu_transition, 0.0f, 0.0f, 0.0f);
+				
+				ui_drawDebugData();
+			}				
 			break;
 		}
 		case GAMEPLAY:{
 
-			render_gameplayScene(player, scenery);
+			if (game.previous_state == MAIN_MENU && game.timer.mainMenu_transition < 1.0f) {
+			
+				rdpq_sync_pipe();
+				ui_drawMainMenu();
+				ui_drawFadingTransition(game.timer.mainMenu_transition, 0.0f, 0.0f, 0.0f);
+			}
+			else{
 
-    		rdpq_sync_pipe();
-
-			ui_drawDebugData();
-
+				render_gameplayScene(player, scenery);
+				
+				rdpq_sync_pipe();
+				
+				if (game.timer.gameplay_transition > 0.0f) 
+				ui_drawFadingTransition(game.timer.gameplay_transition, 0.0f, 0.0f, 0.0f);
+				
+				if (game.timer.pause_transition > 0.0f) ui_drawPauseMenu();
+				
+				ui_drawDebugData();
+			}
 			break;
 		}
 		case PAUSE:{
