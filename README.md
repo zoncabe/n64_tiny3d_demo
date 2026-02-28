@@ -12,3 +12,4 @@ Then run make from the main folder and pray!
 hit the [N64brew Discord](https://discord.gg/r86zSRwDDY) for more<br/>
 
 ##
+
